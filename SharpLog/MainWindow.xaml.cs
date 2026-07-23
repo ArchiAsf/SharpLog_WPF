@@ -22,10 +22,13 @@ namespace SharpLog
             InitializeComponent();
         }
 
-            
+
+  
 
 
         
+
+
 
     }
 }

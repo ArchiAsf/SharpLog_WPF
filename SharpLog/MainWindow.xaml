@@ -5,28 +5,37 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SharpLog"
         mc:Ignorable="d"
-        Title="MainWindow" 
+        Title="SharpLog" 
         Height="768"
         Width="1366"
         MinHeight="768"
-        MinWidth="1366" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow">
-    <TabControl >
-        <TabItem Header="日志编辑" Height="28">
-            <Grid ShowGridLines="True">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="7*"/>
-                    <ColumnDefinition Width="3*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="40"/>
-                    <RowDefinition Height="8*"/>
-                    <RowDefinition Height="2*"/>
-                </Grid.RowDefinitions>
+        MinWidth="1366"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="SingleBorderWindow"
+        Style="{StaticResource LogMainWindowStyle}">
+
+    <TabControl Style="{StaticResource DarkTabControlStyle}" >
+        <TabItem Style="{StaticResource DarkTabItemStyle}" 
+                 Header="日志编辑">
+            <Border Style="{StaticResource DarkTabContentStyle}">
+                <Grid ShowGridLines="True">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="7*"/>
+                        <ColumnDefinition Width="3*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="8*"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
 
 
-            </Grid>
+                </Grid>
+            </Border>
         </TabItem>
-        <TabItem Header="日志查看" Height="26">
+
+        <TabItem Style="{StaticResource DarkTabItemStyle}" 
+                 Header="日志查看">
 
 
 
