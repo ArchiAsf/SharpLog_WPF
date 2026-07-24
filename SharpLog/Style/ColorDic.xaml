@@ -8,7 +8,7 @@
 
     <!--  卡片Panel容器  -->
     <SolidColorBrush x:Key="PanelBackColor" Color="#FF202328" />
-    <SolidColorBrush x:Key="InPanelBackColor" Color="#FF121418"  />
+    <SolidColorBrush x:Key="InPanelBackColor" Color="#FF121418" />
     <SolidColorBrush x:Key="PanelBorderColor" Color="#FF3C3F46" />
 
     <!--  Label文字色系  -->
@@ -43,7 +43,7 @@
 
     <!--  ========== 【拓展1：文字层级补充】强调、辅助、占位文字 ==========  -->
     <!--  强调高亮文字（主色蓝，用于呼号、频率、关键数字高亮）  -->
-    <SolidColorBrush x:Key="AccentTextColor" Color="#FF4D8BFF" />
+    <SolidColorBrush x:Key="AccentTextColor" Color="Goldenrod" />
     <!--  超链接/可点击文字色  -->
     <SolidColorBrush x:Key="LinkTextColor" Color="#FF6BA1FF" />
     <!--  输入框占位符(Placeholder)灰色文字  -->
