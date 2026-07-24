@@ -77,6 +77,7 @@ namespace SharpLog.Model
         /// </summary>
         public string? RIG { get; set; }
 
+
         /// <summary>
         /// 发射功率（可选，例如100W、5W）
         /// </summary>
@@ -137,4 +138,5 @@ namespace SharpLog.Model
         /// </summary>
         public bool IsConfirmation { get; set; }
     }
+
 }

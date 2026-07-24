@@ -1,0 +1,60 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+
+    <!--  ========== 全局颜色资源（完全对应你WinForm色值，一一映射） ==========  -->
+    <!--  主窗体背景、字体  -->
+    <SolidColorBrush x:Key="LogMainFormBackColor" Color="#FF121418" />
+    <SolidColorBrush x:Key="LogMainFormFontColor" Color="#FFF0F2F5" />
+
+    <!--  卡片Panel容器  -->
+    <SolidColorBrush x:Key="PanelBackColor" Color="#FF202328" />
+    <SolidColorBrush x:Key="InPanelBackColor" Color="#FF121418"  />
+    <SolidColorBrush x:Key="PanelBorderColor" Color="#FF3C3F46" />
+
+    <!--  Label文字色系  -->
+    <SolidColorBrush x:Key="LabelMainTitleColor" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="LabelTextColor" Color="#FFF0F2F5" />
+    <SolidColorBrush x:Key="LabelSecondaryNoteColor" Color="#FFC8CBD2" />
+
+    <!--  TextBox输入框 正常状态  -->
+    <SolidColorBrush x:Key="NormalTextBoxBackColor" Color="#FF2D3037" />
+    <SolidColorBrush x:Key="NormalTextBoxTextColor" Color="#FFF0F2F5" />
+    <SolidColorBrush x:Key="NormalTextBoxBorderColor" Color="#FF3C3F46" />
+    <!--  TextBox 焦点状态  -->
+    <SolidColorBrush x:Key="FocusTextBoxTextColor" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="FocusTextBoxBorderColor" Color="#FF2962FF" />
+
+    <!--  主Button按钮  -->
+    <SolidColorBrush x:Key="ButtonNormalBackColor" Color="#FF2962FF" />
+    <SolidColorBrush x:Key="ButtonNormalTextColor" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="ButtonHoverBackColor" Color="#FF487EFF" />
+    <SolidColorBrush x:Key="ButtonClickBackColor" Color="#FF1646B4" />
+    <SolidColorBrush x:Key="ButtonDisabledBackColor" Color="#FF233250" />
+    <SolidColorBrush x:Key="ButtonDisabledTextColor" Color="#FF787D87" />
+
+    <!--  DataGrid 日志表格（原DataGridView）  -->
+    <SolidColorBrush x:Key="DgvHeaderBackColor" Color="#FF202328" />
+    <SolidColorBrush x:Key="DgvHeaderTextColor" Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="DgvHeaderBorderColor" Color="#FF3C3F46" />
+    <SolidColorBrush x:Key="DgvRowNormalBackColor" Color="#FF121418" />
+    <SolidColorBrush x:Key="DgvRowNormalTextColor" Color="#FFF0F2F5" />
+    <SolidColorBrush x:Key="DgvRowSelectedBackColor" Color="#FF2962FF" />
+    <SolidColorBrush x:Key="DgvRowSelectedTextColor" Color="#FFFFFFFF" />
+
+    <!--  ========== TabControl / TabItem 暗色主题样式（适配日志双标签：日志编辑 / 日志查看） ==========  -->
+    <!--  Tab头部背景（未选中）  -->
+    <SolidColorBrush x:Key="TabItemNormalBackColor" Color="#FF202328" />
+    <!--  Tab头部背景（选中激活）  -->
+    <SolidColorBrush x:Key="TabItemSelectedBackColor" Color="#FF121418" />
+    <!--  Tab头部悬浮背景  -->
+    <SolidColorBrush x:Key="TabItemHoverBackColor" Color="#FF2C3038" />
+    <!--  Tab头部文字（未选中）  -->
+    <SolidColorBrush x:Key="TabItemNormalTextColor" Color="#FFC8CBD2" />
+    <!--  Tab头部文字（选中）  -->
+    <SolidColorBrush x:Key="TabItemSelectedTextColor" Color="#FFFFFFFF" />
+    <!--  Tab分割线、边框颜色  -->
+    <SolidColorBrush x:Key="TabBorderBrush" Color="#FF3C3F46" />
+
+
+
+</ResourceDictionary>

@@ -1,12 +1,14 @@
-﻿<Application x:Class="SharpLog.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:SharpLog"
-             StartupUri="MainWindow.xaml">
+﻿<Application
+    x:Class="SharpLog.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:SharpLog"
+    StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Style/MainFormStyle.xaml"/>
+                <ResourceDictionary Source="/Style/ColorDic.xaml" />
+                <ResourceDictionary Source="/Style/FormStyle.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
