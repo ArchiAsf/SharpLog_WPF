@@ -41,6 +41,61 @@
     <SolidColorBrush x:Key="DgvRowSelectedBackColor" Color="#FF2962FF" />
     <SolidColorBrush x:Key="DgvRowSelectedTextColor" Color="#FFFFFFFF" />
 
+    <!--  ========== 【拓展1：文字层级补充】强调、辅助、占位文字 ==========  -->
+    <!--  强调高亮文字（主色蓝，用于呼号、频率、关键数字高亮）  -->
+    <SolidColorBrush x:Key="AccentTextColor" Color="#FF4D8BFF" />
+    <!--  超链接/可点击文字色  -->
+    <SolidColorBrush x:Key="LinkTextColor" Color="#FF6BA1FF" />
+    <!--  输入框占位符(Placeholder)灰色文字  -->
+    <SolidColorBrush x:Key="PlaceholderTextColor" Color="#FF6B6F78" />
+    <!--  最弱辅助文字（水印、提示、脚注）  -->
+    <SolidColorBrush x:Key="LabelTertiaryNoteColor" Color="#FF8A8E97" />
+    <!--  成功状态文字（绿色，通联成功、保存成功提示）  -->
+    <SolidColorBrush x:Key="SuccessTextColor" Color="#FF4EC9B0" />
+    <!--  警告状态文字（橙黄色，格式提醒、必填提示）  -->
+    <SolidColorBrush x:Key="WarningTextColor" Color="#FFD7A84A" />
+    <!--  错误/危险文字（红色，校验失败、删除确认、报错提示）  -->
+    <SolidColorBrush x:Key="ErrorTextColor" Color="#FFF16C6C" />
+
+
+    <!--  ========== 【拓展2：语义状态背景+边框】提示条、校验、标签徽章 ==========  -->
+    <!--  成功状态：浅绿背景 + 边框（用于成功提示条、已同步标签）  -->
+    <SolidColorBrush x:Key="SuccessBackColor" Color="#FF1B3A35" />
+    <SolidColorBrush x:Key="SuccessBorderColor" Color="#FF2E6B60" />
+
+    <!--  警告状态：浅橙背景 + 边框（用于必填提醒、格式警告）  -->
+    <SolidColorBrush x:Key="WarningBackColor" Color="#FF3A301B" />
+    <SolidColorBrush x:Key="WarningBorderColor" Color="#FF6B552E" />
+
+    <!--  错误状态：浅红背景 + 边框（用于输入校验失败、错误提示框）  -->
+    <SolidColorBrush x:Key="ErrorBackColor" Color="#FF3A1F1F" />
+    <SolidColorBrush x:Key="ErrorBorderColor" Color="#FF6B3333" />
+
+    <!--  信息状态：浅蓝背景 + 边框（和主色呼应，普通提示、说明条）  -->
+    <SolidColorBrush x:Key="InfoBackColor" Color="#FF1A2B4D" />
+    <SolidColorBrush x:Key="InfoBorderColor" Color="#FF294F8A" />
+
+
+    <!--  ========== 【拓展3：辅助UI元素色】分割线、阴影、次要按钮 ==========  -->
+    <!--  列表/卡片内部分割线（比边框更淡）  -->
+    <SolidColorBrush x:Key="DividerColor" Color="#FF2A2D33" />
+    <!--  悬浮遮罩层半透明黑（弹窗、下拉菜单背景）  -->
+    <SolidColorBrush x:Key="OverlayMaskColor" Color="#80000000" />
+
+    <!--  次要按钮（幽灵按钮/边框按钮）正常态  -->
+    <SolidColorBrush x:Key="SecondaryButtonBorderColor" Color="#FF3C3F46" />
+    <SolidColorBrush x:Key="SecondaryButtonHoverBackColor" Color="#FF2A2D33" />
+
+    <!--  危险操作按钮（删除、清空日志）红系配色  -->
+    <SolidColorBrush x:Key="DangerButtonNormalBackColor" Color="#FFC0392B" />
+    <SolidColorBrush x:Key="DangerButtonHoverBackColor" Color="#FFE04F3F" />
+    <SolidColorBrush x:Key="DangerButtonClickBackColor" Color="#FF922B20" />
+
+
+    <!--  ========== 【拓展4：RadioButton/CheckBox 勾选强调色】和主蓝统一 ==========  -->
+    <SolidColorBrush x:Key="CheckAccentColor" Color="#FF2962FF" />
+    <SolidColorBrush x:Key="CheckDisabledColor" Color="#FF55585F" />
+
     <!--  ========== TabControl / TabItem 暗色主题样式（适配日志双标签：日志编辑 / 日志查看） ==========  -->
     <!--  Tab头部背景（未选中）  -->
     <SolidColorBrush x:Key="TabItemNormalBackColor" Color="#FF202328" />

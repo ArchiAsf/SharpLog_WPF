@@ -50,6 +50,7 @@
                             <!--左侧第一列栏-->
                             <Border Style="{StaticResource CardPanelStyle}" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3">
 
+
                             </Border>
                             <!--中间主要栏-->
                             <Border  Style="{StaticResource CardPanelStyle}" Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
@@ -85,7 +86,10 @@
                                             </TextBlock>
                                         </Label>
                                     </Border>
-                                    <Border  Style="{StaticResource InCardPanelStyle}"  Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2"></Border>
+                                    <!-- 开始时间输入框 -->
+                                    <Border  Style="{StaticResource InCardPanelStyle}"  Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2">
+                                        <TextBox x:Name="StartTimeInPutBox" Style="{StaticResource DarkTextBoxStyle}"/>
+                                    </Border>
 
                                     <Border  Style="{StaticResource CardPanelStyle}"  Grid.Column="3" Grid.Row="0">
                                         <!-- 字段标签：结束时间 EndTime -->
@@ -97,7 +101,10 @@
                                             </TextBlock>
                                         </Label>
                                     </Border>
-                                    <Border  Style="{StaticResource InCardPanelStyle}"  Grid.Column="4" Grid.Row="0" Grid.ColumnSpan="2"></Border>
+                                    <!-- 结束时间输入框 -->
+                                    <Border  Style="{StaticResource InCardPanelStyle}"  Grid.Column="4" Grid.Row="0" Grid.ColumnSpan="2">
+                                        <TextBox x:Name="EndTimeInPutBox" Style="{StaticResource DarkTextBoxStyle}"/>
+                                    </Border>
 
                                     <Border  Style="{StaticResource CardPanelStyle}"  Grid.Column="6" Grid.Row="0" Grid.ColumnSpan="2">
                                         <!-- 字段标签：备注 RMKS -->
@@ -119,7 +126,10 @@
                                             </TextBlock>
                                         </Label>
                                     </Border>
-                                    <Border  Style="{StaticResource InCardPanelStyle}"  Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3"></Border>
+                                    <!-- 呼号输入框 -->
+                                    <Border  Style="{StaticResource InCardPanelStyle}"   Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3">
+                                        <TextBox x:Name="CallSignInPutBox" Style="{StaticResource DarkTextBoxStyle}" FontSize="20"/>
+                                    </Border>
                                     <Border  Style="{StaticResource CardPanelStyle}"  Grid.Column="4" Grid.Row="1">
                                         <!-- 字段标签：模式 Mode -->
                                         <Label Style="{StaticResource LabelMainTitleStyle}" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -130,9 +140,16 @@
                                             </TextBlock>
                                         </Label>
                                     </Border>
-                                    <Border  Style="{StaticResource InCardPanelStyle}"  Grid.Column="5" Grid.Row="1"></Border>
+                                    <!-- 模式输入框 -->
+                                    <Border  Style="{StaticResource InCardPanelStyle}"  Grid.Column="5" Grid.Row="1">
+                                        <TextBox x:Name="ModeInPutBox" Style="{StaticResource DarkTextBoxStyle}"/>
+                                    </Border>
 
-                                    <Border  Style="{StaticResource InCardPanelStyle}"  Grid.Column="6" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="6"></Border>
+                                    <!-- 备注多行输入框（纵向跨6行，右侧大区域） -->
+                                    <Border  Style="{StaticResource InCardPanelStyle}"  Grid.Column="6" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="6">
+                                        <TextBox x:Name="RmksInPutBox" Style="{StaticResource DarkTextBoxStyle}" 
+                 TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
+                                    </Border>
 
                                     <Border  Style="{StaticResource CardPanelStyle}"  Grid.Column="0" Grid.Row="2">
                                         <!-- 字段标签：频率 Freq -->
@@ -144,7 +161,10 @@
                                             </TextBlock>
                                         </Label>
                                     </Border>
-                                    <Border  Style="{StaticResource InCardPanelStyle}"  Grid.Column="1" Grid.Row="2"></Border>
+                                    <!-- 频率输入框 -->
+                                    <Border  Style="{StaticResource InCardPanelStyle}"  Grid.Column="1" Grid.Row="2">
+                                        <TextBox x:Name="FreqInPutBox" Style="{StaticResource DarkTextBoxStyle}"/>
+                                    </Border>
 
                                     <Border  Style="{StaticResource CardPanelStyle}"  Grid.Column="2" Grid.Row="2">
                                         <!-- 字段标签：信号报告_收 RST -->
@@ -156,7 +176,10 @@
                                             </TextBlock>
                                         </Label>
                                     </Border>
-                                    <Border  Style="{StaticResource InCardPanelStyle}"  Grid.Column="3" Grid.Row="2"></Border>
+                                    <!-- 接收信号报告输入框 -->
+                                    <Border  Style="{StaticResource InCardPanelStyle}"  Grid.Column="3" Grid.Row="2">
+                                        <TextBox x:Name="RstInPutBox" Style="{StaticResource DarkTextBoxStyle}"/>
+                                    </Border>
 
                                     <Border  Style="{StaticResource CardPanelStyle}"  Grid.Column="4" Grid.Row="2">
                                         <!-- 字段标签：信号报告_发 RRST -->
@@ -168,7 +191,10 @@
                                             </TextBlock>
                                         </Label>
                                     </Border>
-                                    <Border  Style="{StaticResource InCardPanelStyle}"  Grid.Column="5" Grid.Row="2"></Border>
+                                    <!-- 发射信号报告输入框 -->
+                                    <Border  Style="{StaticResource InCardPanelStyle}"  Grid.Column="5" Grid.Row="2">
+                                        <TextBox x:Name="RrstInPutBox" Style="{StaticResource DarkTextBoxStyle}"/>
+                                    </Border>
 
                                     <Border  Style="{StaticResource CardPanelStyle}"  Grid.Column="0" Grid.Row="3" >
                                         <!-- 字段标签：发射功率_收 Power -->
@@ -180,7 +206,10 @@
                                             </TextBlock>
                                         </Label>
                                     </Border>
-                                    <Border  Style="{StaticResource InCardPanelStyle}"  Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2"></Border>
+                                    <!-- 接收功率输入框 -->
+                                    <Border  Style="{StaticResource InCardPanelStyle}"  Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2">
+                                        <TextBox x:Name="RxPowerInPutBox" Style="{StaticResource DarkTextBoxStyle}"/>
+                                    </Border>
 
                                     <Border  Style="{StaticResource CardPanelStyle}"  Grid.Column="3" Grid.Row="3">
                                         <!-- 字段标签：发射功率_发 Power -->
@@ -192,7 +221,10 @@
                                             </TextBlock>
                                         </Label>
                                     </Border>
-                                    <Border  Style="{StaticResource InCardPanelStyle}"  Grid.Column="4" Grid.Row="3" Grid.ColumnSpan="2"></Border>
+                                    <!-- 发射功率输入框 -->
+                                    <Border  Style="{StaticResource InCardPanelStyle}"  Grid.Column="4" Grid.Row="3" Grid.ColumnSpan="2">
+                                        <TextBox x:Name="TxPowerInPutBox" Style="{StaticResource DarkTextBoxStyle}"/>
+                                    </Border>
 
                                     <Border  Style="{StaticResource CardPanelStyle}"  Grid.Column="0" Grid.Row="4" >
                                         <!-- 字段标签：地理位置 QTH -->
@@ -204,7 +236,10 @@
                                             </TextBlock>
                                         </Label>
                                     </Border>
-                                    <Border  Style="{StaticResource InCardPanelStyle}"  Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="5"  ></Border>
+                                    <!-- QTH地理位置输入框 -->
+                                    <Border  Style="{StaticResource InCardPanelStyle}"  Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="5"  >
+                                        <TextBox x:Name="QthInPutBox" Style="{StaticResource DarkTextBoxStyle}"/>
+                                    </Border>
 
                                     <Border  Style="{StaticResource CardPanelStyle}"  Grid.Column="0" Grid.Row="5" >
                                         <!-- 字段标签：设备 RIG -->
@@ -216,7 +251,10 @@
                                             </TextBlock>
                                         </Label>
                                     </Border>
-                                    <Border  Style="{StaticResource InCardPanelStyle}"  Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="5"  ></Border>
+                                    <!-- 设备RIG输入框 -->
+                                    <Border  Style="{StaticResource InCardPanelStyle}"  Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="5"  >
+                                        <TextBox x:Name="RigInPutBox" Style="{StaticResource DarkTextBoxStyle}"/>
+                                    </Border>
 
                                     <Border  Style="{StaticResource CardPanelStyle}"  Grid.Column="0" Grid.Row="6" >
                                         <!-- 字段标签：天线 ANT -->
@@ -228,7 +266,10 @@
                                             </TextBlock>
                                         </Label>
                                     </Border>
-                                    <Border  Style="{StaticResource InCardPanelStyle}"  Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="5" ></Border>
+                                    <!-- 天线ANT输入框 -->
+                                    <Border  Style="{StaticResource InCardPanelStyle}"  Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="5" >
+                                        <TextBox x:Name="AntInPutBox" Style="{StaticResource DarkTextBoxStyle}"/>
+                                    </Border>
                                 </Grid>
                             </Border>
 
