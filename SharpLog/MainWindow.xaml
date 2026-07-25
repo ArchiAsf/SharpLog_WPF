@@ -35,7 +35,15 @@
                         Grid.ColumnSpan="2"
                         Style="{StaticResource CardPanelStyle}" />
 
-                    <!--  主要功能实现区  -->
+                    <!--  中间右侧容器  -->
+                    <Border
+                        Grid.Row="1"
+                        Grid.RowSpan="2"
+                        Grid.Column="1"
+                        Style="{StaticResource CardPanelStyle}" />
+
+
+                    <!--  中间通联日志保存区  -->
                     <Border Grid.Row="1" Grid.Column="0">
                         <Grid ShowGridLines="False">
                             <Grid.ColumnDefinitions>
@@ -53,7 +61,198 @@
                                 Grid.Row="0"
                                 Grid.RowSpan="3"
                                 Grid.Column="0"
-                                Style="{StaticResource CardPanelStyle}" />
+                                Style="{StaticResource CardPanelStyle}">
+
+                                <!--  左侧栏划分表格  -->
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="2.5*" />
+                                        <RowDefinition Height="3.25*" />
+                                        <RowDefinition Height="3.25*" />
+                                    </Grid.RowDefinitions>
+
+                                    <!--  时间显示区实现  -->
+                                    <Border Style="{StaticResource CardPanelStyle}">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="7.5*" />
+                                                <RowDefinition Height="2.5*" />
+                                            </Grid.RowDefinitions>
+                                            <!--  上方时间区  -->
+                                            <Border BorderBrush="{StaticResource PanelBorderColor}" BorderThickness="0,0,0,1">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="*" />
+                                                        <RowDefinition Height="*" />
+                                                    </Grid.RowDefinitions>
+
+
+                                                    <!--  UTC时间区  -->
+                                                    <Border
+                                                        Grid.Row="0"
+                                                        Grid.Column="0"
+                                                        BorderBrush="{StaticResource PanelBorderColor}"
+                                                        BorderThickness="0,0,0,1">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition />
+                                                            </Grid.ColumnDefinitions>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="1.5*" />
+                                                                <RowDefinition Height="3*" />
+                                                                <RowDefinition Height="1*" />
+                                                            </Grid.RowDefinitions>
+
+                                                            <Border
+                                                                Grid.Row="0"
+                                                                Grid.Column="0"
+                                                                Padding="0">
+                                                                <Label Style="{StaticResource TimeLabelStyle}">
+                                                                    <TextBlock>
+                                                                        UTC时间
+                                                                    </TextBlock>
+                                                                </Label>
+                                                            </Border>
+
+                                                            <Border
+                                                                Grid.Row="1"
+                                                                Grid.Column="0"
+                                                                Padding="0">
+                                                                <Border Style="{StaticResource TimeBorder}">
+                                                                    <Label Style="{StaticResource TimeStyle}">
+                                                                        <TextBlock TextAlignment="Center">
+                                                                            03:29:36
+                                                                        </TextBlock>
+                                                                    </Label>
+                                                                </Border>
+                                                            </Border>
+
+                                                            <Border
+                                                                Grid.Row="1"
+                                                                Grid.Column="0"
+                                                                Padding="0"
+                                                                HorizontalAlignment="Right"
+                                                                VerticalAlignment="Bottom">
+                                                                <Label Style="{StaticResource UTCZoneStyle}">
+                                                                    <TextBlock>
+                                                                        UTC+0
+                                                                    </TextBlock>
+                                                                </Label>
+                                                            </Border>
+
+                                                            <Border
+                                                                Grid.Row="2"
+                                                                Grid.Column="0"
+                                                                Padding="0">
+                                                                <Label Style="{StaticResource TimeDataStyle}">
+                                                                    <TextBlock>
+                                                                        2026/07/25
+                                                                    </TextBlock>
+                                                                </Label>
+                                                            </Border>
+
+                                                        </Grid>
+                                                    </Border>
+
+                                                    <!--  地区时间区  -->
+                                                    <Border
+                                                        Grid.Row="1"
+                                                        Grid.Column="0"
+                                                        BorderBrush="{StaticResource PanelBorderColor}"
+                                                        BorderThickness="0,0,0,1">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition />
+                                                            </Grid.ColumnDefinitions>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="1.5*" />
+                                                                <RowDefinition Height="3*" />
+                                                                <RowDefinition Height="1*" />
+                                                            </Grid.RowDefinitions>
+
+                                                            <Border
+                                                                Grid.Row="0"
+                                                                Grid.Column="0"
+                                                                Padding="0">
+                                                                <Label Style="{StaticResource TimeLabelStyle}">
+                                                                    <TextBlock>
+                                                                        北京时间
+                                                                    </TextBlock>
+                                                                </Label>
+                                                            </Border>
+
+                                                            <Border
+                                                                Grid.Row="1"
+                                                                Grid.Column="0"
+                                                                Padding="0">
+                                                                <Border Style="{StaticResource TimeBorder}">
+                                                                    <Label Style="{StaticResource TimeStyle}">
+                                                                        <TextBlock TextAlignment="Center">
+                                                                            11:29:36
+                                                                        </TextBlock>
+                                                                    </Label>
+                                                                </Border>
+                                                            </Border>
+
+                                                            <Border
+                                                                Grid.Row="1"
+                                                                Grid.Column="0"
+                                                                Padding="0"
+                                                                HorizontalAlignment="Right"
+                                                                VerticalAlignment="Bottom">
+                                                                <Label Style="{StaticResource UTCZoneStyle}">
+                                                                    <TextBlock>
+                                                                        UTC+8
+                                                                    </TextBlock>
+                                                                </Label>
+                                                            </Border>
+
+                                                            <Border
+                                                                Grid.Row="2"
+                                                                Grid.Column="0"
+                                                                Padding="0">
+                                                                <Label Style="{StaticResource TimeDataStyle}">
+                                                                    <TextBlock>
+                                                                        2026/07/25
+                                                                    </TextBlock>
+                                                                </Label>
+                                                            </Border>
+                                                        </Grid>
+                                                    </Border>
+
+                                                </Grid>
+                                            </Border>
+
+                                            <!--  晨昏显示区  -->
+                                            <Grid Grid.Row="1">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="2.5*" />
+                                                    <ColumnDefinition Width="3.5*" />
+                                                    <ColumnDefinition Width="3.5*" />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="7*" />
+                                                    <RowDefinition Height="3*" />
+                                                </Grid.RowDefinitions>
+
+
+                                            </Grid>
+
+                                        </Grid>
+                                    </Border>
+
+                                </Grid>
+                            </Border>
+
                             <!--  中间主要栏  -->
                             <Border
                                 Grid.Row="0"
@@ -165,7 +364,8 @@
                                         Style="{StaticResource InCardPanelStyle}">
                                         <TextBox
                                             x:Name="CallSignInPutBox"
-                                            FontSize="20"
+                                            FontFamily="Consolas"
+                                            FontSize="22"
                                             Foreground="{StaticResource AccentTextColor}"
                                             Style="{StaticResource DarkTextBoxStyle}" />
                                     </Border>
@@ -200,8 +400,11 @@
                                         Style="{StaticResource InCardPanelStyle}">
                                         <TextBox
                                             x:Name="RmksInPutBox"
+                                            VerticalContentAlignment="Top"
                                             AcceptsReturn="True"
+                                            FontSize="14"
                                             Style="{StaticResource DarkTextBoxStyle}"
+                                            TextAlignment="Justify"
                                             TextWrapping="Wrap"
                                             VerticalScrollBarVisibility="Auto" />
                                     </Border>
@@ -225,7 +428,10 @@
                                         Grid.Row="2"
                                         Grid.Column="1"
                                         Style="{StaticResource InCardPanelStyle}">
-                                        <TextBox x:Name="FreqInPutBox" Style="{StaticResource DarkTextBoxStyle}" />
+                                        <TextBox
+                                            x:Name="FreqInPutBox"
+                                            Style="{StaticResource UnitTextBoxStyle}"
+                                            Tag="kHz" />
                                     </Border>
 
                                     <Border
@@ -272,9 +478,32 @@
                                         <TextBox x:Name="RrstInPutBox" Style="{StaticResource DarkTextBoxStyle}" />
                                     </Border>
 
+
                                     <Border
                                         Grid.Row="3"
                                         Grid.Column="0"
+                                        Style="{StaticResource CardPanelStyle}">
+                                        <!--  字段标签：网格 GRID  -->
+                                        <Label
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Style="{StaticResource LabelMainTitleStyle}">
+                                            <TextBlock TextAlignment="Center">
+                                                网格<LineBreak />
+                                                Grid</TextBlock>
+                                        </Label>
+                                    </Border>
+                                    <!--  网格输入框  -->
+                                    <Border
+                                        Grid.Row="3"
+                                        Grid.Column="1"
+                                        Style="{StaticResource InCardPanelStyle}">
+                                        <TextBox x:Name="GridInPutBox" Style="{StaticResource DarkTextBoxStyle}" />
+                                    </Border>
+
+                                    <Border
+                                        Grid.Row="3"
+                                        Grid.Column="2"
                                         Style="{StaticResource CardPanelStyle}">
                                         <!--  字段标签：发射功率_收 Power  -->
                                         <Label
@@ -289,15 +518,18 @@
                                     <!--  接收功率输入框  -->
                                     <Border
                                         Grid.Row="3"
-                                        Grid.Column="1"
-                                        Grid.ColumnSpan="2"
+                                        Grid.Column="3"
+                                        Grid.ColumnSpan="1"
                                         Style="{StaticResource InCardPanelStyle}">
-                                        <TextBox x:Name="RxPowerInPutBox" Style="{StaticResource DarkTextBoxStyle}" />
+                                        <TextBox
+                                            x:Name="RxPowerInPutBox"
+                                            Style="{StaticResource UnitTextBoxStyle}"
+                                            Tag="W" />
                                     </Border>
 
                                     <Border
                                         Grid.Row="3"
-                                        Grid.Column="3"
+                                        Grid.Column="4"
                                         Style="{StaticResource CardPanelStyle}">
                                         <!--  字段标签：发射功率_发 Power  -->
                                         <Label
@@ -312,10 +544,13 @@
                                     <!--  发射功率输入框  -->
                                     <Border
                                         Grid.Row="3"
-                                        Grid.Column="4"
-                                        Grid.ColumnSpan="2"
+                                        Grid.Column="5"
+                                        Grid.ColumnSpan="1"
                                         Style="{StaticResource InCardPanelStyle}">
-                                        <TextBox x:Name="TxPowerInPutBox" Style="{StaticResource DarkTextBoxStyle}" />
+                                        <TextBox
+                                            x:Name="TxPowerInPutBox"
+                                            Style="{StaticResource UnitTextBoxStyle}"
+                                            Tag="W" />
                                     </Border>
 
                                     <Border
@@ -400,13 +635,6 @@
                         </Grid>
                     </Border>
 
-
-                    <!--  中间右侧容器  -->
-                    <Border
-                        Grid.Row="1"
-                        Grid.RowSpan="2"
-                        Grid.Column="1"
-                        Style="{StaticResource CardPanelStyle}" />
 
                     <!--  底部容器  -->
                     <Border

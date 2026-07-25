@@ -110,6 +110,9 @@
     <!--  Tab分割线、边框颜色  -->
     <SolidColorBrush x:Key="TabBorderBrush" Color="#FF3C3F46" />
 
+    <!--  时间日期显示颜色  -->
+    <SolidColorBrush x:Key="TimeDataColor" Color="#FF787D87" />
+
 
 
 </ResourceDictionary>
