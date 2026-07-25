@@ -241,8 +241,110 @@
                                                 </Grid.ColumnDefinitions>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="7*" />
-                                                    <RowDefinition Height="3*" />
+                                                    <RowDefinition Height="5.5*" />
                                                 </Grid.RowDefinitions>
+
+                                                <Border
+                                                    Grid.Row="0"
+                                                    Grid.RowSpan="2"
+                                                    Grid.Column="0"
+                                                    BorderBrush="{StaticResource PanelBorderColor}"
+                                                    BorderThickness="0,0,1,0">
+
+                                                    <Image Source="/logo/Dusk.png" Margin="2">
+                                                        
+                                                    </Image>
+                                                </Border>
+
+                                                <Border
+                                                    Grid.Row="0"
+                                                    Grid.Column="1"
+                                                    Grid.ColumnSpan="2"
+                                                    BorderBrush="{StaticResource PanelBorderColor}"
+                                                    BorderThickness="0,0,0,1">
+                                                    <StackPanel
+                                                        Margin="0"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        Orientation="Horizontal">
+                                                        <Label
+                                                            Margin="0,0,8,0"
+                                                            Padding="0"
+                                                            FontSize="12"
+                                                            Foreground="{StaticResource LabelMainTitleColor}">
+                                                            <TextBlock>
+                                                                当前时刻为:
+                                                            </TextBlock>
+                                                        </Label>
+                                                        <Label
+                                                            Margin="1,0"
+                                                            Padding="0"
+                                                            FontSize="12"
+                                                            Foreground="{StaticResource LabelMainTitleColor}">
+                                                            <TextBlock>
+                                                                黄昏
+                                                            </TextBlock>
+                                                        </Label>
+                                                    </StackPanel>
+                                                </Border>
+
+                                                <Border
+                                                    Grid.Row="1"
+                                                    Grid.Column="1"
+                                                    BorderBrush="{StaticResource PanelBorderColor}"
+                                                    BorderThickness="0,0,1,0">
+                                                    <StackPanel
+                                                        Margin="0"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        Orientation="Horizontal">
+                                                        <Label
+                                                            Margin="0,0,4,0"
+                                                            Padding="0"
+                                                            FontSize="10"
+                                                            Foreground="{StaticResource LabelMainTitleColor}">
+                                                            <TextBlock>
+                                                                日出:
+                                                            </TextBlock>
+                                                        </Label>
+                                                        <Label
+                                                            Padding="0"
+                                                            FontSize="10"
+                                                            Foreground="{StaticResource LabelMainTitleColor}">
+                                                            <TextBlock>
+                                                                04：07
+                                                            </TextBlock>
+                                                        </Label>
+                                                    </StackPanel>
+                                                </Border>
+
+                                                <Border Grid.Row="1" Grid.Column="2">
+                                                    <StackPanel
+                                                        Margin="0"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        Orientation="Horizontal">
+                                                        <Label
+                                                            Margin="0,0,4,0"
+                                                            Padding="0"
+                                                            FontSize="10"
+                                                            Foreground="{StaticResource LabelMainTitleColor}">
+                                                            <TextBlock>
+                                                                日落:
+                                                            </TextBlock>
+                                                        </Label>
+                                                        <Label
+                                                            Padding="0"
+                                                            FontSize="10"
+                                                            Foreground="{StaticResource LabelMainTitleColor}">
+                                                            <TextBlock>
+                                                                19：27
+                                                            </TextBlock>
+                                                        </Label>
+                                                    </StackPanel>
+                                                </Border>
+
+
 
 
                                             </Grid>
