@@ -20,40 +20,47 @@
             <Border Margin="0" Style="{StaticResource CardPanelStyle}">
                 <Grid ShowGridLines="False">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="7.5*" />
-                        <ColumnDefinition Width="2.5*" />
+                        <ColumnDefinition Width="43*" />
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="294*" />
+                        <ColumnDefinition Width="113*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40" />
-                        <RowDefinition Height="8*" />
-                        <RowDefinition />
+                        <RowDefinition Height="9*" />
+                        <RowDefinition Height="0.75*" />
                     </Grid.RowDefinitions>
 
                     <!--  顶部工具栏容器  -->
                     <Border
                         Grid.Row="0"
-                        Grid.ColumnSpan="2"
+                        Grid.ColumnSpan="4"
+                        Margin="2,2,2,2"
                         Style="{StaticResource CardPanelStyle}" />
 
                     <!--  中间右侧容器  -->
                     <Border
                         Grid.Row="1"
                         Grid.RowSpan="2"
-                        Grid.Column="1"
+                        Grid.Column="3"
+                        Margin="2,2,2,2"
                         Style="{StaticResource CardPanelStyle}" />
 
 
                     <!--  中间通联日志保存区  -->
-                    <Border Grid.Row="1" Grid.Column="0">
+                    <Border
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3">
                         <Grid ShowGridLines="False">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*" />
-                                <ColumnDefinition Width="8*" />
+                                <ColumnDefinition Width="203.4" />
+                                <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="3.5*" />
-                                <RowDefinition Height="3.5*" />
                                 <RowDefinition Height="3*" />
+                                <RowDefinition Height="3*" />
+                                <RowDefinition Height="4*" />
                             </Grid.RowDefinitions>
 
                             <!--  左侧第一列栏  -->
@@ -251,9 +258,7 @@
                                                     BorderBrush="{StaticResource PanelBorderColor}"
                                                     BorderThickness="0,0,1,0">
 
-                                                    <Image Source="/logo/Dusk.png" Margin="2">
-                                                        
-                                                    </Image>
+                                                    <Image Margin="2" Source="/logo/Dusk.png" />
                                                 </Border>
 
                                                 <Border
@@ -374,13 +379,14 @@
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="6*" />
-                                        <RowDefinition Height="6*" />
-                                        <RowDefinition Height="6*" />
-                                        <RowDefinition Height="6*" />
-                                        <RowDefinition Height="7*" />
-                                        <RowDefinition Height="7*" />
-                                        <RowDefinition Height="7*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
 
                                     <Border
@@ -496,7 +502,7 @@
                                     <!--  备注多行输入框（纵向跨6行，右侧大区域）  -->
                                     <Border
                                         Grid.Row="1"
-                                        Grid.RowSpan="6"
+                                        Grid.RowSpan="7"
                                         Grid.Column="6"
                                         Grid.ColumnSpan="2"
                                         Style="{StaticResource InCardPanelStyle}">
@@ -723,16 +729,101 @@
                                         Style="{StaticResource InCardPanelStyle}">
                                         <TextBox x:Name="AntInPutBox" Style="{StaticResource DarkTextBoxStyle}" />
                                     </Border>
+
+                                    <Border
+                                        Grid.Row="7"
+                                        Grid.Column="0"
+                                        Style="{StaticResource CardPanelStyle}">
+                                        <!--  字段标签：发射高度 Height  -->
+                                        <Label
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Style="{StaticResource LabelMainTitleStyle}">
+                                            <TextBlock TextAlignment="Center">
+                                                发射高度<LineBreak />
+                                                Height</TextBlock>
+                                        </Label>
+                                    </Border>
+                                    <!--  发射高度 Height输入框  -->
+                                    <Border
+                                        Grid.Row="7"
+                                        Grid.Column="1"
+                                        Grid.ColumnSpan="2"
+                                        Style="{StaticResource InCardPanelStyle}">
+                                        <TextBox
+                                            x:Name="HeightInPutBox"
+                                            Style="{StaticResource UnitTextBoxStyle}"
+                                            Tag="M" />
+                                    </Border>
+
+                                    <Border
+                                        Grid.Row="7"
+                                        Grid.Column="3"
+                                        Style="{StaticResource CardPanelStyle}">
+
+                                        <!--  字段标签：操作员OP  -->
+                                        <Label
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Style="{StaticResource LabelMainTitleStyle}">
+                                            <TextBlock TextAlignment="Center">
+                                                操作员<LineBreak />
+                                                OP</TextBlock>
+                                        </Label>
+                                    </Border>
+                                    <!--  操作员OP输入框  -->
+                                    <Border
+                                        Grid.Row="7"
+                                        Grid.Column="4"
+                                        Grid.ColumnSpan="2"
+                                        Style="{StaticResource InCardPanelStyle}">
+                                        <TextBox x:Name="OPInPutBox" Style="{StaticResource DarkTextBoxStyle}" />
+                                    </Border>
                                 </Grid>
                             </Border>
 
 
                             <!--  中间下方栏  -->
-                            <Border
+                            <!--  这里我想实现一个输入呼号后通过解析呼号能得出对方的国家后显示国旗图标然后还有国家名字，还有对应呼号的字母解释法，生成界面代码即可不用对应的功能实现代码  -->
+                            <TabControl
                                 Grid.Row="2"
                                 Grid.Column="1"
                                 Grid.ColumnSpan="2"
-                                Style="{StaticResource CardPanelStyle}" />
+                                Style="{StaticResource InDarkTabControlStyle}">
+                                <TabItem
+                                    Height="18"
+                                    Header="日志信息"
+                                    Style="{StaticResource InDarkTabItemStyle}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="6*" />
+                                            <ColumnDefinition Width="4*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+
+                                        <Border BorderBrush="{StaticResource TabBorderBrush}" BorderThickness="0,0,1,0">
+
+                                           
+
+
+
+
+
+
+                                        </Border>
+                                    </Grid>
+                                </TabItem>
+
+                                <TabItem Height="18" Style="{StaticResource InDarkTabItemStyle}" />
+                            </TabControl>
+
+
+
+
+
+
 
                         </Grid>
                     </Border>
@@ -742,6 +833,8 @@
                     <Border
                         Grid.Row="2"
                         Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Margin="2,2,2,2"
                         Style="{StaticResource CardPanelStyle}" />
 
 

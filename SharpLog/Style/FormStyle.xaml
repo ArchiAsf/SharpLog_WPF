@@ -36,8 +36,9 @@
     <!--  3. Label 主标题样式  -->
     <Style x:Key="LabelMainTitleStyle" TargetType="Label">
         <Setter Property="Foreground" Value="{StaticResource LabelMainTitleColor}" />
-        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontSize" Value="13.5" />
         <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Padding" Value="0" />
     </Style>
 
     <!--  4. Label 正文普通文字  -->
@@ -166,6 +167,48 @@
         <Setter Property="TabStripPlacement" Value="Top" />
     </Style>
 
+    <!--  TabControl 整体容器样式-用于页面内的切换页面的使用  -->
+    <Style x:Key="InDarkTabControlStyle" TargetType="TabControl">
+        <!--  内容区域背景，和主窗体背景统一  -->
+        <Setter Property="Background" Value="{StaticResource PanelBackColor}" />
+        <Setter Property="BorderBrush" Value="{StaticResource TabBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Margin" Value="2" />
+        <!--  标签头部对齐靠左  -->
+        <Setter Property="TabStripPlacement" Value="Top" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabControl">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <!--  标签头部  -->
+                        <TabPanel
+                            x:Name="HeaderPanel"
+                            Grid.Row="0"
+                            Margin="0,0,0,0"
+                            Background="{TemplateBinding Background}"
+                            IsItemsHost="True" />
+                        <!--  标签内容区域  -->
+                        <Border
+                            x:Name="ContentPanel"
+                            Grid.Row="1"
+                            Padding="{TemplateBinding Padding}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="6,6,6,6">
+                            <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent" />
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
     <!--  TabItem 标签头部样式（核心，包含选中/悬浮触发器）  -->
     <!--  TabItem 标签头部样式（修复选中出现白色背景问题）  -->
     <Style x:Key="DarkTabItemStyle" TargetType="TabItem">
@@ -196,6 +239,67 @@
                         <Border
                             x:Name="ActiveLine"
                             Height="3"
+                            Margin="8,2,8,0"
+                            VerticalAlignment="Top"
+                            Background="{StaticResource FocusTextBoxBorderColor}"
+                            CornerRadius="3,3,3,3"
+                            Visibility="Collapsed" />
+
+                        <ContentPresenter
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            ContentSource="Header" />
+                    </Grid>
+
+
+                    <!--  状态触发器：悬浮 / 选中  -->
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="MainBorder" Property="Background" Value="{StaticResource TabItemHoverBackColor}" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="MainBorder" Property="Background" Value="{StaticResource TabItemSelectedBackColor}" />
+                            <Setter Property="Foreground" Value="{StaticResource TabItemSelectedTextColor}" />
+                            <Setter Property="FontWeight" Value="SemiBold" />
+                            <Setter TargetName="ActiveLine" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  TabItem 标签头部样式（核心，包含选中/悬浮触发器）  -->
+    <!--  TabItem 标签头部样式（修复选中出现白色背景问题）  -->
+    <!--  页面内部用来切换页面的标签头部样式  -->
+    <Style x:Key="InDarkTabItemStyle" TargetType="TabItem">
+        <Setter Property="Background" Value="{StaticResource TabItemNormalBackColor}" />
+        <Setter Property="Foreground" Value="{StaticResource TabItemNormalTextColor}" />
+        <Setter Property="BorderBrush" Value="{StaticResource TabBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1,1,1,0" />
+        <Setter Property="Padding" Value="14,2,14, 0" />
+        <Setter Property="FontSize" Value="12" />
+        <!--<Setter Property="MinWidth" Value=""/>-->
+        <Setter Property="Height" Value="28" />
+
+        <!--  核心：重写控件模板，消除原生选中白色背景  -->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabItem">
+                    <Grid>
+
+                        <Border
+                            x:Name="MainBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="6,6,0,0" />
+
+                        <!--  顶部高亮蓝条，选中才显示  -->
+                        <Border
+                            x:Name="ActiveLine"
+                            Height="1.5"
                             Margin="8,2,8,0"
                             VerticalAlignment="Top"
                             Background="{StaticResource FocusTextBoxBorderColor}"
@@ -349,14 +453,17 @@
 
     </Style>
 
-    <!--UTC时区加减文本-->
-    <Style x:Key="UTCZoneStyle" TargetType="Label" >
-        <Setter Property="Margin" Value="0,0,3,0"/>
-        <Setter Property="Padding"  Value="0"/>
-        <Setter Property="FontSize" Value="7.5"/>
-        <Setter Property="Foreground" Value="{StaticResource TimeDataColor}"/>
+    <!--  UTC时区加减文本  -->
+    <Style x:Key="UTCZoneStyle" TargetType="Label">
+        <Setter Property="Margin" Value="0,0,3,0" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="FontSize" Value="7.5" />
+        <Setter Property="Foreground" Value="{StaticResource TimeDataColor}" />
 
     </Style>
+
+
+
 
 
 </ResourceDictionary>

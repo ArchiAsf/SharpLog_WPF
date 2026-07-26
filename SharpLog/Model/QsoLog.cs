@@ -89,7 +89,7 @@ namespace SharpLog.Model
         public string? ANT { get; set; }
 
         /// <summary>
-        /// 天线高度（可选）
+        /// 发射高度（可选）
         /// </summary>
         public string? Height { get; set; }
 
@@ -104,7 +104,7 @@ namespace SharpLog.Model
         public string? RMKS { get; set; }
 
         /// <summary>
-        /// 是否交换QSL卡片
+        /// 是否交换了QSL卡片
         /// </summary>
         public bool IsQSL { get; set; }
 
@@ -132,6 +132,16 @@ namespace SharpLog.Model
         /// 流星余迹通联
         /// </summary>
         public bool IsMeteoricTrail { get; set; }
+
+        /// <summary>
+        /// F2电离层反射通联
+        /// </summary>
+        public bool IsF2Reflection { get; set; }
+
+        /// <summary>
+        /// 突发E层反射通联
+        /// </summary>
+        public bool IsEReflection { get; set; }
 
         /// <summary>
         /// 是否双向确认通联

@@ -20,6 +20,7 @@ namespace SharpLog
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = new ViewModel.MainLogWindow_VM();
         }
 
 
