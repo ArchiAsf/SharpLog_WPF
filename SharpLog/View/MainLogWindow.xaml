@@ -1,5 +1,5 @@
 ﻿<Window
-    x:Class="SharpLog.MainWindow"
+    x:Class="SharpLog.MainLogWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -387,6 +387,7 @@
                                         <RowDefinition Height="*" />
                                         <RowDefinition Height="*" />
                                         <RowDefinition Height="*" />
+                                        <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
 
                                     <Border
@@ -496,7 +497,11 @@
                                         Grid.Row="1"
                                         Grid.Column="5"
                                         Style="{StaticResource InCardPanelStyle}">
-                                        <TextBox x:Name="ModeInPutBox" Style="{StaticResource DarkTextBoxStyle}" />
+                                        <ComboBox
+                                            ItemsSource="{Binding CommModeList}"
+                                            SelectedItem="{Binding SelectCommMode}"
+                                            Style="{StaticResource DarkComboBoxStyle}" />
+
                                     </Border>
 
                                     <!--  备注多行输入框（纵向跨6行，右侧大区域）  -->
@@ -779,6 +784,64 @@
                                         Style="{StaticResource InCardPanelStyle}">
                                         <TextBox x:Name="OPInPutBox" Style="{StaticResource DarkTextBoxStyle}" />
                                     </Border>
+
+
+
+
+                                    <Border
+                                        Grid.Row="8"
+                                        Grid.Column="0"
+                                        Style="{StaticResource CardPanelStyle}">
+                                        <!--  字段标签：通联方式  -->
+                                        <Label
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Style="{StaticResource LabelMainTitleStyle}">
+                                            <TextBlock TextAlignment="Center">
+                                                通联方式<LineBreak />
+                                                PROPMode</TextBlock>
+                                        </Label>
+                                    </Border>
+                                    <!--  通联方式 Propagation Mode输入框  -->
+                                    <Border
+                                        Grid.Row="8"
+                                        Grid.Column="1"
+                                        Grid.ColumnSpan="2"
+                                        Style="{StaticResource InCardPanelStyle}">
+
+                                        <ComboBox
+                                            ItemsSource="{Binding PropagationModeList}"
+                                            SelectedItem="{Binding SelectPROPItem}"
+                                            Style="{StaticResource DarkComboBoxStyle}" />
+
+
+                                    </Border>
+
+                                    <Border
+                                        Grid.Row="8"
+                                        Grid.Column="3"
+                                        Style="{StaticResource CardPanelStyle}">
+
+                                        <!--  字段标签：DMRID  -->
+                                        <Label
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Style="{StaticResource LabelMainTitleStyle}">
+                                            <TextBlock TextAlignment="Center">
+                                                数字ID<LineBreak />
+                                                DigID</TextBlock>
+                                        </Label>
+                                    </Border>
+                                    <!--  DMRID输入框  -->
+                                    <Border
+                                        Grid.Row="8"
+                                        Grid.Column="4"
+                                        Grid.ColumnSpan="2"
+                                        Style="{StaticResource InCardPanelStyle}">
+                                        <TextBox x:Name="DMRIDInPutBox" Style="{StaticResource DarkTextBoxStyle}" />
+                                    </Border>
+
+
                                 </Grid>
                             </Border>
 
@@ -803,16 +866,7 @@
                                             <RowDefinition />
                                         </Grid.RowDefinitions>
 
-                                        <Border BorderBrush="{StaticResource TabBorderBrush}" BorderThickness="0,0,1,0">
-
-                                           
-
-
-
-
-
-
-                                        </Border>
+                                        <Border BorderBrush="{StaticResource TabBorderBrush}" BorderThickness="0,0,1,0" />
                                     </Grid>
                                 </TabItem>
 

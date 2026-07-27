@@ -13,11 +13,11 @@ using System.Windows.Shapes;
 namespace SharpLog
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainLogWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainLogWindow : Window
     {
-        public MainWindow()
+        public MainLogWindow()
         {
             InitializeComponent();
             DataContext = new ViewModel.MainLogWindow_VM();
