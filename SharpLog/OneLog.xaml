@@ -1,0 +1,149 @@
+﻿<UserControl
+    x:Class="SharpLog.OneLog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:SharpLog"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Width="Auto"
+    Height="288"
+    MinWidth="160"
+    MinHeight="288"
+    Margin="0,5,0,5"
+    d:DesignHeight="228"
+    d:DesignWidth="900"
+    mc:Ignorable="d">
+    <Border BorderBrush="{StaticResource PanelBorderColor}" BorderThickness="1">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="8"/>
+                <!-- 0 侧边条 固定 -->
+                <ColumnDefinition Width="180"/>
+                <!-- 1 固定 -->
+                <ColumnDefinition Width="180"/>
+                <!-- 2 固定 -->
+                <ColumnDefinition Width="40"/>
+                <!-- 4 固定 -->
+                <ColumnDefinition Width="*"/>
+                <!-- 5 自适应拉伸 -->
+                <ColumnDefinition Width="*"/>
+                <!-- 6 自适应拉伸 -->
+                <ColumnDefinition Width="100"/>
+                <!-- 7 固定 -->
+                <ColumnDefinition Width="100"/>
+                <!-- 8 固定 -->
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="34"/>
+                <RowDefinition Height="34"/>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="62"/>
+                <RowDefinition Height="36"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="34"/>
+                <RowDefinition Height="34"/>
+                <RowDefinition Height="34"/>
+            </Grid.RowDefinitions>
+
+            <!-- 左侧红色竖条 贯穿9行 -->
+            <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="9"
+                    Background="{Binding CardSideBarColor, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+
+
+            <!-- 第0行 编号1 -->
+            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2"
+                   Content="{Binding StartTime, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource LabelMainTitleStyle}"/>
+            <Label Grid.Row="0" Grid.Column="3"
+                   Content="{Binding TimeZoneSuffix, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource LabelMainTitleStyle}"/>
+            <Label Grid.Row="0" Grid.Column="8" Grid.RowSpan="2"
+                   Content="{Binding Mode, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource LabelMainTitleStyle}"/>
+            <Label Grid.Row="0" Grid.Column="6"
+                   Content="{Binding PropModeText, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource LabelMainTitleStyle}"/>
+
+            <!-- 第1行 编号2 -->
+            <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
+                   Content="{Binding EndTime, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource LabelMainTitleStyle}"/>
+            <Label Grid.Row="1" Grid.Column="3"
+                   Content="{Binding TimeZoneSuffix, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource LabelMainTitleStyle}"/>
+
+            <!-- 第2行 编号3 无d -->
+
+
+            <!-- 第3行 编号4 呼号行【1.5倍高度】 -->
+            <Label Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3"
+                   Content="{Binding CallSign, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource LabelMainTitleStyle}"/>
+            <Label Grid.Row="3" Grid.Column="7"
+                   Content="{Binding RST, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource LabelMainTitleStyle}"/>
+            <Label Grid.Row="3" Grid.Column="8"
+                   Content="{Binding RRST, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource LabelMainTitleStyle}"/>
+
+            <!-- 第4行 编号5 频率行【1.25倍高度】 -->
+            <Label Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3"
+                   Content="{Binding DisplayFrequency, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource LabelMainTitleStyle}"/>
+            <Label Grid.Row="4" Grid.Column="7" Grid.ColumnSpan="2"
+                   Content="{Binding Locator, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource LabelMainTitleStyle}"/>
+
+            <!-- 第5行 编号6 空白 -->
+
+            <!-- 第6行 编号7 QTH -->
+            <Label Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="5"
+                   Content="{Binding QTH, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource LabelMainTitleStyle}"/>
+
+            <!-- 第7行 编号8 设备Rig -->
+            <Label Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="5"
+                   Content="{Binding Rig, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource LabelMainTitleStyle}"/>
+
+            <!-- 第8行 编号9 天线 + 操作员 -->
+            <Label Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="5"
+                   Content="{Binding Antenna, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource LabelMainTitleStyle}"/>
+            <Label Grid.Row="8" Grid.Column="8"
+                   Content="{Binding Operator, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource LabelMainTitleStyle}"/>
+        </Grid>
+    </Border>
+</UserControl>

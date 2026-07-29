@@ -114,5 +114,12 @@
     <SolidColorBrush x:Key="TimeDataColor" Color="#FF787D87" />
 
 
+    <!--  滚动条配套色（沿用暗色主题体系）  -->
+    <SolidColorBrush x:Key="ScrollBarTrackBrush" Color="#FF262930" />
+    <SolidColorBrush x:Key="ScrollBarThumbNormalBrush" Color="#FF444850" />
+    <SolidColorBrush x:Key="ScrollBarThumbHoverBrush" Color="#FF606570" />
+    <SolidColorBrush x:Key="ScrollBarThumbDragBrush" Color="#FF787E8A" />
+
+
 
 </ResourceDictionary>

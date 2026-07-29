@@ -44,7 +44,14 @@
                         Grid.RowSpan="2"
                         Grid.Column="3"
                         Margin="2,2,2,2"
-                        Style="{StaticResource CardPanelStyle}" />
+                        Style="{StaticResource CardPanelStyle}">
+                        <ScrollViewer
+                            HorizontalScrollBarVisibility="Disabled"
+                            Style="{StaticResource DarkOnlyVerticalScrollViewerStyle}"
+                            VerticalScrollBarVisibility="Visible">
+                            <StackPanel Orientation="Vertical" />
+                        </ScrollViewer>
+                    </Border>
 
 
                     <!--  中间通联日志保存区  -->
@@ -400,7 +407,7 @@
                                             VerticalAlignment="Center"
                                             Style="{StaticResource LabelMainTitleStyle}">
                                             <TextBlock TextAlignment="Center">
-                                                开始时间<LineBreak />
+                                                ·开始时间<LineBreak />
                                                 StartTime</TextBlock>
                                         </Label>
                                     </Border>
@@ -423,7 +430,7 @@
                                             VerticalAlignment="Center"
                                             Style="{StaticResource LabelMainTitleStyle}">
                                             <TextBlock TextAlignment="Center">
-                                                结束时间<LineBreak />
+                                                ·结束时间<LineBreak />
                                                 EndTime</TextBlock>
                                         </Label>
                                     </Border>
@@ -461,7 +468,7 @@
                                             VerticalAlignment="Center"
                                             Style="{StaticResource LabelMainTitleStyle}">
                                             <TextBlock TextAlignment="Center">
-                                                呼号<LineBreak />
+                                                ·呼号<LineBreak />
                                                 CallSign</TextBlock>
                                         </Label>
                                     </Border>
@@ -488,7 +495,7 @@
                                             VerticalAlignment="Center"
                                             Style="{StaticResource LabelMainTitleStyle}">
                                             <TextBlock TextAlignment="Center">
-                                                模式<LineBreak />
+                                                ·模式<LineBreak />
                                                 Mode</TextBlock>
                                         </Label>
                                     </Border>
@@ -532,7 +539,7 @@
                                             VerticalAlignment="Center"
                                             Style="{StaticResource LabelMainTitleStyle}">
                                             <TextBlock TextAlignment="Center">
-                                                频率<LineBreak />
+                                                ·频率<LineBreak />
                                                 Freq</TextBlock>
                                         </Label>
                                     </Border>
@@ -839,6 +846,15 @@
                                         Grid.ColumnSpan="2"
                                         Style="{StaticResource InCardPanelStyle}">
                                         <TextBox x:Name="DMRIDInPutBox" Style="{StaticResource DarkTextBoxStyle}" />
+                                    </Border>
+
+                                    <Border
+                                        Grid.Row="8"
+                                        Grid.Column="6"
+                                        Grid.ColumnSpan="2"
+                                        Style="{StaticResource InCardPanelStyle}">
+                                        <Button Style="{StaticResource PrimaryButtonStyle}" 
+                                                Content="添加日志"/>
                                     </Border>
 
 

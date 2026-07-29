@@ -58,13 +58,12 @@ namespace SharpLog.Model
         /// <summary>
         /// 我方送出RST信号报告
         /// </summary>
-        [Required(ErrorMessage = "我方信号报告不能为空")]
         public string RST { get; set; } = string.Empty;
 
         /// <summary>
         /// 对方回传RST信号报告
         /// </summary>
-        [Required(ErrorMessage = "对方信号报告不能为空")]
+
         public string RRST { get; set; } = string.Empty;
 
         /// <summary>
