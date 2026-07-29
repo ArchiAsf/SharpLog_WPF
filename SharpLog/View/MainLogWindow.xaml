@@ -49,7 +49,22 @@
                             HorizontalScrollBarVisibility="Disabled"
                             Style="{StaticResource DarkOnlyVerticalScrollViewerStyle}"
                             VerticalScrollBarVisibility="Visible">
-                            <StackPanel Orientation="Vertical" />
+                            <ItemsControl x:Name="QsoItemsControl" ItemsSource="{Binding QsoLogCollection}">
+                                <!-- 布局面板：动态项排列方式 -->
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <!-- 可选：垂直排列StackPanel / 自适应WrapPanel / Grid -->
+                                        <StackPanel Orientation="Vertical"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                
+                                <!-- 项外边距，卡片之间间距 -->
+                                <ItemsControl.ItemContainerStyle>
+                                    <Style>
+                                        <Setter Property="FrameworkElement.Margin" Value="0,0,0,8"/>
+                                    </Style>
+                                </ItemsControl.ItemContainerStyle>
+                            </ItemsControl>
                         </ScrollViewer>
                     </Border>
 
@@ -417,7 +432,10 @@
                                         Grid.Column="1"
                                         Grid.ColumnSpan="2"
                                         Style="{StaticResource InCardPanelStyle}">
-                                        <TextBox x:Name="StartTimeInPutBox" Style="{StaticResource DarkTextBoxStyle}" />
+                                        <TextBox
+                                            x:Name="StartTimeInPutBox"
+                                            Style="{StaticResource DarkTextBoxStyle}"
+                                            Text="{Binding StartTime, Mode=TwoWay}" />
                                     </Border>
 
                                     <Border
@@ -440,7 +458,10 @@
                                         Grid.Column="4"
                                         Grid.ColumnSpan="2"
                                         Style="{StaticResource InCardPanelStyle}">
-                                        <TextBox x:Name="EndTimeInPutBox" Style="{StaticResource DarkTextBoxStyle}" />
+                                        <TextBox
+                                            x:Name="EndTimeInPutBox"
+                                            Style="{StaticResource DarkTextBoxStyle}"
+                                            Text="{Binding EndTime, Mode=TwoWay}" />
                                     </Border>
 
                                     <Border
@@ -483,7 +504,8 @@
                                             FontFamily="Consolas"
                                             FontSize="22"
                                             Foreground="{StaticResource AccentTextColor}"
-                                            Style="{StaticResource DarkTextBoxStyle}" />
+                                            Style="{StaticResource DarkTextBoxStyle}"
+                                            Text="{Binding CallSign, Mode=TwoWay}" />
                                     </Border>
                                     <Border
                                         Grid.Row="1"
@@ -524,6 +546,7 @@
                                             AcceptsReturn="True"
                                             FontSize="14"
                                             Style="{StaticResource DarkTextBoxStyle}"
+                                            Text="{Binding Rmks, Mode=TwoWay}"
                                             TextAlignment="Justify"
                                             TextWrapping="Wrap"
                                             VerticalScrollBarVisibility="Auto" />
@@ -551,7 +574,8 @@
                                         <TextBox
                                             x:Name="FreqInPutBox"
                                             Style="{StaticResource UnitTextBoxStyle}"
-                                            Tag="kHz" />
+                                            Tag="kHz"
+                                            Text="{Binding Freq, Mode=TwoWay}" />
                                     </Border>
 
                                     <Border
@@ -573,7 +597,10 @@
                                         Grid.Row="2"
                                         Grid.Column="3"
                                         Style="{StaticResource InCardPanelStyle}">
-                                        <TextBox x:Name="RstInPutBox" Style="{StaticResource DarkTextBoxStyle}" />
+                                        <TextBox
+                                            x:Name="RstInPutBox"
+                                            Style="{StaticResource DarkTextBoxStyle}"
+                                            Text="{Binding Rst, Mode=TwoWay}" />
                                     </Border>
 
                                     <Border
@@ -595,7 +622,10 @@
                                         Grid.Row="2"
                                         Grid.Column="5"
                                         Style="{StaticResource InCardPanelStyle}">
-                                        <TextBox x:Name="RrstInPutBox" Style="{StaticResource DarkTextBoxStyle}" />
+                                        <TextBox
+                                            x:Name="RrstInPutBox"
+                                            Style="{StaticResource DarkTextBoxStyle}"
+                                            Text="{Binding Rrst, Mode=TwoWay}" />
                                     </Border>
 
 
@@ -618,7 +648,10 @@
                                         Grid.Row="3"
                                         Grid.Column="1"
                                         Style="{StaticResource InCardPanelStyle}">
-                                        <TextBox x:Name="GridInPutBox" Style="{StaticResource DarkTextBoxStyle}" />
+                                        <TextBox
+                                            x:Name="GridInPutBox"
+                                            Style="{StaticResource DarkTextBoxStyle}"
+                                            Text="{Binding GridLocator, Mode=TwoWay}" />
                                     </Border>
 
                                     <Border
@@ -644,7 +677,8 @@
                                         <TextBox
                                             x:Name="RxPowerInPutBox"
                                             Style="{StaticResource UnitTextBoxStyle}"
-                                            Tag="W" />
+                                            Tag="W"
+                                            Text="{Binding RxPower, Mode=TwoWay}" />
                                     </Border>
 
                                     <Border
@@ -670,7 +704,8 @@
                                         <TextBox
                                             x:Name="TxPowerInPutBox"
                                             Style="{StaticResource UnitTextBoxStyle}"
-                                            Tag="W" />
+                                            Tag="W"
+                                            Text="{Binding TxPower, Mode=TwoWay}" />
                                     </Border>
 
                                     <Border
@@ -693,7 +728,10 @@
                                         Grid.Column="1"
                                         Grid.ColumnSpan="5"
                                         Style="{StaticResource InCardPanelStyle}">
-                                        <TextBox x:Name="QthInPutBox" Style="{StaticResource DarkTextBoxStyle}" />
+                                        <TextBox
+                                            x:Name="QthInPutBox"
+                                            Style="{StaticResource DarkTextBoxStyle}"
+                                            Text="{Binding Qth, Mode=TwoWay}" />
                                     </Border>
 
                                     <Border
@@ -716,7 +754,10 @@
                                         Grid.Column="1"
                                         Grid.ColumnSpan="5"
                                         Style="{StaticResource InCardPanelStyle}">
-                                        <TextBox x:Name="RigInPutBox" Style="{StaticResource DarkTextBoxStyle}" />
+                                        <TextBox
+                                            x:Name="RigInPutBox"
+                                            Style="{StaticResource DarkTextBoxStyle}"
+                                            Text="{Binding Rig, Mode=TwoWay}" />
                                     </Border>
 
                                     <Border
@@ -739,7 +780,10 @@
                                         Grid.Column="1"
                                         Grid.ColumnSpan="5"
                                         Style="{StaticResource InCardPanelStyle}">
-                                        <TextBox x:Name="AntInPutBox" Style="{StaticResource DarkTextBoxStyle}" />
+                                        <TextBox
+                                            x:Name="AntInPutBox"
+                                            Style="{StaticResource DarkTextBoxStyle}"
+                                            Text="{Binding Ant, Mode=TwoWay}" />
                                     </Border>
 
                                     <Border
@@ -765,7 +809,8 @@
                                         <TextBox
                                             x:Name="HeightInPutBox"
                                             Style="{StaticResource UnitTextBoxStyle}"
-                                            Tag="M" />
+                                            Tag="M"
+                                            Text="{Binding Height, Mode=TwoWay}" />
                                     </Border>
 
                                     <Border
@@ -789,7 +834,10 @@
                                         Grid.Column="4"
                                         Grid.ColumnSpan="2"
                                         Style="{StaticResource InCardPanelStyle}">
-                                        <TextBox x:Name="OPInPutBox" Style="{StaticResource DarkTextBoxStyle}" />
+                                        <TextBox
+                                            x:Name="OPInPutBox"
+                                            Style="{StaticResource DarkTextBoxStyle}"
+                                            Text="{Binding Operator, Mode=TwoWay}" />
                                     </Border>
 
 
@@ -845,7 +893,10 @@
                                         Grid.Column="4"
                                         Grid.ColumnSpan="2"
                                         Style="{StaticResource InCardPanelStyle}">
-                                        <TextBox x:Name="DMRIDInPutBox" Style="{StaticResource DarkTextBoxStyle}" />
+                                        <TextBox
+                                            x:Name="DMRIDInPutBox"
+                                            Style="{StaticResource DarkTextBoxStyle}"
+                                            Text="{Binding DmrId, Mode=TwoWay}" />
                                     </Border>
 
                                     <Border
@@ -853,8 +904,7 @@
                                         Grid.Column="6"
                                         Grid.ColumnSpan="2"
                                         Style="{StaticResource InCardPanelStyle}">
-                                        <Button Style="{StaticResource PrimaryButtonStyle}" 
-                                                Content="添加日志"/>
+                                        <Button Content="添加日志" Style="{StaticResource PrimaryButtonStyle}" Command="{Binding AddLogBtnClickCommand}" />
                                     </Border>
 
 

@@ -98,6 +98,16 @@ namespace SharpLog.Model
         public string? OP { get; set; }
 
         /// <summary>
+        /// 网格定位（可选，示例：FN31pr）
+        /// </summary>
+        public string? Locator { get; set; }
+
+        /// <summary>
+        /// DMR数字集群通联ID（可选，示例：123456）
+        /// </summary>
+        public string DMRID { get; set; }
+
+        /// <summary>
         /// 备注信息RMKS（可选）
         /// </summary>
         public string? RMKS { get; set; }
@@ -111,36 +121,6 @@ namespace SharpLog.Model
         /// QRP低功率通联
         /// </summary>
         public bool IsQRP { get; set; }
-
-        /// <summary>
-        /// 卫星通联
-        /// </summary>
-        public bool IsSatellite { get; set; }
-
-        /// <summary>
-        /// 中继台通联
-        /// </summary>
-        public bool IsRelayStation { get; set; }
-
-        /// <summary>
-        /// EME月面反射通联
-        /// </summary>
-        public bool IsEME { get; set; }
-
-        /// <summary>
-        /// 流星余迹通联
-        /// </summary>
-        public bool IsMeteoricTrail { get; set; }
-
-        /// <summary>
-        /// F2电离层反射通联
-        /// </summary>
-        public bool IsF2Reflection { get; set; }
-
-        /// <summary>
-        /// 突发E层反射通联
-        /// </summary>
-        public bool IsEReflection { get; set; }
 
         /// <summary>
         /// 是否双向确认通联
