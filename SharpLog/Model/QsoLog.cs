@@ -56,6 +56,11 @@ namespace SharpLog.Model
         public string Mode { get; set; } = string.Empty;
 
         /// <summary>
+        /// 时区（可选，示例：UTC+8、UTC-5）
+        /// </summary>
+        public string TimeZone { get; set; } = string.Empty;
+
+        /// <summary>
         /// 我方送出RST信号报告
         /// </summary>
         public string RST { get; set; } = string.Empty;
@@ -105,7 +110,7 @@ namespace SharpLog.Model
         /// <summary>
         /// DMR数字集群通联ID（可选，示例：123456）
         /// </summary>
-        public string DMRID { get; set; }
+        public string DigitalID { get; set; }
 
         /// <summary>
         /// 备注信息RMKS（可选）

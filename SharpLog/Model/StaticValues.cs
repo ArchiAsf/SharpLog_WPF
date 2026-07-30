@@ -9,6 +9,8 @@ namespace SharpLog.Model
 {
     public static class StaticValues
     {
+
+
         public static readonly ObservableCollection<PropagationItem> Set_PropagationModeList = new ObservableCollection<PropagationItem>()
             {
                 new PropagationItem{ Name = " ", Code = "Simplex‌" },
@@ -36,13 +38,9 @@ namespace SharpLog.Model
             new CommMode{ Name = "MSK144", Code = "MSK144" }
 
         };
-
-
-
-
-
-
         #region 无线电相关参数
+
+
         // C# 字符串数组 - SSTV全波段常用频点（全球通用）
         readonly static public string[] sstvCommonFrequencies = new string[]
         {
@@ -215,12 +213,135 @@ namespace SharpLog.Model
         { "MSK144", Color.FromArgb(255, 0, 255, 255) }
         };
 
+        #endregion
+
+
         // Drawing.Color → WPF.Media.Color
         public static System.Windows.Media.Color ToWpfColor(System.Drawing.Color drawingColor)
         {
             return System.Windows.Media.Color.FromArgb(drawingColor.A, drawingColor.R, drawingColor.G, drawingColor.B);
         }
 
-        #endregion
+
+        //生成一个将LogTable对象转换为OneLog对象的方法
+        public static OneLog ConvertToOneLog(LogTable log)
+        {
+            //修正下面的代码，以确保OneLog对象的属性正确映射自LogTable对象
+            return new OneLog
+            {
+                CardSideBarColor= new System.Windows.Media.SolidColorBrush(StaticValues.ToWpfColor(StaticValues.ModeColorMap[log.Mode])),
+                StartTime = log.StartTime,
+                EndTime = log.EndTime,
+                TimeZoneSuffix = log.TimeZone,
+                CallSign = log.CallSign,
+                DisplayFrequency = log.Frequency,
+                Mode = log.Mode,
+                RST = log.RST,
+                RRST = log.RRST,
+                QTH = log.QTH,
+                Rig = log.RIG,
+                Antenna = log.ANT,
+                Operator = log.OP,
+                Locator = log.Locator,
+            };
+        }
+
+        //测试用通联数据
+        public static readonly List<LogTable> TestQsoLogs = new List<LogTable>
+        {
+            new LogTable{
+                StartTime = "2026/07/09-19:45:36",
+                EndTime = "2026/07/09-19:50:12",
+                TimeZone = "UTC+0",
+                CallSign = "K1ABC",
+                Frequency = "14.074MHz",
+                Mode = "FT8",
+                RST = "59",
+                RRST = "59",
+                QTH = "New York, USA",
+                RIG = "IC-7300",
+                Pow = "100W",
+                ANT = "Dipole",
+                Height = "10m",
+                OP = "John Doe",
+                Locator = "FN31pr",
+                DigitalID = "461006"
+            },
+            new LogTable{
+                StartTime = "2026/07/09-20:15:10",
+                EndTime = "2026/07/09-20:20:45",
+                TimeZone = "UTC+0",
+                CallSign = "G4XYZ",
+                Frequency = "7.074MHz",
+                Mode = "D-STAR",
+                RST = "59",
+                RRST = "59",
+                QTH = "London, UK",
+                RIG = "TS-590SG",
+                Pow = "50W",
+                ANT = "Vertical",
+                Height = "12m",
+                OP = "Jane Smith",
+                Locator = "IO91wm",
+                DigitalID = "4600025"
+            },
+            new LogTable{
+                StartTime = "2026/07/09-21:05:22",
+                EndTime = "2026/07/09-21:10:55",
+                TimeZone = "UTC+9",
+                CallSign = "JA1XYZ",
+                Frequency = "14.230MHz",
+                Mode = "SSB",
+                RST = "59",
+                RRST = "59",
+                QTH = "Tokyo, Japan",
+                RIG = "FT-991A",
+                Pow = "80W",
+                ANT = "Yagi",
+                Height = "15m",
+                OP = "Taro Yamada",
+                Locator = "PM95aa",
+                DigitalID = ""
+            },
+            new LogTable
+            {
+                StartTime = "2026/07/09-22:30:00",
+                EndTime = "2026/07/09-22:35:30",
+                TimeZone = "UTC+10",
+                CallSign = "VK2ABC",
+                Frequency = "3.570MHz",
+                Mode = "FT8",
+                RST = "59",
+                RRST = "59",
+                QTH = "Sydney, Australia",
+                RIG = "IC-705",
+                Pow = "50W",
+                ANT = "End-Fed",
+                Height = "8m",
+                OP = "Alice Brown",
+                Locator = "QF56aa",
+                DigitalID = ""
+            },
+            new LogTable
+            {
+                StartTime = "2026/07/09-23:15:45",
+                EndTime = "2026/07/09-23:20:10",
+                TimeZone = "UTC+1",
+                CallSign = "DL1XYZ",
+                Frequency = "7.074MHz",
+                Mode = "FT8",
+                RST = "59",
+                RRST = "59",
+                QTH = "Berlin, Germany",
+                RIG = "TS-590SG",
+                Pow = "100W",
+                ANT = "Dipole",
+                Height = "12m",
+                OP = "Max Mustermann",
+                Locator = "JO62aa",
+                DigitalID = "4600225"
+            }
+        };
+
     }
 }

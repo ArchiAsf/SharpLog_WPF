@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.VisualBasic;
 using SharpLog.Model;
 using System;
 using System.Collections.Generic;
@@ -107,6 +108,21 @@ namespace SharpLog.ViewModel
 
         }
 
+        //一个将输入的20260524191130转化为2026/05/24-19:11:30的方法
+        static string TimeChanger(string TimeString)
+        {
+            TimeString = TimeString.Trim();
+
+            string year = TimeString.Substring(0, 4);
+            string month = TimeString.Substring(4, 2);
+            string day = TimeString.Substring(6, 2);
+            string hour = TimeString.Substring(8, 2);
+            string minute = TimeString.Substring(10, 2);
+            string second = TimeString.Substring(12, 2);
+
+            return $"{year}/{month}/{day}-{hour}:{minute}:{second}";
+        }
+
 
         [RelayCommand]
         private void AddLogBtnClick()
@@ -122,8 +138,8 @@ namespace SharpLog.ViewModel
                 OneLog onelog = new OneLog()
                 {
                     CardSideBarColor = new System.Windows.Media.SolidColorBrush(StaticValues.ToWpfColor(StaticValues.ModeColorMap[SelectedCommName])),
-                    StartTime = _startTime,
-                    EndTime = _endTime,
+                    StartTime = TimeChanger(_startTime),
+                    EndTime = TimeChanger(_endTime),
                     TimeZoneSuffix = "UTC",
                     Mode = SelectedCommName,
                     PropModeText = SelectedPropName,
@@ -139,6 +155,20 @@ namespace SharpLog.ViewModel
                 };
                 QsoLogCollection.Add(onelog);
             }
+        }
+
+        int i = 0;
+
+        //测试用添加日志记录点击事件
+        [RelayCommand]
+        private void TestAddLogBtnClick()
+        {
+            OneLog onelog = new OneLog();
+            
+            onelog=StaticValues.ConvertToOneLog(StaticValues.TestQsoLogs[i]);
+
+            QsoLogCollection.Add(onelog);
+            i++;
         }
 
 

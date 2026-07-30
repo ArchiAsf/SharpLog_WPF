@@ -20,9 +20,9 @@
             <Border Margin="0" Style="{StaticResource CardPanelStyle}">
                 <Grid ShowGridLines="False">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="43*" />
+                        <ColumnDefinition Width="60*" />
                         <ColumnDefinition Width="2*" />
-                        <ColumnDefinition Width="294*" />
+                        <ColumnDefinition Width="200*" />
                         <ColumnDefinition Width="113*" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -36,7 +36,31 @@
                         Grid.Row="0"
                         Grid.ColumnSpan="4"
                         Margin="2,2,2,2"
-                        Style="{StaticResource CardPanelStyle}" />
+                        Style="{StaticResource CardPanelStyle}">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="8*" />
+                                <ColumnDefinition Width="3*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                <Button 
+                                    Command="{Binding TestAddLogBtnClickCommand }"
+                                    Width="36"
+                                    Margin="2"
+                                    Content="T"
+                                    Style="{StaticResource PrimaryButtonStyle}" />
+                            </StackPanel>
+
+                        </Grid>
+
+
+                    </Border>
 
                     <!--  中间右侧容器  -->
                     <Border
@@ -50,18 +74,18 @@
                             Style="{StaticResource DarkOnlyVerticalScrollViewerStyle}"
                             VerticalScrollBarVisibility="Visible">
                             <ItemsControl x:Name="QsoItemsControl" ItemsSource="{Binding QsoLogCollection}">
-                                <!-- 布局面板：动态项排列方式 -->
+                                <!--  布局面板：动态项排列方式  -->
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <!-- 可选：垂直排列StackPanel / 自适应WrapPanel / Grid -->
-                                        <StackPanel Orientation="Vertical"/>
+                                        <!--  可选：垂直排列StackPanel / 自适应WrapPanel / Grid  -->
+                                        <StackPanel Orientation="Vertical" />
                                     </ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
-                                
-                                <!-- 项外边距，卡片之间间距 -->
+
+                                <!--  项外边距，卡片之间间距  -->
                                 <ItemsControl.ItemContainerStyle>
                                     <Style>
-                                        <Setter Property="FrameworkElement.Margin" Value="0,0,0,8"/>
+                                        <Setter Property="FrameworkElement.Margin" Value="0,0,0,8" />
                                     </Style>
                                 </ItemsControl.ItemContainerStyle>
                             </ItemsControl>
@@ -76,8 +100,8 @@
                         Grid.ColumnSpan="3">
                         <Grid ShowGridLines="False">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="203.4" />
-                                <ColumnDefinition />
+                                <ColumnDefinition Width="204" />
+                                <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="3*" />
@@ -98,7 +122,7 @@
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="2.5*" />
+                                        <RowDefinition Height="180" />
                                         <RowDefinition Height="3.25*" />
                                         <RowDefinition Height="3.25*" />
                                     </Grid.RowDefinitions>
@@ -904,7 +928,10 @@
                                         Grid.Column="6"
                                         Grid.ColumnSpan="2"
                                         Style="{StaticResource InCardPanelStyle}">
-                                        <Button Content="添加日志" Style="{StaticResource PrimaryButtonStyle}" Command="{Binding AddLogBtnClickCommand}" />
+                                        <Button
+                                            Command="{Binding AddLogBtnClickCommand}"
+                                            Content="添加日志"
+                                            Style="{StaticResource PrimaryButtonStyle}" />
                                     </Border>
 
 
