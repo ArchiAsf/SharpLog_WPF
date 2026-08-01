@@ -18,9 +18,13 @@ namespace SharpLog.ViewModel
         //普通输入框绑定
 
         [ObservableProperty]
+        private DateTime _startTimeDT;
+
         private string _startTime = string.Empty;
 
         [ObservableProperty]
+        private DateTime _endTimeDT;
+
         private string _endTime = string.Empty;
 
         [ObservableProperty]
@@ -106,6 +110,20 @@ namespace SharpLog.ViewModel
 
             _SelectCommMode = CommModeList[0]; // 默认选择第一个选项
 
+            //初始化和格式化一些参数的值和格式
+
+            _startTime= DateTimeToLogString(_startTimeDT);
+
+        }
+
+        /// <summary>
+        /// 将 DateTime 转换为 yyyy/MM/dd-HH:mm:ss 格式字符串
+        /// </summary>
+        /// <param name="dateTime">要转换的时间</param>
+        /// <returns>格式化后的字符串，如 2026/05/24-19:11:30</returns>
+        public static string DateTimeToLogString(DateTime dateTime)
+        {
+            return dateTime.ToString("yyyy/MM/dd-HH:mm:ss");
         }
 
         //一个将输入的20260524191130转化为2026/05/24-19:11:30的方法
