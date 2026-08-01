@@ -78,6 +78,10 @@ namespace SharpLog.ViewModel
         [ObservableProperty]
         private CommMode? _SelectCommMode;
 
+
+        [ObservableProperty]
+        private string _MessageShowStr = string.Empty;
+
         //下来菜单绑定的集合
 
         public ObservableCollection<PropagationItem> PropagationModeList { get; }
@@ -112,7 +116,7 @@ namespace SharpLog.ViewModel
 
             //初始化和格式化一些参数的值和格式
 
-            _startTime= DateTimeToLogString(_startTimeDT);
+            _startTime = DateTimeToLogString(_startTimeDT);
 
         }
 
@@ -182,8 +186,8 @@ namespace SharpLog.ViewModel
         private void TestAddLogBtnClick()
         {
             OneLog onelog = new OneLog();
-            
-            onelog=StaticValues.ConvertToOneLog(StaticValues.TestQsoLogs[i]);
+
+            onelog = StaticValues.ConvertToOneLog(StaticValues.TestQsoLogs[i]);
 
             QsoLogCollection.Add(onelog);
             i++;

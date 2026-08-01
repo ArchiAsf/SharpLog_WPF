@@ -31,7 +31,7 @@
         <Setter Property="BorderBrush" Value="{StaticResource PanelBorderColor}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="6" />
-        <Setter Property="Padding" Value="3" />
+        <Setter Property="Padding" Value="2.5" />
         <Setter Property="Margin" Value="2" />
 
     </Style>
@@ -89,7 +89,7 @@
             <Trigger Property="IsFocused" Value="True">
                 <Setter Property="Foreground" Value="{StaticResource FocusTextBoxTextColor}" />
                 <Setter Property="BorderBrush" Value="{StaticResource FocusTextBoxBorderColor}" />
-                <Setter Property="BorderThickness" Value="3" />
+                <Setter Property="BorderThickness" Value="1" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -561,9 +561,8 @@
         BasedOn="{StaticResource {x:Type hc:DateTimePicker}}"
         TargetType="hc:DateTimePicker">
         <Setter Property="DateTimeFormat" Value="yyyy/MM/dd-HH:mm:ss"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Background" Value="{StaticResource NormalTextBoxBackColor}"/>
-        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontSize" Value="13"/>
 
     </Style>
     
