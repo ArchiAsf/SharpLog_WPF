@@ -415,6 +415,9 @@
                                 Grid.Row="0"
                                 Grid.Column="0"
                                 Style="{StaticResource CardPanelStyle}">
+                                <Border.InputBindings>
+                                    <MouseBinding MouseAction="LeftClick" Command="{Binding StartTimeTextClick_TimeInPutStartTimeCommand}" />
+                                </Border.InputBindings>
                                 <!--  字段标签：开始时间 StartTime  -->
                                 <Label
                                     HorizontalAlignment="Center"
@@ -439,6 +442,9 @@
                                 Grid.Row="0"
                                 Grid.Column="3"
                                 Style="{StaticResource CardPanelStyle}">
+                                <Border.InputBindings>
+                                    <MouseBinding MouseAction="LeftClick" Command="{Binding EndTimeTextClick_TimeInPutEndTimeCommand}" />
+                                </Border.InputBindings>
                                 <!--  字段标签：结束时间 EndTime  -->
                                 <Label
                                     HorizontalAlignment="Center"

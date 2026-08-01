@@ -18,6 +18,8 @@ namespace SharpLog.ViewModel
     [ObservableObject]
     public partial class MainLogWindow_VM
     {
+
+        #region 日志信息相关绑定属性
         //普通输入框绑定
         [ObservableProperty]
         private DateTime _StartTimeDT = LogUseTime.DateTime;
@@ -71,6 +73,10 @@ namespace SharpLog.ViewModel
         [ObservableProperty]
         private string _dmrId = string.Empty;
 
+        #endregion
+
+        #region 被动属性
+
         //日期时间显示属性绑定
         [ObservableProperty]
         private string _UtcDate = "0000/00/00";
@@ -104,7 +110,7 @@ namespace SharpLog.ViewModel
         [ObservableProperty]
         private Visibility _MessShowISVisibility = Visibility.Hidden;
 
-        //下来菜单绑定的集合
+        //下拉菜单绑定的集合
 
         public ObservableCollection<PropagationItem> PropagationModeList { get; }
 
@@ -123,10 +129,14 @@ namespace SharpLog.ViewModel
         public string? SelectedPropName => _SelectPROPItem?.Name;
         public string? SelectedCommName => _SelectCommMode?.Name;
 
-
         // ========== 定时器 ==========
         public readonly DispatcherTimer _timer;
 
+        #endregion
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public MainLogWindow_VM()
         {
             PropagationModeList = StaticValues.Set_PropagationModeList;
@@ -156,6 +166,8 @@ namespace SharpLog.ViewModel
 
         }
 
+        #region 定时触发相关方法
+
         /// <summary>
         /// 每秒触发
         /// </summary>
@@ -179,85 +191,28 @@ namespace SharpLog.ViewModel
             LocalDate = DateTime.Now.ToString("yyyy/MM/dd");
             LocalTimeZone = "UTC" + DateTimeOffset.Now.ToString("zzz");
             LocalTime = DateTime.Now.ToString("HH:mm:ss");
+
+            if (IsUseUtcTime == true)
+                LogUseTime = DateTime.UtcNow;
+            else
+                LogUseTime = DateTime.Now;
         }
+
+        #endregion
+
+
+
+        #region 绑定触发事件
 
         /// <summary>
-        /// 将 DateTime 转换为 yyyy/MM/dd-HH:mm:ss 格式字符串
+        /// 添加日志记录按钮点击事件
         /// </summary>
-        /// <param name="dateTime">要转换的时间</param>
-        /// <returns>格式化后的字符串，如 2026/05/24-19:11:30</returns>
-        public static string DateTimeToLogString(DateTime dateTime)
-        {
-            return dateTime.ToString("yyyy/MM/dd-HH:mm:ss");
-        }
-
-        //一个将输入的20260524191130转化为2026/05/24-19:11:30的方法
-        static string TimeChanger(string TimeString)
-        {
-            TimeString = TimeString.Trim();
-
-            string year = TimeString.Substring(0, 4);
-            string month = TimeString.Substring(4, 2);
-            string day = TimeString.Substring(6, 2);
-            string hour = TimeString.Substring(8, 2);
-            string minute = TimeString.Substring(10, 2);
-            string second = TimeString.Substring(12, 2);
-
-            return $"{year}/{month}/{day}-{hour}:{minute}:{second}";
-        }
-
-
         [RelayCommand]
         private void AddLogBtnClick()
         {
-            var result = QsoLogValidator.ValidateLogInput(_startTime, _endTime, _callSign, SelectedCommName, _freq);
-            if (!result.IsValid)
-            {
-                // 处理校验失败的情况
-            }
-            else
-            {
-                // 处理校验成功的情况   <
-                OneLog onelog = new OneLog()
-                {
-                    CardSideBarColor = new System.Windows.Media.SolidColorBrush(StaticValues.ToWpfColor(StaticValues.ModeColorMap[SelectedCommName])),
-                    StartTime = TimeChanger(_startTime),
-                    EndTime = TimeChanger(_endTime),
-                    TimeZoneSuffix = "UTC",
-                    Mode = SelectedCommName,
-                    PropModeText = SelectedPropName,
-                    CallSign = _callSign,
-                    RRST = _Rrst,
-                    RST = _rst,
-                    DisplayFrequency = _freq,
-                    Locator = _gridLocator,
-                    QTH = _qth,
-                    Rig = _rig,
-                    Antenna = _ant,
-                    Operator = _operator
-                };
-                QsoLogCollection.Add(onelog);
-            }
+
+
         }
-
-        int i = 0;
-
-        /// <summary>
-        /// 测试用添加日志记录点击事件
-        /// </summary>
-        [RelayCommand]
-        private void TestAddLogBtnClick()
-        {
-            OneLog onelog = new OneLog();
-
-            onelog = StaticValues.ConvertToOneLog(StaticValues.TestQsoLogs[i]);
-
-            QsoLogCollection.Add(onelog);
-            i++;
-
-            ShowMessInMessStr("已添加一条测试记录");
-        }
-
 
         /// <summary>
         /// 转换全局时间显示的时区
@@ -281,6 +236,28 @@ namespace SharpLog.ViewModel
             }
         }
 
+        [RelayCommand]
+        private void StartTimeTextClick_TimeInPutStartTime() => StartTimeDT = LogUseTime.DateTime;
+
+        [RelayCommand]
+        private void EndTimeTextClick_TimeInPutEndTime() => EndTimeDT = LogUseTime.DateTime;
+
+        #endregion
+
+
+
+        #region 辅助方法
+
+        /// <summary>
+        /// 将 DateTime 转换为 yyyy/MM/dd-HH:mm:ss 格式字符串
+        /// </summary>
+        /// <param name="dateTime">要转换的时间</param>
+        /// <returns>格式化后的字符串，如 2026/05/24-19:11:30</returns>
+        public static string DateTimeToLogString(DateTime dateTime)
+        {
+            return dateTime.ToString("yyyy/MM/dd-HH:mm:ss");
+        }
+
         /// <summary>
         /// 显示消息提示，并在2秒后隐藏
         /// </summary>
@@ -296,10 +273,45 @@ namespace SharpLog.ViewModel
         }
 
 
+        #endregion
 
 
 
 
+
+        //一个将输入的20260524191130转化为2026/05/24-19:11:30的方法
+        static string TimeChanger(string TimeString)
+        {
+            TimeString = TimeString.Trim();
+
+            string year = TimeString.Substring(0, 4);
+            string month = TimeString.Substring(4, 2);
+            string day = TimeString.Substring(6, 2);
+            string hour = TimeString.Substring(8, 2);
+            string minute = TimeString.Substring(10, 2);
+            string second = TimeString.Substring(12, 2);
+
+            return $"{year}/{month}/{day}-{hour}:{minute}:{second}";
+        }
+
+
+        int i = 0;
+
+        /// <summary>
+        /// 测试用添加日志记录点击事件
+        /// </summary>
+        [RelayCommand]
+        private void TestAddLogBtnClick()
+        {
+            OneLog onelog = new OneLog();
+
+            onelog = StaticValues.ConvertToOneLog(StaticValues.TestQsoLogs[i]);
+
+            QsoLogCollection.Add(onelog);
+            i++;
+
+            ShowMessInMessStr("已添加一条测试记录");
+        }
 
 
 
