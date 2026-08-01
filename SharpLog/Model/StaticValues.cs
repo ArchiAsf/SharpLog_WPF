@@ -216,6 +216,7 @@ namespace SharpLog.Model
         #endregion
 
 
+
         // Drawing.Color → WPF.Media.Color
         public static System.Windows.Media.Color ToWpfColor(System.Drawing.Color drawingColor)
         {
