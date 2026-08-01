@@ -8,7 +8,10 @@ using System.Collections.ObjectModel;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
+using static SharpLog.Model.StaticValues;
 
 namespace SharpLog.ViewModel
 {
@@ -16,14 +19,13 @@ namespace SharpLog.ViewModel
     public partial class MainLogWindow_VM
     {
         //普通输入框绑定
-
         [ObservableProperty]
-        private DateTime _startTimeDT;
+        private DateTime _StartTimeDT = LogUseTime.DateTime;
 
         private string _startTime = string.Empty;
 
         [ObservableProperty]
-        private DateTime _endTimeDT;
+        private DateTime _EndTimeDT = LogUseTime.DateTime;
 
         private string _endTime = string.Empty;
 
@@ -69,18 +71,38 @@ namespace SharpLog.ViewModel
         [ObservableProperty]
         private string _dmrId = string.Empty;
 
+        //日期时间显示属性绑定
+        [ObservableProperty]
+        private string _UtcDate = "0000/00/00";
+
+        [ObservableProperty]
+        private string _LocalDate = "0000/00/00";
+
+        [ObservableProperty]
+        private string _UtcTimeZone = "UTC";
+
+        [ObservableProperty]
+        private string _LocalTimeZone = "UTC+NaN";
+
+        [ObservableProperty]
+        private string _UtcTime = "00:00:00";
+
+        [ObservableProperty]
+        private string _LocalTime = "00:00:00";
 
         //下拉菜单绑定
-
         [ObservableProperty]
         private PropagationItem? _SelectPROPItem;
 
         [ObservableProperty]
         private CommMode? _SelectCommMode;
 
-
+        //消息提示框相关属性
         [ObservableProperty]
         private string _MessageShowStr = string.Empty;
+
+        [ObservableProperty]
+        private Visibility _MessShowISVisibility = Visibility.Hidden;
 
         //下来菜单绑定的集合
 
@@ -102,7 +124,8 @@ namespace SharpLog.ViewModel
         public string? SelectedCommName => _SelectCommMode?.Name;
 
 
-
+        // ========== 定时器 ==========
+        public readonly DispatcherTimer _timer;
 
         public MainLogWindow_VM()
         {
@@ -116,8 +139,46 @@ namespace SharpLog.ViewModel
 
             //初始化和格式化一些参数的值和格式
 
-            _startTime = DateTimeToLogString(_startTimeDT);
+            _startTime = DateTimeToLogString(_StartTimeDT);
+            _endTime = DateTimeToLogString(_EndTimeDT);
 
+            //打开计时器刷新，每秒刷新
+            _timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(1)
+            };
+            _timer.Tick += Timer_Tick;
+
+            _timer.Start();
+
+            // 立即刷新一次，不用等1秒
+            RefreshTime();
+
+        }
+
+        /// <summary>
+        /// 每秒触发
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Timer_Tick(object? sender, EventArgs e) => RefreshTime();
+
+
+
+        /// <summary>
+        /// 每秒刷新时所执行的事件
+        /// </summary>
+        private void RefreshTime()
+        {
+
+
+            UtcDate = DateTime.UtcNow.ToString("yyyy/MM/dd");
+            UtcTimeZone = "UTC";
+            UtcTime = DateTime.UtcNow.ToString("HH:mm:ss");
+
+            LocalDate = DateTime.Now.ToString("yyyy/MM/dd");
+            LocalTimeZone = "UTC" + DateTimeOffset.Now.ToString("zzz");
+            LocalTime = DateTime.Now.ToString("HH:mm:ss");
         }
 
         /// <summary>
@@ -181,7 +242,9 @@ namespace SharpLog.ViewModel
 
         int i = 0;
 
-        //测试用添加日志记录点击事件
+        /// <summary>
+        /// 测试用添加日志记录点击事件
+        /// </summary>
         [RelayCommand]
         private void TestAddLogBtnClick()
         {
@@ -191,9 +254,46 @@ namespace SharpLog.ViewModel
 
             QsoLogCollection.Add(onelog);
             i++;
+
+            ShowMessInMessStr("已添加一条测试记录");
         }
 
 
+        /// <summary>
+        /// 转换全局时间显示的时区
+        /// </summary>
+        [RelayCommand]
+        private void ConvertTimeZone()
+        {
+            if (IsUseUtcTime == false)
+            {
+                LogUseTime = UtcNow;
+                IsUseUtcTime = !IsUseUtcTime;
+                StartTimeDT = LogUseTime.DateTime;
+                EndTimeDT = LogUseTime.DateTime;
+            }
+            else
+            {
+                LogUseTime = LocalNow;
+                IsUseUtcTime = !IsUseUtcTime;
+                StartTimeDT = LogUseTime.DateTime;
+                EndTimeDT = LogUseTime.DateTime;
+            }
+        }
+
+        /// <summary>
+        /// 显示消息提示，并在2秒后隐藏
+        /// </summary>
+        /// <param name="Value">消息体</param>
+        /// <returns></returns>
+        private async Task ShowMessInMessStr(string Value)
+        {
+            MessageShowStr = Value;
+            MessShowISVisibility = Visibility.Visible;
+            await Task.Delay(20000);
+            MessShowISVisibility = Visibility.Hidden;
+            MessageShowStr = string.Empty;
+        }
 
 
 

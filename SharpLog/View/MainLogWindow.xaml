@@ -11,6 +11,7 @@
     Height="768"
     MinWidth="1366"
     MinHeight="768"
+    Closing="ClosingChange"
     Style="{StaticResource LogMainWindowStyle}"
     WindowStartupLocation="CenterScreen"
     WindowStyle="SingleBorderWindow"
@@ -28,8 +29,8 @@
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40" />
-                        <RowDefinition MinHeight="400" MaxHeight="600"/>
-                        <RowDefinition MinHeight="200" MaxHeight="100000000"/>
+                        <RowDefinition MinHeight="400" MaxHeight="600" />
+                        <RowDefinition MinHeight="200" MaxHeight="100000000" />
                         <RowDefinition Height="50" />
                     </Grid.RowDefinitions>
 
@@ -77,9 +78,9 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="220" />
                                 <RowDefinition Height="180" />
-                                <RowDefinition Height="180" />
-                                <RowDefinition Height="3.25*" />
+                                <RowDefinition Height="*" />
                             </Grid.RowDefinitions>
 
                             <!--  时间显示区实现  -->
@@ -91,6 +92,7 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="7.5*" />
                                         <RowDefinition Height="2.5*" />
+                                        <RowDefinition Height="2.0*" />
                                     </Grid.RowDefinitions>
                                     <!--  上方时间区  -->
                                     <Border BorderBrush="{StaticResource PanelBorderColor}" BorderThickness="0,0,0,1">
@@ -137,22 +139,22 @@
                                                         Padding="0">
                                                         <Border Style="{StaticResource TimeBorder}">
                                                             <Label Style="{StaticResource TimeStyle}">
-                                                                <TextBlock TextAlignment="Center">
-                                                                    03:29:36
+                                                                <TextBlock Text="{Binding UtcTime}" TextAlignment="Center">
                                                                 </TextBlock>
                                                             </Label>
                                                         </Border>
                                                     </Border>
 
                                                     <Border
-                                                        Grid.Row="1"
+                                                        Grid.Row="2"
                                                         Grid.Column="0"
                                                         Padding="0"
-                                                        HorizontalAlignment="Right"
+                                                        Margin="3,0,0,0"
+                                                        HorizontalAlignment="Left"
                                                         VerticalAlignment="Bottom">
                                                         <Label Style="{StaticResource UTCZoneStyle}">
-                                                            <TextBlock>
-                                                                UTC+0
+                                                            <TextBlock Text="{Binding UtcTimeZone}">
+                                                                UTC
                                                             </TextBlock>
                                                         </Label>
                                                     </Border>
@@ -162,8 +164,7 @@
                                                         Grid.Column="0"
                                                         Padding="0">
                                                         <Label Style="{StaticResource TimeDataStyle}">
-                                                            <TextBlock>
-                                                                2026/07/25
+                                                            <TextBlock Text="{Binding UtcDate}">
                                                             </TextBlock>
                                                         </Label>
                                                     </Border>
@@ -193,7 +194,7 @@
                                                         Padding="0">
                                                         <Label Style="{StaticResource TimeLabelStyle}">
                                                             <TextBlock>
-                                                                北京时间
+                                                                时区时间
                                                             </TextBlock>
                                                         </Label>
                                                     </Border>
@@ -204,22 +205,21 @@
                                                         Padding="0">
                                                         <Border Style="{StaticResource TimeBorder}">
                                                             <Label Style="{StaticResource TimeStyle}">
-                                                                <TextBlock TextAlignment="Center">
-                                                                    11:29:36
+                                                                <TextBlock Text="{Binding LocalTime}" TextAlignment="Center">
                                                                 </TextBlock>
                                                             </Label>
                                                         </Border>
                                                     </Border>
 
                                                     <Border
-                                                        Grid.Row="1"
+                                                        Grid.Row="2"
                                                         Grid.Column="0"
-                                                        Padding="0"
-                                                        HorizontalAlignment="Right"
+                                                        Padding="0,0,0,0"
+                                                        Margin="3,0,0,0"
+                                                        HorizontalAlignment="Left"
                                                         VerticalAlignment="Bottom">
                                                         <Label Style="{StaticResource UTCZoneStyle}">
-                                                            <TextBlock>
-                                                                UTC+8
+                                                            <TextBlock Text="{Binding LocalTimeZone}">
                                                             </TextBlock>
                                                         </Label>
                                                     </Border>
@@ -229,8 +229,7 @@
                                                         Grid.Column="0"
                                                         Padding="0">
                                                         <Label Style="{StaticResource TimeDataStyle}">
-                                                            <TextBlock>
-                                                                2026/07/25
+                                                            <TextBlock Text="{Binding LocalDate}">
                                                             </TextBlock>
                                                         </Label>
                                                     </Border>
@@ -241,125 +240,139 @@
                                     </Border>
 
                                     <!--  晨昏显示区  -->
-                                    <Grid Grid.Row="1">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="2.5*" />
-                                            <ColumnDefinition Width="3.5*" />
-                                            <ColumnDefinition Width="3.5*" />
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="7*" />
-                                            <RowDefinition Height="5.5*" />
-                                        </Grid.RowDefinitions>
+                                    <Border
+                                        Grid.Row="1"
+                                        BorderBrush="{StaticResource PanelBorderColor}"
+                                        BorderThickness="0,0,0,1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2.5*" />
+                                                <ColumnDefinition Width="3.5*" />
+                                                <ColumnDefinition Width="3.5*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="7*" />
+                                                <RowDefinition Height="5.5*" />
+                                            </Grid.RowDefinitions>
 
-                                        <Border
-                                            Grid.Row="0"
-                                            Grid.RowSpan="2"
-                                            Grid.Column="0"
-                                            BorderBrush="{StaticResource PanelBorderColor}"
-                                            BorderThickness="0,0,1,0">
+                                            <Border
+                                                Grid.Row="0"
+                                                Grid.RowSpan="2"
+                                                Grid.Column="0"
+                                                BorderBrush="{StaticResource PanelBorderColor}"
+                                                BorderThickness="0,0,1,0">
 
-                                            <Image Margin="2" Source="/logo/Dusk.png" />
-                                        </Border>
+                                                <Image Margin="2" Source="/logo/Dusk.png" />
+                                            </Border>
 
-                                        <Border
-                                            Grid.Row="0"
-                                            Grid.Column="1"
-                                            Grid.ColumnSpan="2"
-                                            BorderBrush="{StaticResource PanelBorderColor}"
-                                            BorderThickness="0,0,0,1">
-                                            <StackPanel
-                                                Margin="0"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                Orientation="Horizontal">
-                                                <Label
-                                                    Margin="0,0,8,0"
-                                                    Padding="0"
-                                                    FontSize="12"
-                                                    Style="{StaticResource TimeLabelStyle}"
-                                                    Foreground="{StaticResource LabelMainTitleColor}">
-                                                    <TextBlock>
-                                                        当前时刻为:
-                                                    </TextBlock>
-                                                </Label>
-                                                <Label
-                                                    Margin="1,0"
-                                                    Padding="0"
-                                                    FontSize="12"
-                                                    Style="{StaticResource LabelMainTitleStyle}"
-                                                    Foreground="{StaticResource LabelMainTitleColor}">
-                                                    <TextBlock>
-                                                        黄昏
-                                                    </TextBlock>
-                                                </Label>
-                                            </StackPanel>
-                                        </Border>
+                                            <Border
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                Grid.ColumnSpan="2"
+                                                BorderBrush="{StaticResource PanelBorderColor}"
+                                                BorderThickness="0,0,0,1">
+                                                <StackPanel
+                                                    Margin="0"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Orientation="Horizontal">
+                                                    <Label
+                                                        Margin="0,0,8,0"
+                                                        Padding="0"
+                                                        FontSize="12"
+                                                        Foreground="{StaticResource LabelMainTitleColor}"
+                                                        Style="{StaticResource TimeLabelStyle}">
+                                                        <TextBlock>
+                                                            当前时刻为:
+                                                        </TextBlock>
+                                                    </Label>
+                                                    <Label
+                                                        Margin="1,0"
+                                                        Padding="0"
+                                                        FontSize="12"
+                                                        Foreground="{StaticResource LabelMainTitleColor}"
+                                                        Style="{StaticResource LabelMainTitleStyle}">
+                                                        <TextBlock>
+                                                            黄昏
+                                                        </TextBlock>
+                                                    </Label>
+                                                </StackPanel>
+                                            </Border>
 
-                                        <Border
-                                            Grid.Row="1"
-                                            Grid.Column="1"
-                                            BorderBrush="{StaticResource PanelBorderColor}"
-                                            BorderThickness="0,0,1,0">
-                                            <StackPanel
-                                                Margin="0"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                Orientation="Horizontal">
-                                                <Label
-                                                    Margin="0,0,4,0"
-                                                    Padding="0"
-                                                    FontSize="10"
-                                                    Style="{StaticResource LabelMainTitleStyle}"
-                                                    Foreground="{StaticResource LabelMainTitleColor}">
-                                                    <TextBlock>
-                                                        日出:
-                                                    </TextBlock>
-                                                </Label>
-                                                <Label
-                                                    Padding="0"
-                                                    FontSize="10"
-                                                    Style="{StaticResource LabelMainTitleStyle}"
-                                                    Foreground="{StaticResource LabelMainTitleColor}">
-                                                    <TextBlock>
-                                                        04：07
-                                                    </TextBlock>
-                                                </Label>
-                                            </StackPanel>
-                                        </Border>
+                                            <Border
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                BorderBrush="{StaticResource PanelBorderColor}"
+                                                BorderThickness="0,0,1,0">
+                                                <StackPanel
+                                                    Margin="0"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Orientation="Horizontal">
+                                                    <Label
+                                                        Margin="0,0,4,0"
+                                                        Padding="0"
+                                                        FontSize="10"
+                                                        Foreground="{StaticResource LabelMainTitleColor}"
+                                                        Style="{StaticResource LabelMainTitleStyle}">
+                                                        <TextBlock>
+                                                            日出:
+                                                        </TextBlock>
+                                                    </Label>
+                                                    <Label
+                                                        Padding="0"
+                                                        FontSize="10"
+                                                        Foreground="{StaticResource LabelMainTitleColor}"
+                                                        Style="{StaticResource LabelMainTitleStyle}">
+                                                        <TextBlock>
+                                                            04：07
+                                                        </TextBlock>
+                                                    </Label>
+                                                </StackPanel>
+                                            </Border>
 
-                                        <Border Grid.Row="1" Grid.Column="2">
-                                            <StackPanel
-                                                Margin="0"
-                                                HorizontalAlignment="Center"
-                                                VerticalAlignment="Center"
-                                                Orientation="Horizontal">
-                                                <Label
-                                                    Margin="0,0,4,0"
-                                                    Padding="0"
-                                                    FontSize="10"
-                                                    Style="{StaticResource LabelMainTitleStyle}"
-                                                    Foreground="{StaticResource LabelMainTitleColor}">
-                                                    <TextBlock>
-                                                        日落:
-                                                    </TextBlock>
-                                                </Label>
-                                                <Label
-                                                    Padding="0"
-                                                    FontSize="10"
-                                                    Style="{StaticResource LabelMainTitleStyle}"
-                                                    Foreground="{StaticResource LabelMainTitleColor}">
-                                                    <TextBlock>
-                                                        19：27
-                                                    </TextBlock>
-                                                </Label>
-                                            </StackPanel>
-                                        </Border>
-
-
+                                            <Border Grid.Row="1" Grid.Column="2">
+                                                <StackPanel
+                                                    Margin="0"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center"
+                                                    Orientation="Horizontal">
+                                                    <Label
+                                                        Margin="0,0,4,0"
+                                                        Padding="0"
+                                                        FontSize="10"
+                                                        Foreground="{StaticResource LabelMainTitleColor}"
+                                                        Style="{StaticResource LabelMainTitleStyle}">
+                                                        <TextBlock>
+                                                            日落:
+                                                        </TextBlock>
+                                                    </Label>
+                                                    <Label
+                                                        Padding="0"
+                                                        FontSize="10"
+                                                        Foreground="{StaticResource LabelMainTitleColor}"
+                                                        Style="{StaticResource LabelMainTitleStyle}">
+                                                        <TextBlock>
+                                                            19：27
+                                                        </TextBlock>
+                                                    </Label>
+                                                </StackPanel>
+                                            </Border>
 
 
-                                    </Grid>
+
+
+                                        </Grid>
+                                    </Border>
+
+                                    <!--  转换时区按钮  -->
+                                    <Border Grid.Row="2">
+                                        <Button
+                                            Margin="5"
+                                            Command="{Binding ConvertTimeZoneCommand}"
+                                            Content="时区转换"
+                                            Style="{StaticResource PrimaryButtonStyle}" />
+                                    </Border>
 
                                 </Grid>
                             </Border>
@@ -418,7 +431,7 @@
                                 Grid.Column="1"
                                 Grid.ColumnSpan="2"
                                 Style="{StaticResource InCardPanelStyle}">
-                                <hc:DateTimePicker SelectedDateTime="{Binding startTimeDT, Mode=TwoWay}" Style="{StaticResource TimeInPut_HC}" />
+                                <hc:DateTimePicker SelectedDateTime="{Binding StartTimeDT, Mode=TwoWay}" Style="{StaticResource TimeInPut_HC}" />
 
                             </Border>
 
@@ -442,7 +455,7 @@
                                 Grid.Column="4"
                                 Grid.ColumnSpan="2"
                                 Style="{StaticResource InCardPanelStyle}">
-                                <hc:DateTimePicker SelectedDateTime="{Binding endTimeDT, Mode=TwoWay}" Style="{StaticResource TimeInPut_HC}" />
+                                <hc:DateTimePicker SelectedDateTime="{Binding EndTimeDT, Mode=TwoWay}" Style="{StaticResource TimeInPut_HC}" />
 
                             </Border>
 
@@ -960,17 +973,64 @@
                         Grid.ColumnSpan="2"
                         Margin="2,2,2,2"
                         Style="{StaticResource CardPanelStyle}" />
-                    
-                    <!--消息提示框-->
+
+                    <!--  消息提示框  -->
+                    <Border
+                        Grid.Row="2"
+                        Grid.RowSpan="2"
+                        Grid.Column="2"
+                        Margin="0,0,18,0">
+                        <Border
+                            Padding="10,0,10,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Style="{StaticResource InCardPanelStyle}"
+                            Visibility="{Binding MessShowISVisibility}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="2*" />
+                                    <RowDefinition Height="8*" />
+                                </Grid.RowDefinitions>
+                                <Border
+                                    Grid.Row="0"
+                                    BorderBrush="{StaticResource PanelBorderColor}"
+                                    BorderThickness="0,0,0,1">
+                                    <Label
+                                        Margin="0,3,0,3"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Style="{StaticResource LabelMainTitleStyle}">
+                                        <TextBlock Text="提示" TextAlignment="Center" />
+                                    </Label>
+                                </Border>
+
+
+                                <!--  消息提示内容  -->
+                                <Label
+                                    Grid.Row="1"
+                                    Margin="0,5,0,5"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource LabelMainTitleStyle}">
+                                    <TextBlock Text="{Binding MessageShowStr}" TextAlignment="Center" />
+                                </Label>
+
+
+                            </Grid>
+
+
+                        </Border>
+
+                    </Border>
 
 
                 </Grid>
             </Border>
         </TabItem>
 
-        
-        
-        
+
+
+
         <TabItem Header="日志查看" Style="{StaticResource DarkTabItemStyle}" />
     </TabControl>
 </Window>

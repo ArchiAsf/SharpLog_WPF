@@ -24,33 +24,21 @@ namespace SharpLog
             InitializeComponent();
             DataContext = new ViewModel.MainLogWindow_VM();
 
-            // 尝试获取CalendarWithClock的默认样式
-            var style = Application.Current.TryFindResource(typeof(CalendarWithClock));
-            Debug.WriteLine($"CalendarWithClock样式是否存在：{style != null}");
-
-            // 尝试获取基础控件样式
-            var btnStyle = Application.Current.TryFindResource(typeof(Button));
-            Debug.WriteLine($"Button样式是否存在：{btnStyle != null}");
-
-            // 列出所有合并资源字典
-            Debug.WriteLine($"合并资源字典数量：{Application.Current.Resources.MergedDictionaries.Count}");
-            foreach (var dict in Application.Current.Resources.MergedDictionaries)
-            {
-                Debug.WriteLine($"  - {dict.Source}");
-            }
-
-
-            //try
-            //{
-            //    var uri = new Uri("pack://application:,,,/HandyControl;component/Themes/SkinDark.xaml");
-            //    var dict = new ResourceDictionary { Source = uri };
-            //    Debug.WriteLine("✅ HC资源字典加载成功");
-            //}
-            //catch (Exception ex)
-            //{
-            //    Debug.WriteLine($"❌ 资源加载失败：{ex.Message}");
-            //}
         }
-
+        private void ClosingChange(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // 窗口关闭前触发，在这里停定时器、保存数据等
+            if (DataContext is ViewModel.MainLogWindow_VM vm)
+            {
+                vm._timer.Stop();
+                // 还可以做其他清理工作
+            }
+        }
     }
 }
+
+
+
+
+
+

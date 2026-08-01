@@ -222,6 +222,19 @@ namespace SharpLog.Model
             return System.Windows.Media.Color.FromArgb(drawingColor.A, drawingColor.R, drawingColor.G, drawingColor.B);
         }
 
+        // 现在计算机所在时区的时间
+        public static DateTimeOffset LocalNow => DateTimeOffset.Now;
+
+        //现在的UTC时间
+        public static DateTimeOffset UtcNow => DateTimeOffset.UtcNow;
+
+        //程序要使用的时间
+        public static DateTimeOffset LogUseTime { get; set; } = UtcNow;
+
+        //如果为true就是使用UTC时间，如果为false就是使用本地时间
+        public static bool IsUseUtcTime { get; set; } = true;
+
+
 
         //生成一个将LogTable对象转换为OneLog对象的方法
         public static OneLog ConvertToOneLog(LogTable log)
@@ -229,7 +242,7 @@ namespace SharpLog.Model
             //修正下面的代码，以确保OneLog对象的属性正确映射自LogTable对象
             return new OneLog
             {
-                CardSideBarColor= new System.Windows.Media.SolidColorBrush(StaticValues.ToWpfColor(StaticValues.ModeColorMap[log.Mode])),
+                CardSideBarColor = new System.Windows.Media.SolidColorBrush(StaticValues.ToWpfColor(StaticValues.ModeColorMap[log.Mode])),
                 StartTime = log.StartTime,
                 EndTime = log.EndTime,
                 TimeZoneSuffix = log.TimeZone,

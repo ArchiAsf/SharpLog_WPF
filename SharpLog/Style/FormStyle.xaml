@@ -438,7 +438,7 @@
         BasedOn="{StaticResource TimeStyle_}"
         TargetType="Label">
         <Setter Property="Foreground" Value="{StaticResource LabelMainTitleColor}" />
-        <Setter Property="FontSize" Value="10" />
+        <Setter Property="FontSize" Value="12" />
 
     </Style>
 
@@ -478,7 +478,7 @@
     <Style x:Key="UTCZoneStyle" TargetType="Label">
         <Setter Property="Margin" Value="0,0,3,0" />
         <Setter Property="Padding" Value="0" />
-        <Setter Property="FontSize" Value="7.5" />
+        <Setter Property="FontSize" Value="8" />
         <Setter Property="Foreground" Value="{StaticResource TimeDataColor}" />
 
     </Style>
