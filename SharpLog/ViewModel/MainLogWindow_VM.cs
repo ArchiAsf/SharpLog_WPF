@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using static SharpLog.Model.StaticValues;
+using static SharpLog.DB.SharpLogDbTools;
 
 namespace SharpLog.ViewModel
 {
@@ -24,12 +25,8 @@ namespace SharpLog.ViewModel
         [ObservableProperty]
         private DateTime _StartTimeDT = LogUseTime.DateTime;
 
-        private string _startTime = string.Empty;
-
         [ObservableProperty]
         private DateTime _EndTimeDT = LogUseTime.DateTime;
-
-        private string _endTime = string.Empty;
 
         [ObservableProperty]
         private string _callSign = string.Empty;
@@ -154,8 +151,6 @@ namespace SharpLog.ViewModel
 
             //初始化和格式化一些参数的值和格式
 
-            _startTime = DateTimeToLogString(_StartTimeDT);
-            _endTime = DateTimeToLogString(_EndTimeDT);
 
             //打开计时器刷新，每秒刷新
             _timer = new DispatcherTimer
@@ -218,12 +213,18 @@ namespace SharpLog.ViewModel
         /// <summary>
         /// 添加日志记录按钮点击事件
         /// </summary>
-        [RelayCommand]
+        [RelayCommand()]
         private void AddLogBtnClick()
         {
+            if (CanAddLog())
+            {
+                 QsoLog onelog = new QsoLog();
 
+            }
 
         }
+
+
 
         /// <summary>
         /// 转换全局时间显示的时区
@@ -278,51 +279,48 @@ namespace SharpLog.ViewModel
         {
             MessageShowStr = Value;
             MessShowISVisibility = Visibility.Visible;
-            await Task.Delay(20000);
+            await Task.Delay(2000);
             MessShowISVisibility = Visibility.Hidden;
             MessageShowStr = string.Empty;
         }
 
+        /// <summary>
+        /// 检查是否可以添加日志记录
+        /// </summary>
+        /// <returns></returns>
+        private bool CanAddLog()
+        {
+            (bool isValid, string errorMessage) = QsoLogValidator.ValidateLogInput(CallSign, Freq);
+
+            // 检查必填字段是否为空
+            if (string.IsNullOrWhiteSpace(CallSign) || string.IsNullOrWhiteSpace(Freq) || string.IsNullOrWhiteSpace(StartTimeDT.ToString()) || string.IsNullOrWhiteSpace(EndTimeDT.ToString()) || string.IsNullOrWhiteSpace(SelectedCommCode))
+            {
+                ShowMessInMessStr("请填写所有必填字段！");
+                return false;
+            }
+            // 检查频率是否为有效的数字
+            if (!double.TryParse(Freq, out double frequency))
+            {
+                ShowMessInMessStr("频率必须是有效的数字！");
+                return false;
+            }
+            // 检查开始时间是否早于结束时间
+            if (StartTimeDT >= EndTimeDT)
+            {
+                ShowMessInMessStr("开始时间必须早于结束时间！");
+                return false;
+            }
+            if (!isValid)
+            {
+                ShowMessInMessStr(errorMessage);
+                return false;
+            }
+            return true;
+        }
 
         #endregion
 
 
-
-
-
-        //一个将输入的20260524191130转化为2026/05/24-19:11:30的方法
-        static string TimeChanger(string TimeString)
-        {
-            TimeString = TimeString.Trim();
-
-            string year = TimeString.Substring(0, 4);
-            string month = TimeString.Substring(4, 2);
-            string day = TimeString.Substring(6, 2);
-            string hour = TimeString.Substring(8, 2);
-            string minute = TimeString.Substring(10, 2);
-            string second = TimeString.Substring(12, 2);
-
-            return $"{year}/{month}/{day}-{hour}:{minute}:{second}";
-        }
-
-
-        int i = 0;
-
-        /// <summary>
-        /// 测试用添加日志记录点击事件
-        /// </summary>
-        [RelayCommand]
-        private void TestAddLogBtnClick()
-        {
-            OneLog onelog = new OneLog();
-
-            onelog = StaticValues.ConvertToOneLog(StaticValues.TestQsoLogs[i]);
-
-            QsoLogCollection.Add(onelog);
-            i++;
-
-            ShowMessInMessStr("已添加一条测试记录");
-        }
 
 
 

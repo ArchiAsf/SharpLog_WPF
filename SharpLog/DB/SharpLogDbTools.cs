@@ -11,7 +11,7 @@ using static SharpLog.Infrastructure.Logger;
 
 namespace SharpLog.DB
 {
-    class SharpLogDbTools
+    static class SharpLogDbTools
     {
         // ==================================================
         //  新增
@@ -29,7 +29,7 @@ namespace SharpLog.DB
                 dbContext.Set<T>().Add(data);
                 await dbContext.SaveChangesAsync();
 
-               Logger.Info($"成功添加{typeof(T).Name}类型的数据", "DBHelper");
+                Logger.Info($"成功添加{typeof(T).Name}类型的数据", "DBHelper");
                 return (true, null);
             }
             catch (SqliteException ex) when (ex.SqliteErrorCode == 19)

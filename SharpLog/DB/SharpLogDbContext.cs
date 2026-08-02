@@ -9,7 +9,7 @@ namespace SharpLog.DB
 {
     public class SharpLogDbContext : DbContext
     {
-        public DbSet<Model.LogTable> LogTables { get; set; } = null!;
+        public DbSet<Model.QsoLog> LogTables { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

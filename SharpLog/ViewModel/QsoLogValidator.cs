@@ -17,59 +17,21 @@ namespace SharpLog
     {
         // 呼号正则：仅允许大小写字母、数字、斜杠 /
         private static readonly Regex _callsignRegex = new Regex(@"^[A-Za-z0-9/]+$", RegexOptions.Compiled);
-        private const string TimeFormat = "yyyy/MM/dd-HH:mm:ss";
 
         /// <summary>
         /// 校验日志必填项
         /// </summary>
-        /// <param name="startTime">开始时间</param>
-        /// <param name="endTime">结束时间</param>
         /// <param name="callSign">对方呼号</param>
-        /// <param name="commMode">通联模式</param>
         /// <param name="freqKhz">频率（千赫兹）</param>
         /// <returns>(是否合法, 错误信息)</returns>
-        public static (bool IsValid, string ErrorMessage) ValidateLogInput(
-            string startTime,
-            string endTime,
-            string callSign,
-            string commMode,
-            string freqKhz)
+        public static (bool IsValid, string ErrorMessage) ValidateLogInput(string callSign, string freqKhz)
         {
-            #region 非空校验
-            if (string.IsNullOrWhiteSpace(startTime))
-                return (false, "【开始时间】不能为空");
-            if (string.IsNullOrWhiteSpace(endTime))
-                return (false, "【结束时间】不能为空");
-            if (string.IsNullOrWhiteSpace(callSign))
-                return (false, "【呼号】不能为空");
-            if (string.IsNullOrWhiteSpace(commMode))
-                return (false, "【模式】必须选择");
-            if (string.IsNullOrWhiteSpace(freqKhz))
-                return (false, "【频率】不能为空");
-            #endregion
 
             #region 呼号格式校验
             if (!_callsignRegex.IsMatch(callSign))
                 return (false, "【呼号】包含非法字符，仅允许字母、数字、斜杠(/)");
             #endregion
 
-            #region 时间格式 + 先后顺序校验
-            if (!DateTime.TryParseExact(startTime, TimeFormat, null, System.Globalization.DateTimeStyles.None, out DateTime startDt))
-            {
-                return (false, $"【开始时间】格式错误！要求格式：{TimeFormat} 示例：2026/07/09-19:45:36");
-            }
-
-            if (!DateTime.TryParseExact(endTime, TimeFormat, null, System.Globalization.DateTimeStyles.None, out DateTime endDt))
-            {
-                return (false, $"【结束时间】格式错误！要求格式：{TimeFormat} 示例：2026/07/09-19:45:36");
-            }
-
-            // 核心新增：结束时间不能早于开始时间
-            if (endDt < startDt)
-            {
-                return (false, "【结束时间】不能早于【开始时间】！");
-            }
-            #endregion
 
             #region 频率校验
             if (!double.TryParse(freqKhz, out double freqKhzValue))
