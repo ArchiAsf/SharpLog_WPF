@@ -585,7 +585,18 @@
         <Setter Property="Margin" Value="2,1,2,1" />
     </Style>
 
-
+    <!--状态栏里面的文字标签样式-->
+    <Style
+        x:Key="EffectLabelStyle"
+        BasedOn="{StaticResource LabelMainTitleStyle}"
+        TargetType="Label">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="14 " />
+        <Setter Property="Margin" Value="3,8,0,8" />
+        
+        
+    </Style>
 
 
 

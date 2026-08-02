@@ -110,13 +110,18 @@ namespace SharpLog.ViewModel
         [ObservableProperty]
         private Visibility _MessShowISVisibility = Visibility.Hidden;
 
-        //下拉菜单绑定的集合
+        //显示时区名称
+        [ObservableProperty]
+        private string _ZoneName = string.Empty;
 
+        //下拉菜单绑定的集合
         public ObservableCollection<PropagationItem> PropagationModeList { get; }
 
         public ObservableCollection<CommMode> CommModeList { get; }
 
         public ObservableCollection<OneLog> QsoLogCollection { get; }
+
+
 
 
         //获取选中下拉菜单的Code值
@@ -193,9 +198,15 @@ namespace SharpLog.ViewModel
             LocalTime = DateTime.Now.ToString("HH:mm:ss");
 
             if (IsUseUtcTime == true)
+            {
                 LogUseTime = DateTime.UtcNow;
+                ZoneName = "UTC";
+            }
             else
+            {
                 LogUseTime = DateTime.Now;
+                ZoneName = "UTC" + DateTimeOffset.Now.ToString("zzz");
+            }
         }
 
         #endregion

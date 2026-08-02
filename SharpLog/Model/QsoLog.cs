@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.AccessControl;
 using System.Text;
 
 namespace SharpLog.Model
@@ -56,81 +57,128 @@ namespace SharpLog.Model
         public string Mode { get; set; } = string.Empty;
 
         /// <summary>
+        /// 通联所属操作员
+        /// </summary>
+        [Required(ErrorMessage = "通联所属操作员不能为空")]
+        public string Radio_operator { get; set; } = string.Empty;
+
+        /// <summary>
         /// 时区（可选，示例：UTC+8、UTC-5）
         /// </summary>
-        public string TimeZone { get; set; } = string.Empty;
+        public string? TimeZone { get; set; } = string.Empty;
 
         /// <summary>
         /// 我方送出RST信号报告
         /// </summary>
-        public string RST { get; set; } = string.Empty;
+        public string? RST { get; set; } = string.Empty;
 
         /// <summary>
         /// 对方回传RST信号报告
         /// </summary>
 
-        public string RRST { get; set; } = string.Empty;
+        public string? RRST { get; set; } = string.Empty;
 
         /// <summary>
         /// 对方QTH地理位置（可选）
         /// </summary>
-        public string? QTH { get; set; }
+        public string? QTH { get; set; } = string.Empty;
 
         /// <summary>
         /// 电台型号RIG（可选）
         /// </summary>
-        public string? RIG { get; set; }
+        public string? RIG { get; set; } = string.Empty;
 
 
         /// <summary>
         /// 发射功率（可选，例如100W、5W）
         /// </summary>
-        public string? Pow { get; set; }
+        public string? Pow { get; set; } = string.Empty;
 
         /// <summary>
         /// 天线类型ANT（可选）
         /// </summary>
-        public string? ANT { get; set; }
+        public string? ANT { get; set; } = string.Empty;
 
         /// <summary>
         /// 发射高度（可选）
         /// </summary>
-        public string? Height { get; set; }
+        public string? Height { get; set; } = string.Empty;
 
         /// <summary>
         /// 操作员OP（可选）
         /// </summary>
-        public string? OP { get; set; }
+        public string? OP { get; set; } = string.Empty;
 
         /// <summary>
         /// 网格定位（可选，示例：FN31pr）
         /// </summary>
-        public string? Locator { get; set; }
+        public string? Locator { get; set; } = string.Empty;
 
         /// <summary>
         /// DMR数字集群通联ID（可选，示例：123456）
         /// </summary>
-        public string DigitalID { get; set; }
+        public string DigitalID { get; set; } = string.Empty;
 
         /// <summary>
         /// 备注信息RMKS（可选）
         /// </summary>
-        public string? RMKS { get; set; }
+        public string? RMKS { get; set; } = string.Empty;
+
+
+        public int? GroupID { get; set; }
+
+        public int? StarID { get; set; }
 
         /// <summary>
         /// 是否交换了QSL卡片
         /// </summary>
-        public bool IsQSL { get; set; }
+        public bool IsQSL { get; set; } = false;
 
         /// <summary>
-        /// QRP低功率通联
+        /// QSL卡片接收时间（可选，格式：YYYY-MM-DD HH:MM:SS）
         /// </summary>
-        public bool IsQRP { get; set; }
+        public string? QslReceiveTime { get; set; } = string.Empty;
+
+        /// <summary>
+        /// QSL卡片发送时间（可选，格式：YYYY-MM-DD HH:MM:SS）
+        /// </summary>
+        public string? QslSendTime { get; set; } = string.Empty;
+
+        /// <summary>
+        /// QSL卡片接收地址（可选）
+        /// </summary>
+        public string? QslAddress { get; set; } = string.Empty;
+
+        /// <summary>
+        /// QSL卡片邮政编码（可选）
+        /// </summary>
+        public string? PostalCode { get; set; } = string.Empty;
+
+        /// <summary>
+        /// QSL卡片接收人姓名（可选）
+        /// </summary>
+        public string? ReceiverName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// QSL卡片接收人联系方式（可选）
+        /// </summary>
+        public string? ReceiverContact { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 天气情况（可选，示例：晴、雨、雪）
+        /// </summary>
+        public string? Weather { get; set; } = string.Empty;
+
+        /// <summary>
+        /// 温度情况（可选，示例：25°C、-5°C）
+        /// </summary>
+        public string? Temperature { get; set; } = string.Empty;
+
 
         /// <summary>
         /// 是否双向确认通联
         /// </summary>
-        public bool IsConfirmation { get; set; }
+        public bool IsConfirmation { get; set; } = false;
     }
 
 }

@@ -28,10 +28,10 @@
 
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="35" />
+                        <RowDefinition MinHeight="355" MaxHeight="600" />
+                        <RowDefinition MinHeight="220" MaxHeight="100000000" />
                         <RowDefinition Height="40" />
-                        <RowDefinition MinHeight="400" MaxHeight="600" />
-                        <RowDefinition MinHeight="200" MaxHeight="100000000" />
-                        <RowDefinition Height="50" />
                     </Grid.RowDefinitions>
 
                     <!--  顶部工具栏容器  -->
@@ -957,10 +957,27 @@
                                             Grid.Column="0"
                                             Style="{StaticResource LittleCardPanelStyle}">
                                             <Label Style="{StaticResource LittleLabelStyle}">
-                                                <TextBlock>
-                                                    分组
-                                                </TextBlock>
+                                                <TextBlock Text="{DynamicResource Text_Group}" />
                                             </Label>
+                                        </Border>
+
+                                        <Border
+                                            Grid.Row="0"
+                                            Grid.Column="1"
+                                            Padding="0,2,0,2">
+                                            <hc:ComboBox
+                                                Height="20"
+                                                ItemsSource="{Binding PropagationModeList}"
+                                                SelectedItem="{Binding SelectPROPItem, Mode=TwoWay}">
+
+                                                <!--  【下拉选项高度】缩小每一行  -->
+                                                <hc:ComboBox.ItemContainerStyle>
+                                                    <Style TargetType="ComboBoxItem">
+                                                        <Setter Property="Height" Value="26" />
+                                                        <Setter Property="Padding" Value="0" />
+                                                    </Style>
+                                                </hc:ComboBox.ItemContainerStyle>
+                                            </hc:ComboBox>
                                         </Border>
 
                                         <Border
@@ -968,9 +985,7 @@
                                             Grid.Column="2"
                                             Style="{StaticResource LittleCardPanelStyle}">
                                             <Label Style="{StaticResource LittleLabelStyle}">
-                                                <TextBlock>
-                                                    分组
-                                                </TextBlock>
+                                                <TextBlock Text="{DynamicResource Text_Star}" />
                                             </Label>
                                         </Border>
 
@@ -980,9 +995,7 @@
                                             Grid.ColumnSpan="3"
                                             Style="{StaticResource LittleCardPanelStyle}">
                                             <Label Style="{StaticResource LittleLabelStyle}">
-                                                <TextBlock>
-                                                    分组
-                                                </TextBlock>
+                                                <TextBlock Text="{DynamicResource Text_QslReceived}" />
                                             </Label>
                                         </Border>
 
@@ -991,9 +1004,7 @@
                                             Grid.Column="0"
                                             Style="{StaticResource LittleCardPanelStyle}">
                                             <Label Style="{StaticResource LittleLabelStyle}">
-                                                <TextBlock>
-                                                    分组
-                                                </TextBlock>
+                                                <TextBlock Text="{DynamicResource Text_QslReceiveTime}" />
                                             </Label>
                                         </Border>
 
@@ -1002,9 +1013,7 @@
                                             Grid.Column="2"
                                             Style="{StaticResource LittleCardPanelStyle}">
                                             <Label Style="{StaticResource LittleLabelStyle}">
-                                                <TextBlock>
-                                                    分组
-                                                </TextBlock>
+                                                <TextBlock Text="{DynamicResource Text_QslSendTime}" />
                                             </Label>
                                         </Border>
 
@@ -1014,9 +1023,7 @@
                                             Grid.ColumnSpan="3"
                                             Style="{StaticResource LittleCardPanelStyle}">
                                             <Label Style="{StaticResource LittleLabelStyle}">
-                                                <TextBlock>
-                                                    分组
-                                                </TextBlock>
+                                                <TextBlock Text="{DynamicResource Text_QslMailAddress}" />
                                             </Label>
                                         </Border>
 
@@ -1026,9 +1033,7 @@
                                             Grid.ColumnSpan="2"
                                             Style="{StaticResource LittleCardPanelStyle}">
                                             <Label Style="{StaticResource LittleLabelStyle}">
-                                                <TextBlock>
-                                                    分组
-                                                </TextBlock>
+                                                <TextBlock Text="{DynamicResource Text_PostalCode}" />
                                             </Label>
                                         </Border>
 
@@ -1037,9 +1042,7 @@
                                             Grid.Column="2"
                                             Style="{StaticResource LittleCardPanelStyle}">
                                             <Label Style="{StaticResource LittleLabelStyle}">
-                                                <TextBlock>
-                                                    分组
-                                                </TextBlock>
+                                                <TextBlock Text="{DynamicResource Text_ReceiverName}" />
                                             </Label>
                                         </Border>
 
@@ -1048,9 +1051,7 @@
                                             Grid.Column="2"
                                             Style="{StaticResource LittleCardPanelStyle}">
                                             <Label Style="{StaticResource LittleLabelStyle}">
-                                                <TextBlock>
-                                                    分组
-                                                </TextBlock>
+                                                <TextBlock Text="{DynamicResource Text_ReceiverContact}" />
                                             </Label>
                                         </Border>
 
@@ -1059,9 +1060,7 @@
                                             Grid.Column="0"
                                             Style="{StaticResource LittleCardPanelStyle}">
                                             <Label Style="{StaticResource LittleLabelStyle}">
-                                                <TextBlock>
-                                                    分组
-                                                </TextBlock>
+                                                <TextBlock Text="{DynamicResource Text_Weather}" />
                                             </Label>
                                         </Border>
 
@@ -1070,18 +1069,9 @@
                                             Grid.Column="2"
                                             Style="{StaticResource LittleCardPanelStyle}">
                                             <Label Style="{StaticResource LittleLabelStyle}">
-                                                <TextBlock>
-                                                    
-                                                </TextBlock>
+                                                <TextBlock Text="{DynamicResource Text_Temperature}" />
                                             </Label>
                                         </Border>
-
-
-
-
-
-
-
 
 
                                     </Grid>
@@ -1127,7 +1117,32 @@
                         Grid.Column="0"
                         Grid.ColumnSpan="2"
                         Margin="2,2,2,2"
-                        Style="{StaticResource CardPanelStyle}" />
+                        Style="{StaticResource CardPanelStyle}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="6*" />
+                                <ColumnDefinition Width="6*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel
+                                Grid.Column="0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                                <Label Style="{StaticResource EffectLabelStyle}">
+                                    <TextBlock Text="{DynamicResource Text_NowTimeZone}" />
+                                </Label>
+                                <Label Style="{StaticResource EffectLabelStyle}">
+                                    <TextBlock Text="{Binding ZoneName}" />
+                                </Label>
+                            </StackPanel>
+
+                        </Grid>
+                    </Border>
 
                     <!--  消息提示框  -->
                     <Border

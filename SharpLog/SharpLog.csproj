@@ -30,10 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DB\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Resource Include="logo\Dusk.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
