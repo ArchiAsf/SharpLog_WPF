@@ -14,6 +14,9 @@
 
                 <ResourceDictionary Source="/Style/ColorDic.xaml" />
                 <ResourceDictionary Source="/Style/FormStyle.xaml" />
+                
+                <!--语言字典-->
+                <ResourceDictionary Source="/Langunges/LangCN.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

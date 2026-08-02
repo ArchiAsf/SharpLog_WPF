@@ -560,14 +560,30 @@
         x:Key="TimeInPut_HC"
         BasedOn="{StaticResource {x:Type hc:DateTimePicker}}"
         TargetType="hc:DateTimePicker">
-        <Setter Property="DateTimeFormat" Value="yyyy/MM/dd-HH:mm:ss"/>
-        <Setter Property="Background" Value="{StaticResource NormalTextBoxBackColor}"/>
-        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="DateTimeFormat" Value="yyyy/MM/dd-HH:mm:ss" />
+        <Setter Property="Background" Value="{StaticResource NormalTextBoxBackColor}" />
+        <Setter Property="FontSize" Value="13" />
 
     </Style>
-    
 
+    <!--小表格里面的标签样式-->
+    <Style
+        x:Key="LittleLabelStyle"
+        BasedOn="{StaticResource LabelMainTitleStyle}"
+        TargetType="Label">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="12 " />
+    </Style>
 
+    <!--小表格里面的卡片面板-->
+    <Style
+        x:Key="LittleCardPanelStyle"
+        BasedOn="{StaticResource CardPanelStyle}"
+        TargetType="Border">
+        <Setter Property="Padding" Value="5,0,5,0" />
+        <Setter Property="Margin" Value="2,1,2,1" />
+    </Style>
 
 
 

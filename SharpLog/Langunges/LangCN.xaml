@@ -1,0 +1,18 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=System.Runtime">
+
+    <system:String x:Key="Text_Group">分组</system:String>
+    <system:String x:Key="Text_Star">星标</system:String>
+    <system:String x:Key="Text_QslReceived">是否已收妥QSL卡片</system:String>
+    <system:String x:Key="Text_QslMailAddress">QSL卡片邮寄地址</system:String>
+    <system:String x:Key="Text_PostalCode">邮政编码</system:String>
+    <system:String x:Key="Text_ReceiverName">收件人姓名</system:String>
+    <system:String x:Key="Text_ReceiverContact">收件人联系方式</system:String>
+    <system:String x:Key="Text_QslSendTime">QSL卡发出时间</system:String>
+    <system:String x:Key="Text_QslReceiveTime">QSL卡收到时间</system:String>
+    <system:String x:Key="Text_Weather">天气</system:String>
+    <system:String x:Key="Text_Temperature">气温</system:String>
+
+
+</ResourceDictionary>

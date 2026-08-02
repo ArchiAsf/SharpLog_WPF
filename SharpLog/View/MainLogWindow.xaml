@@ -139,8 +139,7 @@
                                                         Padding="0">
                                                         <Border Style="{StaticResource TimeBorder}">
                                                             <Label Style="{StaticResource TimeStyle}">
-                                                                <TextBlock Text="{Binding UtcTime}" TextAlignment="Center">
-                                                                </TextBlock>
+                                                                <TextBlock Text="{Binding UtcTime}" TextAlignment="Center" />
                                                             </Label>
                                                         </Border>
                                                     </Border>
@@ -148,8 +147,8 @@
                                                     <Border
                                                         Grid.Row="2"
                                                         Grid.Column="0"
-                                                        Padding="0"
                                                         Margin="3,0,0,0"
+                                                        Padding="0"
                                                         HorizontalAlignment="Left"
                                                         VerticalAlignment="Bottom">
                                                         <Label Style="{StaticResource UTCZoneStyle}">
@@ -164,8 +163,7 @@
                                                         Grid.Column="0"
                                                         Padding="0">
                                                         <Label Style="{StaticResource TimeDataStyle}">
-                                                            <TextBlock Text="{Binding UtcDate}">
-                                                            </TextBlock>
+                                                            <TextBlock Text="{Binding UtcDate}" />
                                                         </Label>
                                                     </Border>
 
@@ -205,8 +203,7 @@
                                                         Padding="0">
                                                         <Border Style="{StaticResource TimeBorder}">
                                                             <Label Style="{StaticResource TimeStyle}">
-                                                                <TextBlock Text="{Binding LocalTime}" TextAlignment="Center">
-                                                                </TextBlock>
+                                                                <TextBlock Text="{Binding LocalTime}" TextAlignment="Center" />
                                                             </Label>
                                                         </Border>
                                                     </Border>
@@ -214,13 +211,12 @@
                                                     <Border
                                                         Grid.Row="2"
                                                         Grid.Column="0"
-                                                        Padding="0,0,0,0"
                                                         Margin="3,0,0,0"
+                                                        Padding="0,0,0,0"
                                                         HorizontalAlignment="Left"
                                                         VerticalAlignment="Bottom">
                                                         <Label Style="{StaticResource UTCZoneStyle}">
-                                                            <TextBlock Text="{Binding LocalTimeZone}">
-                                                            </TextBlock>
+                                                            <TextBlock Text="{Binding LocalTimeZone}" />
                                                         </Label>
                                                     </Border>
 
@@ -229,8 +225,7 @@
                                                         Grid.Column="0"
                                                         Padding="0">
                                                         <Label Style="{StaticResource TimeDataStyle}">
-                                                            <TextBlock Text="{Binding LocalDate}">
-                                                            </TextBlock>
+                                                            <TextBlock Text="{Binding LocalDate}" />
                                                         </Label>
                                                     </Border>
                                                 </Grid>
@@ -262,7 +257,7 @@
                                                 BorderBrush="{StaticResource PanelBorderColor}"
                                                 BorderThickness="0,0,1,0">
 
-                                                <Image Margin="2" Source="/logo/Dusk.png" />
+                                                <Image Margin="2" Source="/logo/night.png" />
                                             </Border>
 
                                             <Border
@@ -416,7 +411,7 @@
                                 Grid.Column="0"
                                 Style="{StaticResource CardPanelStyle}">
                                 <Border.InputBindings>
-                                    <MouseBinding MouseAction="LeftClick" Command="{Binding StartTimeTextClick_TimeInPutStartTimeCommand}" />
+                                    <MouseBinding Command="{Binding StartTimeTextClick_TimeInPutStartTimeCommand}" MouseAction="LeftClick" />
                                 </Border.InputBindings>
                                 <!--  字段标签：开始时间 StartTime  -->
                                 <Label
@@ -443,7 +438,7 @@
                                 Grid.Column="3"
                                 Style="{StaticResource CardPanelStyle}">
                                 <Border.InputBindings>
-                                    <MouseBinding MouseAction="LeftClick" Command="{Binding EndTimeTextClick_TimeInPutEndTimeCommand}" />
+                                    <MouseBinding Command="{Binding EndTimeTextClick_TimeInPutEndTimeCommand}" MouseAction="LeftClick" />
                                 </Border.InputBindings>
                                 <!--  字段标签：结束时间 EndTime  -->
                                 <Label
@@ -924,21 +919,175 @@
                         Style="{StaticResource InDarkTabControlStyle}">
                         <TabItem
                             Height="18"
-                            Header="日志信息"
+                            Header="其他信息"
                             Style="{StaticResource InDarkTabItemStyle}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="6*" />
                                     <ColumnDefinition Width="4*" />
+                                    <ColumnDefinition Width="6*" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
 
                                 <Border BorderBrush="{StaticResource TabBorderBrush}" BorderThickness="0,0,1,0" />
+
+                                <!--  日志其他信息区  -->
+                                <Border Grid.Column="1">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+
+                                        <Border
+                                            Grid.Row="0"
+                                            Grid.Column="0"
+                                            Style="{StaticResource LittleCardPanelStyle}">
+                                            <Label Style="{StaticResource LittleLabelStyle}">
+                                                <TextBlock>
+                                                    分组
+                                                </TextBlock>
+                                            </Label>
+                                        </Border>
+
+                                        <Border
+                                            Grid.Row="0"
+                                            Grid.Column="2"
+                                            Style="{StaticResource LittleCardPanelStyle}">
+                                            <Label Style="{StaticResource LittleLabelStyle}">
+                                                <TextBlock>
+                                                    分组
+                                                </TextBlock>
+                                            </Label>
+                                        </Border>
+
+                                        <Border
+                                            Grid.Row="1"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="3"
+                                            Style="{StaticResource LittleCardPanelStyle}">
+                                            <Label Style="{StaticResource LittleLabelStyle}">
+                                                <TextBlock>
+                                                    分组
+                                                </TextBlock>
+                                            </Label>
+                                        </Border>
+
+                                        <Border
+                                            Grid.Row="2"
+                                            Grid.Column="0"
+                                            Style="{StaticResource LittleCardPanelStyle}">
+                                            <Label Style="{StaticResource LittleLabelStyle}">
+                                                <TextBlock>
+                                                    分组
+                                                </TextBlock>
+                                            </Label>
+                                        </Border>
+
+                                        <Border
+                                            Grid.Row="2"
+                                            Grid.Column="2"
+                                            Style="{StaticResource LittleCardPanelStyle}">
+                                            <Label Style="{StaticResource LittleLabelStyle}">
+                                                <TextBlock>
+                                                    分组
+                                                </TextBlock>
+                                            </Label>
+                                        </Border>
+
+                                        <Border
+                                            Grid.Row="3"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="3"
+                                            Style="{StaticResource LittleCardPanelStyle}">
+                                            <Label Style="{StaticResource LittleLabelStyle}">
+                                                <TextBlock>
+                                                    分组
+                                                </TextBlock>
+                                            </Label>
+                                        </Border>
+
+                                        <Border
+                                            Grid.Row="5"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="2"
+                                            Style="{StaticResource LittleCardPanelStyle}">
+                                            <Label Style="{StaticResource LittleLabelStyle}">
+                                                <TextBlock>
+                                                    分组
+                                                </TextBlock>
+                                            </Label>
+                                        </Border>
+
+                                        <Border
+                                            Grid.Row="5"
+                                            Grid.Column="2"
+                                            Style="{StaticResource LittleCardPanelStyle}">
+                                            <Label Style="{StaticResource LittleLabelStyle}">
+                                                <TextBlock>
+                                                    分组
+                                                </TextBlock>
+                                            </Label>
+                                        </Border>
+
+                                        <Border
+                                            Grid.Row="6"
+                                            Grid.Column="2"
+                                            Style="{StaticResource LittleCardPanelStyle}">
+                                            <Label Style="{StaticResource LittleLabelStyle}">
+                                                <TextBlock>
+                                                    分组
+                                                </TextBlock>
+                                            </Label>
+                                        </Border>
+
+                                        <Border
+                                            Grid.Row="7"
+                                            Grid.Column="0"
+                                            Style="{StaticResource LittleCardPanelStyle}">
+                                            <Label Style="{StaticResource LittleLabelStyle}">
+                                                <TextBlock>
+                                                    分组
+                                                </TextBlock>
+                                            </Label>
+                                        </Border>
+
+                                        <Border
+                                            Grid.Row="7"
+                                            Grid.Column="2"
+                                            Style="{StaticResource LittleCardPanelStyle}">
+                                            <Label Style="{StaticResource LittleLabelStyle}">
+                                                <TextBlock>
+                                                    
+                                                </TextBlock>
+                                            </Label>
+                                        </Border>
+
+
+
+
+
+
+
+
+
+                                    </Grid>
+                                </Border>
                             </Grid>
                         </TabItem>
-
                         <TabItem Height="18" Style="{StaticResource InDarkTabItemStyle}" />
                     </TabControl>
 

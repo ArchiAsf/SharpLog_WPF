@@ -13,10 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="logo\Dawn.png" />
-    <None Remove="logo\DayLogo.png" />
     <None Remove="logo\Dusk.png" />
-    <None Remove="logo\MoonLogo.png" />
+    <None Remove="logo\Morning.png" />
+    <None Remove="logo\night.png" />
+    <None Remove="logo\Sun.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,16 +34,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="logo\Dawn.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="logo\DayLogo.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
     <Resource Include="logo\Dusk.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="logo\MoonLogo.png">
+    <Resource Include="logo\Morning.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="logo\night.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="logo\Sun.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
