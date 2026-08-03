@@ -7,15 +7,15 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <!-- 先加载基础主题 -->
-                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml"/>
+                <!--  先加载基础主题  -->
+                <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/Theme.xaml" />
                 <!--  HC 主题  -->
                 <ResourceDictionary Source="pack://application:,,,/HandyControl;component/Themes/SkinDark.xaml" />
 
                 <ResourceDictionary Source="/Style/ColorDic.xaml" />
                 <ResourceDictionary Source="/Style/FormStyle.xaml" />
-                
-                <!--语言字典-->
+
+                <!--  语言字典  -->
                 <ResourceDictionary Source="/Langunges/LangCN.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

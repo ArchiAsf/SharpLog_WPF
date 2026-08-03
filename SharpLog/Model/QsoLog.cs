@@ -18,6 +18,8 @@ namespace SharpLog.Model
     [Index(nameof(CallSign))]              // 呼号索引
     [Index(nameof(Mode))]                  // 模式索引
     [Index(nameof(Frequency))]             // 频率索引
+    [Index(nameof(GroupID))]             // 分组索引
+    [Index(nameof(StarID))]             // 星级索引
     public class QsoLog
     {
         /// <summary>
@@ -170,12 +172,12 @@ namespace SharpLog.Model
         /// <summary>
         /// QSL卡片接收时间（可选，格式：YYYY-MM-DD HH:MM:SS）
         /// </summary>
-        public string? QslReceiveTime { get; set; }
+        public DateTime? QslReceiveTime { get; set; }
 
         /// <summary>
         /// QSL卡片发送时间（可选，格式：YYYY-MM-DD HH:MM:SS）
         /// </summary>
-        public string? QslSendTime { get; set; }
+        public DateTime? QslSendTime { get; set; }
 
         /// <summary>
         /// QSL卡片接收地址（可选）

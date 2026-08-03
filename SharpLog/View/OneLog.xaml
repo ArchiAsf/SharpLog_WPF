@@ -82,12 +82,12 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1" />
                     <!--  0 侧边条 固定  -->
-                    <ColumnDefinition Width="68" />
+                    <ColumnDefinition Width="69" />
                     <!--  1 固定  -->
                     <!--  2 固定  -->
-                    <ColumnDefinition Width="68" />
+                    <ColumnDefinition Width="69" />
                     <!--  4 固定  -->
-                    <ColumnDefinition Width="36" />
+                    <ColumnDefinition Width="50" />
                     <!--  5 自适应拉伸  -->
                     <ColumnDefinition Width="*" />
                     <!--  6 自适应拉伸  -->

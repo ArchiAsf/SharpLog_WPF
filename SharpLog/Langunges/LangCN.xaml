@@ -15,7 +15,7 @@
     <system:String x:Key="Text_Weather">天气</system:String>
     <system:String x:Key="Text_Temperature">气温</system:String>
     <system:String x:Key="Text_NowTimeZone">当前时区：</system:String>
-    
+
 
 
 </ResourceDictionary>

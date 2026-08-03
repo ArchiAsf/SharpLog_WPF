@@ -31,7 +31,11 @@ namespace SharpLog.ViewModel
             string callSign, string freq, string mode, string rst, string Rrst,
             string gridLocator, string rxPower, string txPower,
             string qth, string rig, string ant,
-            string rmks, string height, string Op, string PropMode, string DigID)
+            string rmks, string height, string Op, string PropMode, string DigID,
+
+            int? groupID,int StarID,
+            string IsQSL, DateTime? QslReceiveTime, DateTime? QslSendTime,
+            string QslAddress, string ReceiverName, string PostalCode, string ReceiverContact)
         {
             QsoLog qsoLog = new QsoLog
             {
@@ -54,8 +58,17 @@ namespace SharpLog.ViewModel
                 OP = Op,
                 PropMode = PropMode,
                 DigitalID = DigID,
-                
-                RadioOperator="BG2GPT"
+                GroupID = groupID,
+                StarID = StarID,
+                IsQSL = IsQSL == "是" ? true : false,
+                QslReceiveTime = QslReceiveTime,
+                QslSendTime = QslSendTime,
+                QslAddress = QslAddress,
+                ReceiverName = ReceiverName,
+                PostalCode = PostalCode,
+                ReceiverContact = ReceiverContact,
+
+                RadioOperator ="BG2GPT"
 
 
             };

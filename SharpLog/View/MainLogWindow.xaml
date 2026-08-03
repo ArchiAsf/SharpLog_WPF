@@ -52,15 +52,6 @@
                                 <RowDefinition />
                             </Grid.RowDefinitions>
 
-                            <StackPanel Grid.Column="0" Orientation="Horizontal">
-                                <Button
-                                    Width="36"
-                                    Margin="2"
-                                    Command="{Binding TestAddLogBtnClickCommand}"
-                                    Content="T"
-                                    Style="{StaticResource PrimaryButtonStyle}" />
-                            </StackPanel>
-
                         </Grid>
 
 
@@ -498,8 +489,8 @@
                                 Style="{StaticResource InCardPanelStyle}">
                                 <TextBox
                                     x:Name="CallSignInPutBox"
-                                    FontFamily="Consolas"
                                     FontSize="22"
+                                    FontFamily="Consolas"
                                     Foreground="{StaticResource AccentTextColor}"
                                     Style="{StaticResource DarkTextBoxStyle}"
                                     Text="{Binding CallSign, Mode=TwoWay}" />
@@ -952,24 +943,31 @@
                                             <RowDefinition />
                                         </Grid.RowDefinitions>
 
+                                        <!--  ====================== 第0行：分组、星标数字输入区域 ======================  -->
+                                        <!--  分组 文字标签容器  -->
                                         <Border
                                             Grid.Row="0"
                                             Grid.Column="0"
                                             Style="{StaticResource LittleCardPanelStyle}">
                                             <Label Style="{StaticResource LittleLabelStyle}">
+                                                <!--  使用动态资源实现多语言文本  -->
                                                 <TextBlock Text="{DynamicResource Text_Group}" />
                                             </Label>
                                         </Border>
 
-                                       <Border
+                                        <!--  分组数值输入框，hc数字增减控件  -->
+                                        <Border
                                             Grid.Row="0"
                                             Grid.Column="1"
                                             Padding="0,2,0,2">
-                                            <hc:NumericUpDown Maximum="5" Minimum="0" FontSize="16" Value="{Binding GroupID}"/>
+                                            <hc:NumericUpDown
+                                                FontSize="16"
+                                                Maximum="5"
+                                                Minimum="0"
+                                                Value="{Binding GroupID}" />
                                         </Border>
 
-
-
+                                        <!--  星标 文字标签容器  -->
                                         <Border
                                             Grid.Row="0"
                                             Grid.Column="2"
@@ -979,13 +977,20 @@
                                             </Label>
                                         </Border>
 
+                                        <!--  星标等级数值输入框  -->
                                         <Border
                                             Grid.Row="0"
                                             Grid.Column="3"
                                             Padding="0,2,0,2">
-                                            <hc:NumericUpDown Maximum="5" Minimum="0" FontSize="16" Value="{Binding StarID}"/>
+                                            <hc:NumericUpDown
+                                                FontSize="16"
+                                                Maximum="5"
+                                                Minimum="0"
+                                                Value="{Binding StarID}" />
                                         </Border>
 
+                                        <!--  ====================== 第1行：是否已收妥QSL卡片下拉选择 ======================  -->
+                                        <!--  标签，横跨0、1、2三列  -->
                                         <Border
                                             Grid.Row="1"
                                             Grid.Column="0"
@@ -996,6 +1001,21 @@
                                             </Label>
                                         </Border>
 
+                                        <!--  下拉选择框：是 / 否  -->
+                                        <Border
+                                            Grid.Row="1"
+                                            Grid.Column="3"
+                                            Padding="0,2,0,2">
+                                            <hc:ComboBox Text="{Binding IsQSL}">
+                                                <hc:ComboBox.Items>
+                                                    <system:String>是</system:String>
+                                                    <system:String>否</system:String>
+                                                </hc:ComboBox.Items>
+                                            </hc:ComboBox>
+                                        </Border>
+
+                                        <!--  ====================== 第2行：QSL收发日期选择区域 ======================  -->
+                                        <!--  QSL卡收到时间 标签  -->
                                         <Border
                                             Grid.Row="2"
                                             Grid.Column="0"
@@ -1005,19 +1025,15 @@
                                             </Label>
                                         </Border>
 
+                                        <!--  QSL收到日期选择器  -->
                                         <Border
-                                            Grid.Row="1"
-                                            Grid.Column="3"
+                                            Grid.Row="2"
+                                            Grid.Column="1"
                                             Padding="0,2,0,2">
-                                            <hc:ComboBox >
-                                                <hc:ComboBox.Items>
-                                                    <system:String>是</system:String>
-                                                    <system:String>否</system:String>
-                                                </hc:ComboBox.Items>
-                                            </hc:ComboBox>
+                                            <hc:DatePicker SelectedDate="{Binding QslReceiveTime}" />
                                         </Border>
 
-
+                                        <!--  QSL卡发出时间 标签  -->
                                         <Border
                                             Grid.Row="2"
                                             Grid.Column="2"
@@ -1027,16 +1043,37 @@
                                             </Label>
                                         </Border>
 
+                                        <!--  QSL发出日期选择器  -->
+                                        <Border
+                                            Grid.Row="2"
+                                            Grid.Column="3"
+                                            Padding="0,2,0,2">
+                                            <hc:DatePicker SelectedDate="{Binding QslSendTime}" />
+                                        </Border>
+
+                                        <!--  ====================== 第3行：QSL卡片邮寄地址标题 ======================  -->
+                                        <!--  标签横跨全部4列  -->
                                         <Border
                                             Grid.Row="3"
                                             Grid.Column="0"
-                                            Grid.ColumnSpan="3"
+                                            Grid.ColumnSpan="4"
                                             Style="{StaticResource LittleCardPanelStyle}">
                                             <Label Style="{StaticResource LittleLabelStyle}">
                                                 <TextBlock Text="{DynamicResource Text_QslMailAddress}" />
                                             </Label>
                                         </Border>
 
+                                        <!--  ====================== 第4行：QSL完整邮寄地址输入框 ======================  -->
+                                        <Border
+                                            Grid.Row="4"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="4"
+                                            Padding="2,2,1,2">
+                                            <TextBox Text="{Binding QslAddress}" />
+                                        </Border>
+
+                                        <!--  ====================== 第5行：邮政编码、收件人姓名 ======================  -->
+                                        <!--  邮政编码 标签，横跨0、1列  -->
                                         <Border
                                             Grid.Row="5"
                                             Grid.Column="0"
@@ -1047,6 +1084,7 @@
                                             </Label>
                                         </Border>
 
+                                        <!--  收件人姓名 标签  -->
                                         <Border
                                             Grid.Row="5"
                                             Grid.Column="2"
@@ -1056,6 +1094,25 @@
                                             </Label>
                                         </Border>
 
+                                        <!--  收件人姓名输入框  -->
+                                        <Border
+                                            Grid.Row="5"
+                                            Grid.Column="3"
+                                            Padding="2,2,1,2">
+                                            <TextBox Text="{Binding ReceiverName}" />
+                                        </Border>
+
+                                        <!--  ====================== 第6行：邮政编码输入框、收件人联系方式 ======================  -->
+                                        <!--  邮政编码输入框，横跨0、1列  -->
+                                        <Border
+                                            Grid.Row="6"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="2"
+                                            Padding="2,2,1,2">
+                                            <TextBox Text="{Binding PostalCode}" />
+                                        </Border>
+
+                                        <!--  收件人联系方式 标签  -->
                                         <Border
                                             Grid.Row="6"
                                             Grid.Column="2"
@@ -1063,6 +1120,14 @@
                                             <Label Style="{StaticResource LittleLabelStyle}">
                                                 <TextBlock Text="{DynamicResource Text_ReceiverContact}" />
                                             </Label>
+                                        </Border>
+
+                                        <!--  收件人联系方式输入框  -->
+                                        <Border
+                                            Grid.Row="6"
+                                            Grid.Column="3"
+                                            Padding="2,2,1,2">
+                                            <TextBox Text="{Binding ReceiverContact}" />
                                         </Border>
 
 

@@ -30,7 +30,16 @@ namespace SharpLog.ViewModel
         private DateTime _EndTimeDT = LogUseTime.DateTime;
 
         [ObservableProperty]
-        private string _CallSign = string.Empty;
+        private string _CallSign=string.Empty;
+
+        partial void OnCallSignChanged(string value)
+        {
+            var upper = value.ToUpperInvariant();
+            if (value != upper)
+            {
+                CallSign = upper;
+            }
+        }
 
         [ObservableProperty]
         private string _Rmks = string.Empty;
@@ -46,6 +55,14 @@ namespace SharpLog.ViewModel
 
         [ObservableProperty]
         private string _gridLocator = string.Empty;
+        partial void OnGridLocatorChanged(string value)
+        {
+            var upper = value.ToUpperInvariant();
+            if (value != upper)
+            {
+                GridLocator = upper;
+            }
+        }
 
         [ObservableProperty]
         private string _rxPower = string.Empty;
@@ -78,13 +95,13 @@ namespace SharpLog.ViewModel
         private int _StarID = 0;
 
         [ObservableProperty]
-        private bool _IsQSL = false;
+        private string _IsQSL=string.Empty;
 
         [ObservableProperty]
-        private string _QslReceiveTime = string.Empty;
+        private DateTime? _QslReceiveTime ;
 
         [ObservableProperty]
-        private string _QslSendTime = string.Empty;
+        private DateTime? _QslSendTime;
 
         [ObservableProperty]
         private string _QslAddress = string.Empty;
@@ -190,6 +207,9 @@ namespace SharpLog.ViewModel
             AllQsoLogList = a.Result.Data.ToList();
             ShowLogInView();
 
+            CallSign=CallSign.ToUpper();
+            GridLocator = GridLocator.ToUpper();    
+
 
             //打开计时器刷新，每秒刷新
             _timer = new DispatcherTimer
@@ -259,7 +279,8 @@ namespace SharpLog.ViewModel
             {
                 Task<(bool Success, string? WarningMessage)> Result = AddDBDataAsync<QsoLog>(ConvertMainViewToQsoLog(
                     StartTimeDT, EndTimeDT, ZoneName, CallSign, Freq, SelectedCommCode, Rst, Rrst,
-                    GridLocator, RxPower, TxPower, Qth, Rig, Ant, Rmks, Height, Operator, SelectedPropCode, DigID));
+                    GridLocator, RxPower, TxPower, Qth, Rig, Ant, Rmks, Height, Operator, SelectedPropCode, DigID,
+                    GroupID, StarID, IsQSL, QslReceiveTime, QslSendTime, QslAddress, ReceiverName, PostalCode, ReceiverContact));
 
                 if (!Result.Result.Success)
                 {
@@ -312,16 +333,6 @@ namespace SharpLog.ViewModel
         #region 辅助方法
 
         /// <summary>
-        /// 将 DateTime 转换为 yyyy/MM/dd-HH:mm:ss 格式字符串
-        /// </summary>
-        /// <param name="dateTime">要转换的时间</param>
-        /// <returns>格式化后的字符串，如 2026/05/24-19:11:30</returns>
-        public static string DateTimeToLogString(DateTime dateTime)
-        {
-            return dateTime.ToString("yyyy/MM/dd-HH:mm:ss");
-        }
-
-        /// <summary>
         /// 将 QsoLog 对象转换为 OneLog 对象，并添加到 QsoLogCollection 中
         /// </summary>
         private void ShowLogInView()
@@ -330,7 +341,7 @@ namespace SharpLog.ViewModel
             AllQsoLogList = GetAllDBDataAsync<QsoLog>().Result.Data;
             AllQsoLogList.ForEach(l =>
             {
-                QsoLogCollection.Add(ConvertQsoLogToOneLog(l));
+                QsoLogCollection.Insert(0, ConvertQsoLogToOneLog(l));
             });
         }
 
