@@ -13,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Threading;
 using static SharpLog.Model.StaticValues;
 using static SharpLog.DB.SharpLogDbTools;
+using static SharpLog.ViewModel.ModeConvertTools;
 
 namespace SharpLog.ViewModel
 {
@@ -29,16 +30,16 @@ namespace SharpLog.ViewModel
         private DateTime _EndTimeDT = LogUseTime.DateTime;
 
         [ObservableProperty]
-        private string _callSign = string.Empty;
+        private string _CallSign = string.Empty;
 
         [ObservableProperty]
-        private string _rmks = string.Empty;
+        private string _Rmks = string.Empty;
 
         [ObservableProperty]
-        private string _freq = string.Empty;
+        private string _Freq = string.Empty;
 
         [ObservableProperty]
-        private string _rst = string.Empty;
+        private string _Rst = string.Empty;
 
         [ObservableProperty]
         private string _Rrst = string.Empty;
@@ -68,7 +69,40 @@ namespace SharpLog.ViewModel
         private string _operator = string.Empty;
 
         [ObservableProperty]
-        private string _dmrId = string.Empty;
+        private string _DigID = string.Empty;
+
+        [ObservableProperty]
+        private int _GroupID = 0;
+
+        [ObservableProperty]
+        private int _StarID = 0;
+
+        [ObservableProperty]
+        private bool _IsQSL = false;
+
+        [ObservableProperty]
+        private string _QslReceiveTime = string.Empty;
+
+        [ObservableProperty]
+        private string _QslSendTime = string.Empty;
+
+        [ObservableProperty]
+        private string _QslAddress = string.Empty;
+
+        [ObservableProperty]
+        private string _PostalCode = string.Empty;
+
+        [ObservableProperty]
+        private string _ReceiverName = string.Empty;
+
+        [ObservableProperty]
+        private string _ReceiverContact = string.Empty;
+
+        [ObservableProperty]
+        private string _Weather = string.Empty;
+
+        [ObservableProperty]
+        private string _Temperature = string.Empty;
 
         #endregion
 
@@ -116,9 +150,11 @@ namespace SharpLog.ViewModel
 
         public ObservableCollection<CommMode> CommModeList { get; }
 
+        //日志展示绑定的集合
         public ObservableCollection<OneLog> QsoLogCollection { get; }
 
-
+        //所有日志记录的集合
+        public List<QsoLog> AllQsoLogList { get; set; } = new List<QsoLog>();
 
 
         //获取选中下拉菜单的Code值
@@ -150,6 +186,9 @@ namespace SharpLog.ViewModel
             _SelectCommMode = CommModeList[0]; // 默认选择第一个选项
 
             //初始化和格式化一些参数的值和格式
+            var a = GetAllDBDataAsync<QsoLog>();
+            AllQsoLogList = a.Result.Data.ToList();
+            ShowLogInView();
 
 
             //打开计时器刷新，每秒刷新
@@ -218,8 +257,20 @@ namespace SharpLog.ViewModel
         {
             if (CanAddLog())
             {
-                 QsoLog onelog = new QsoLog();
+                Task<(bool Success, string? WarningMessage)> Result = AddDBDataAsync<QsoLog>(ConvertMainViewToQsoLog(
+                    StartTimeDT, EndTimeDT, ZoneName, CallSign, Freq, SelectedCommCode, Rst, Rrst,
+                    GridLocator, RxPower, TxPower, Qth, Rig, Ant, Rmks, Height, Operator, SelectedPropCode, DigID));
 
+                if (!Result.Result.Success)
+                {
+                    ShowMessInMessStr(Result.Result.WarningMessage ?? "添加日志记录失败！");
+
+                }
+                else
+                {
+                    ShowMessInMessStr("日志记录添加成功！");
+                    ShowLogInView();
+                }
             }
 
         }
@@ -268,6 +319,19 @@ namespace SharpLog.ViewModel
         public static string DateTimeToLogString(DateTime dateTime)
         {
             return dateTime.ToString("yyyy/MM/dd-HH:mm:ss");
+        }
+
+        /// <summary>
+        /// 将 QsoLog 对象转换为 OneLog 对象，并添加到 QsoLogCollection 中
+        /// </summary>
+        private void ShowLogInView()
+        {
+            QsoLogCollection.Clear();
+            AllQsoLogList = GetAllDBDataAsync<QsoLog>().Result.Data;
+            AllQsoLogList.ForEach(l =>
+            {
+                QsoLogCollection.Add(ConvertQsoLogToOneLog(l));
+            });
         }
 
         /// <summary>

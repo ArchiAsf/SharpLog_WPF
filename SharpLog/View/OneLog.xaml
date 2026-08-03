@@ -25,7 +25,7 @@
                 x:Key="CallSignBigLabelStyle"
                 BasedOn="{StaticResource LabelMainTitleStyle}"
                 TargetType="Label">
-                <Setter Property="FontSize" Value="32" />
+                <Setter Property="FontSize" Value="26" />
             </Style>
 
             <!--  样式2：14号 频率、网格定位  -->
@@ -56,7 +56,7 @@
                 x:Key="QsoBigLabelStyle"
                 BasedOn="{StaticResource LabelMainTitleStyle}"
                 TargetType="Label">
-                <Setter Property="FontSize" Value="28" />
+                <Setter Property="FontSize" Value="24" />
             </Style>
         </Border.Resources>
         <Grid>

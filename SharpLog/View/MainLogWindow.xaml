@@ -6,6 +6,7 @@
     xmlns:hc="clr-namespace:HandyControl.Controls;assembly=HandyControl"
     xmlns:local="clr-namespace:SharpLog"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
     Title="SharpLog"
     Width="1366"
     Height="768"
@@ -893,7 +894,7 @@
                                 <TextBox
                                     x:Name="DMRIDInPutBox"
                                     Style="{StaticResource DarkTextBoxStyle}"
-                                    Text="{Binding DmrId, Mode=TwoWay}" />
+                                    Text="{Binding DigID, Mode=TwoWay}" />
                             </Border>
 
                             <Border
@@ -949,7 +950,6 @@
                                             <RowDefinition />
                                             <RowDefinition />
                                             <RowDefinition />
-                                            <RowDefinition />
                                         </Grid.RowDefinitions>
 
                                         <Border
@@ -961,24 +961,14 @@
                                             </Label>
                                         </Border>
 
-                                        <Border
+                                       <Border
                                             Grid.Row="0"
                                             Grid.Column="1"
                                             Padding="0,2,0,2">
-                                            <hc:ComboBox
-                                                Height="20"
-                                                ItemsSource="{Binding PropagationModeList}"
-                                                SelectedItem="{Binding SelectPROPItem, Mode=TwoWay}">
-
-                                                <!--  【下拉选项高度】缩小每一行  -->
-                                                <hc:ComboBox.ItemContainerStyle>
-                                                    <Style TargetType="ComboBoxItem">
-                                                        <Setter Property="Height" Value="26" />
-                                                        <Setter Property="Padding" Value="0" />
-                                                    </Style>
-                                                </hc:ComboBox.ItemContainerStyle>
-                                            </hc:ComboBox>
+                                            <hc:NumericUpDown Maximum="5" Minimum="0" FontSize="16" Value="{Binding GroupID}"/>
                                         </Border>
+
+
 
                                         <Border
                                             Grid.Row="0"
@@ -987,6 +977,13 @@
                                             <Label Style="{StaticResource LittleLabelStyle}">
                                                 <TextBlock Text="{DynamicResource Text_Star}" />
                                             </Label>
+                                        </Border>
+
+                                        <Border
+                                            Grid.Row="0"
+                                            Grid.Column="3"
+                                            Padding="0,2,0,2">
+                                            <hc:NumericUpDown Maximum="5" Minimum="0" FontSize="16" Value="{Binding StarID}"/>
                                         </Border>
 
                                         <Border
@@ -1007,6 +1004,19 @@
                                                 <TextBlock Text="{DynamicResource Text_QslReceiveTime}" />
                                             </Label>
                                         </Border>
+
+                                        <Border
+                                            Grid.Row="1"
+                                            Grid.Column="3"
+                                            Padding="0,2,0,2">
+                                            <hc:ComboBox >
+                                                <hc:ComboBox.Items>
+                                                    <system:String>是</system:String>
+                                                    <system:String>否</system:String>
+                                                </hc:ComboBox.Items>
+                                            </hc:ComboBox>
+                                        </Border>
+
 
                                         <Border
                                             Grid.Row="2"
@@ -1055,7 +1065,9 @@
                                             </Label>
                                         </Border>
 
-                                        <Border
+
+                                        <!--  因为表格空间限制，不得不删除掉气温和天气的填写，后续版本再添加上吧  -->
+                                        <!--<Border
                                             Grid.Row="7"
                                             Grid.Column="0"
                                             Style="{StaticResource LittleCardPanelStyle}">
@@ -1071,7 +1083,7 @@
                                             <Label Style="{StaticResource LittleLabelStyle}">
                                                 <TextBlock Text="{DynamicResource Text_Temperature}" />
                                             </Label>
-                                        </Border>
+                                        </Border>-->
 
 
                                     </Grid>
