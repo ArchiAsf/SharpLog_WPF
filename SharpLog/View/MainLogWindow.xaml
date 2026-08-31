@@ -403,35 +403,26 @@
                                 Grid.Column="0"
                                 Style="{StaticResource CardPanelStyle}">
                                 <Border.InputBindings>
-                                    <MouseBinding Command="{Binding QsoDateClick_SetStartTimeCommand}" MouseAction="LeftClick" />
+                                    <MouseBinding Command="{Binding StartTimeTextClick_TimeInPutStartTimeCommand}" MouseAction="LeftClick" />
                                 </Border.InputBindings>
-                                <!--  字段标签：开始日期 QSO_DATE（ADIF）  -->
+                                <!--  字段标签：开始时间（复合输入，后台拆分存储为 QSO_DATE + TIME_ON）  -->
                                 <Label
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
                                     <TextBlock TextAlignment="Center">
-                                        ·开始日期<LineBreak />
-                                        QSO_DATE</TextBlock>
+                                        ·开始时间<LineBreak />
+                                        StartTime</TextBlock>
                                 </Label>
                             </Border>
-                            <!--  开始日期+开始时间输入框（ADIF: QSO_DATE + TIME_ON）  -->
+                            <!--  开始时间输入框（hc:DateTimePicker 复合输入，后台拆分存储）  -->
                             <Border
                                 Grid.Row="0"
                                 Grid.Column="1"
                                 Grid.ColumnSpan="2"
                                 Style="{StaticResource InCardPanelStyle}">
-                                <StackPanel
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Orientation="Horizontal">
-                                    <hc:DatePicker SelectedDate="{Binding QSO_DATE, Mode=TwoWay}" />
-                                    <TextBox
-                                        Width="90"
-                                        Text="{Binding TIME_ON, Mode=TwoWay}"
-                                        Style="{StaticResource UnitTextBoxStyle}"
-                                        Tag="HHmmss" />
-                                </StackPanel>
+                                <hc:DateTimePicker SelectedDateTime="{Binding StartTimeDT, Mode=TwoWay}" Style="{StaticResource TimeInPut_HC}" />
+
                             </Border>
 
                             <Border
@@ -439,35 +430,26 @@
                                 Grid.Column="3"
                                 Style="{StaticResource CardPanelStyle}">
                                 <Border.InputBindings>
-                                    <MouseBinding Command="{Binding QsoDateOffClick_SetEndTimeCommand}" MouseAction="LeftClick" />
+                                    <MouseBinding Command="{Binding EndTimeTextClick_TimeInPutEndTimeCommand}" MouseAction="LeftClick" />
                                 </Border.InputBindings>
-                                <!--  字段标签：结束日期 QSO_DATE_OFF（ADIF）  -->
+                                <!--  字段标签：结束时间（复合输入，后台拆分存储为 QSO_DATE_OFF + TIME_OFF）  -->
                                 <Label
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
                                     <TextBlock TextAlignment="Center">
-                                        ·结束日期<LineBreak />
-                                        QSO_DATE_OFF</TextBlock>
+                                        ·结束时间<LineBreak />
+                                        EndTime</TextBlock>
                                 </Label>
                             </Border>
-                            <!--  结束日期+结束时间输入框（ADIF: QSO_DATE_OFF + TIME_OFF）  -->
+                            <!--  结束时间输入框（hc:DateTimePicker 复合输入，后台拆分存储）  -->
                             <Border
                                 Grid.Row="0"
                                 Grid.Column="4"
                                 Grid.ColumnSpan="2"
                                 Style="{StaticResource InCardPanelStyle}">
-                                <StackPanel
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Orientation="Horizontal">
-                                    <hc:DatePicker SelectedDate="{Binding QSO_DATE_OFF, Mode=TwoWay}" />
-                                    <TextBox
-                                        Width="90"
-                                        Text="{Binding TIME_OFF, Mode=TwoWay}"
-                                        Style="{StaticResource UnitTextBoxStyle}"
-                                        Tag="HHmmss" />
-                                </StackPanel>
+                                <hc:DateTimePicker SelectedDateTime="{Binding EndTimeDT, Mode=TwoWay}" Style="{StaticResource TimeInPut_HC}" />
+
                             </Border>
 
                             <Border

@@ -5,7 +5,6 @@ using SharpLog.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -24,22 +23,16 @@ namespace SharpLog.ViewModel
 
         #region 日志信息相关绑定属性
         //注意：字段命名已统一为 ADIF 3.1.7 规范名称（CALL/FREQ/RST_SENT/RST_RCVD/GRIDSQUARE 等）
+        //时间输入使用复合 DateTime（hc:DateTimePicker 绑定），后台转换时拆分为
+        //QSO_DATE + TIME_ON / QSO_DATE_OFF + TIME_OFF 分别存储（见 ModeConvertTools）
 
-        //通联开始日期（ADIF: QSO_DATE，DatePicker 绑定）
+        //通联开始时间（复合输入，后台拆分存储为 ADIF: QSO_DATE + TIME_ON）
         [ObservableProperty]
-        private DateTime? _QSO_DATE = LogUseTime.DateTime;
+        private DateTime _StartTimeDT = LogUseTime.DateTime;
 
-        //通联开始时间（ADIF: TIME_ON，文本格式 HHmmss）
+        //通联结束时间（复合输入，后台拆分存储为 ADIF: QSO_DATE_OFF + TIME_OFF）
         [ObservableProperty]
-        private string _TIME_ON = LogUseTime.DateTime.ToString("HHmmss");
-
-        //通联结束日期（ADIF: QSO_DATE_OFF，DatePicker 绑定）
-        [ObservableProperty]
-        private DateTime? _QSO_DATE_OFF = LogUseTime.DateTime;
-
-        //通联结束时间（ADIF: TIME_OFF，文本格式 HHmmss）
-        [ObservableProperty]
-        private string _TIME_OFF = LogUseTime.DateTime.ToString("HHmmss");
+        private DateTime _EndTimeDT = LogUseTime.DateTime;
 
         //对方呼号（ADIF: CALL）
         [ObservableProperty]
@@ -315,7 +308,7 @@ namespace SharpLog.ViewModel
             if (CanAddLog())
             {
                 Task<(bool Success, string? WarningMessage)> Result = AddDBDataAsync<QsoLog>(ConvertMainViewToQsoLog(
-                    QSO_DATE, TIME_ON, QSO_DATE_OFF, TIME_OFF, ZoneName, CALL, FREQ, SelectedCommCode,
+                    StartTimeDT, EndTimeDT, ZoneName, CALL, FREQ, SelectedCommCode,
                     RST_RCVD, RST_SENT, GRIDSQUARE, RX_PWR, TX_PWR, QTH, RIG, Ant, COMMENT,
                     Height, Operator, SelectedPropCode, DigID,
                     GroupID, StarID, QSL_RCVD, QSLRDATE, QSLSDATE, QslAddress, ReceiverName, PostalCode, ReceiverContact));
@@ -346,68 +339,35 @@ namespace SharpLog.ViewModel
             {
                 LogUseTime = UtcNow;
                 IsUseUtcTime = !IsUseUtcTime;
-                SetStartTimeFromLogUseTime();
-                SetEndTimeFromLogUseTime();
+                StartTimeDT = LogUseTime.DateTime;
+                EndTimeDT = LogUseTime.DateTime;
             }
             else
             {
                 LogUseTime = LocalNow;
                 IsUseUtcTime = !IsUseUtcTime;
-                SetStartTimeFromLogUseTime();
-                SetEndTimeFromLogUseTime();
+                StartTimeDT = LogUseTime.DateTime;
+                EndTimeDT = LogUseTime.DateTime;
             }
         }
 
         /// <summary>
-        /// 点击开始日期标签 → 填入当前日志时间（QSO_DATE + TIME_ON）
+        /// 点击开始时间标签 → 填入当前日志时间（后台拆分为 QSO_DATE + TIME_ON）
         /// </summary>
         [RelayCommand]
-        private void QsoDateClick_SetStartTime() => SetStartTimeFromLogUseTime();
+        private void StartTimeTextClick_TimeInPutStartTime() => StartTimeDT = LogUseTime.DateTime;
 
         /// <summary>
-        /// 点击结束日期标签 → 填入当前日志时间（QSO_DATE_OFF + TIME_OFF）
+        /// 点击结束时间标签 → 填入当前日志时间（后台拆分为 QSO_DATE_OFF + TIME_OFF）
         /// </summary>
         [RelayCommand]
-        private void QsoDateOffClick_SetEndTime() => SetEndTimeFromLogUseTime();
+        private void EndTimeTextClick_TimeInPutEndTime() => EndTimeDT = LogUseTime.DateTime;
 
         #endregion
 
 
 
         #region 辅助方法
-
-        /// <summary>
-        /// 将 LogUseTime 的日期+时间填入开始字段（QSO_DATE / TIME_ON）
-        /// </summary>
-        private void SetStartTimeFromLogUseTime()
-        {
-            QSO_DATE = LogUseTime.DateTime;
-            TIME_ON = LogUseTime.DateTime.ToString("HHmmss");
-        }
-
-        /// <summary>
-        /// 将 LogUseTime 的日期+时间填入结束字段（QSO_DATE_OFF / TIME_OFF）
-        /// </summary>
-        private void SetEndTimeFromLogUseTime()
-        {
-            QSO_DATE_OFF = LogUseTime.DateTime;
-            TIME_OFF = LogUseTime.DateTime.ToString("HHmmss");
-        }
-
-        /// <summary>
-        /// 组合日期+时间为 DateTime（用于校验开始早于结束）
-        /// </summary>
-        private static DateTime? CombineDateTime(DateTime? date, string? time)
-        {
-            if (date == null) return null;
-            var d = date.Value.Date;
-            if (!string.IsNullOrWhiteSpace(time)
-                && TimeOnly.TryParseExact(time, "HHmmss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var t))
-            {
-                return d + t.ToTimeSpan();
-            }
-            return d;
-        }
 
         /// <summary>
         /// 将 QsoLog 对象转换为 OneLog 对象，并添加到 QsoLogCollection 中
@@ -444,9 +404,9 @@ namespace SharpLog.ViewModel
         {
             (bool isValid, string errorMessage) = QsoLogValidator.ValidateLogInput(CALL, FREQ);
 
-            // 检查必填字段是否为空（QSO_DATE/TIME_ON/CALL/FREQ/MODE）
-            if (string.IsNullOrWhiteSpace(CALL) || string.IsNullOrWhiteSpace(FREQ) || QSO_DATE == null
-                || string.IsNullOrWhiteSpace(TIME_ON) || string.IsNullOrWhiteSpace(SelectedCommCode))
+            // 检查必填字段是否为空（CALL/FREQ/MODE；时间由 DateTimePicker 保证有值）
+            if (string.IsNullOrWhiteSpace(CALL) || string.IsNullOrWhiteSpace(FREQ)
+                || string.IsNullOrWhiteSpace(SelectedCommCode))
             {
                 ShowMessInMessStr("请填写所有必填字段！");
                 return false;
@@ -457,10 +417,8 @@ namespace SharpLog.ViewModel
                 ShowMessInMessStr("频率必须是有效的数字！");
                 return false;
             }
-            // 检查开始时间是否早于结束时间（QSO_DATE+TIME_ON vs QSO_DATE_OFF+TIME_OFF）
-            DateTime? start = CombineDateTime(QSO_DATE, TIME_ON);
-            DateTime? end = CombineDateTime(QSO_DATE_OFF, TIME_OFF);
-            if (start != null && end != null && start >= end)
+            // 检查开始时间是否早于结束时间（复合 DateTime 直接比较）
+            if (StartTimeDT >= EndTimeDT)
             {
                 ShowMessInMessStr("开始时间必须早于结束时间！");
                 return false;

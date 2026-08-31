@@ -13,11 +13,11 @@ namespace SharpLog.ViewModel
         /// <summary>
         /// 将输入框中的参数转换为QsoLog对象
         /// 字段命名已统一为 ADIF 3.1.7 规范名称
+        /// 时间说明：UI 使用复合 DateTime（hc:DateTimePicker）输入，
+        /// 此处拆分为 QSO_DATE + TIME_ON / QSO_DATE_OFF + TIME_OFF 分别存储
         /// </summary>
-        /// <param name="qsoDate">通联开始日期（ADIF: QSO_DATE）</param>
-        /// <param name="timeOn">通联开始时间（ADIF: TIME_ON，HHmmss）</param>
-        /// <param name="qsoDateOff">通联结束日期（ADIF: QSO_DATE_OFF）</param>
-        /// <param name="timeOff">通联结束时间（ADIF: TIME_OFF，HHmmss）</param>
+        /// <param name="startTimeDT">通联开始时间（复合，拆分存储为 ADIF: QSO_DATE + TIME_ON）</param>
+        /// <param name="endTimeDT">通联结束时间（复合，拆分存储为 ADIF: QSO_DATE_OFF + TIME_OFF）</param>
         /// <param name="timeZone">时区</param>
         /// <param name="call">对方呼号（ADIF: CALL）</param>
         /// <param name="freq">频率（kHz 输入）</param>
@@ -46,7 +46,7 @@ namespace SharpLog.ViewModel
         /// <param name="receiverContact">联系方式（项目自定义）</param>
         /// <returns></returns>
         public static QsoLog ConvertMainViewToQsoLog(
-            DateTime? qsoDate, string? timeOn, DateTime? qsoDateOff, string? timeOff, string timeZone,
+            DateTime startTimeDT, DateTime endTimeDT, string timeZone,
             string call, string freq, string mode, string rstRcvd, string rstSent,
             string gridSquare, string rxPower, string txPower,
             string qth, string rig, string ant,
@@ -58,10 +58,11 @@ namespace SharpLog.ViewModel
         {
             QsoLog qsoLog = new QsoLog
             {
-                QSO_DATE = qsoDate,
-                TIME_ON = timeOn,
-                QSO_DATE_OFF = qsoDateOff,
-                TIME_OFF = timeOff,
+                // 复合时间拆分：日期存 QSO_DATE（取 Date 部分），时间存 TIME_ON（HHmmss 文本）
+                QSO_DATE = startTimeDT.Date,
+                TIME_ON = startTimeDT.ToString("HHmmss"),
+                QSO_DATE_OFF = endTimeDT.Date,
+                TIME_OFF = endTimeDT.ToString("HHmmss"),
                 TimeZone = timeZone,
                 CALL = call,
                 FREQ = double.Parse(freq),
