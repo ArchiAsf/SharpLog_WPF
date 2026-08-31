@@ -1,10 +1,11 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.VisualBasic;
 using SharpLog.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -22,102 +23,138 @@ namespace SharpLog.ViewModel
     {
 
         #region 日志信息相关绑定属性
-        //普通输入框绑定
-        [ObservableProperty]
-        private DateTime _StartTimeDT = LogUseTime.DateTime;
+        //注意：字段命名已统一为 ADIF 3.1.7 规范名称（CALL/FREQ/RST_SENT/RST_RCVD/GRIDSQUARE 等）
 
+        //通联开始日期（ADIF: QSO_DATE，DatePicker 绑定）
         [ObservableProperty]
-        private DateTime _EndTimeDT = LogUseTime.DateTime;
+        private DateTime? _QSO_DATE = LogUseTime.DateTime;
 
+        //通联开始时间（ADIF: TIME_ON，文本格式 HHmmss）
         [ObservableProperty]
-        private string _CallSign=string.Empty;
+        private string _TIME_ON = LogUseTime.DateTime.ToString("HHmmss");
 
-        partial void OnCallSignChanged(string value)
+        //通联结束日期（ADIF: QSO_DATE_OFF，DatePicker 绑定）
+        [ObservableProperty]
+        private DateTime? _QSO_DATE_OFF = LogUseTime.DateTime;
+
+        //通联结束时间（ADIF: TIME_OFF，文本格式 HHmmss）
+        [ObservableProperty]
+        private string _TIME_OFF = LogUseTime.DateTime.ToString("HHmmss");
+
+        //对方呼号（ADIF: CALL）
+        [ObservableProperty]
+        private string _CALL = string.Empty;
+
+        partial void OnCALLChanged(string value)
         {
             var upper = value.ToUpperInvariant();
             if (value != upper)
             {
-                CallSign = upper;
+                CALL = upper;
             }
         }
 
+        //备注（ADIF: COMMENT）
         [ObservableProperty]
-        private string _Rmks = string.Empty;
+        private string _COMMENT = string.Empty;
 
+        //频率（ADIF: FREQ，输入为 kHz，如 7050）
         [ObservableProperty]
-        private string _Freq = string.Empty;
+        private string _FREQ = string.Empty;
 
+        //收到的信号报告（ADIF: RST_RCVD，UI「信号报告_收」）
         [ObservableProperty]
-        private string _Rst = string.Empty;
+        private string _RST_RCVD = string.Empty;
 
+        //发出的信号报告（ADIF: RST_SENT，UI「信号报告_发」）
         [ObservableProperty]
-        private string _Rrst = string.Empty;
+        private string _RST_SENT = string.Empty;
 
+        //网格定位（ADIF: GRIDSQUARE，Maidenhead 网格）
         [ObservableProperty]
-        private string _gridLocator = string.Empty;
-        partial void OnGridLocatorChanged(string value)
+        private string _GRIDSQUARE = string.Empty;
+        partial void OnGRIDSQUAREChanged(string value)
         {
             var upper = value.ToUpperInvariant();
             if (value != upper)
             {
-                GridLocator = upper;
+                GRIDSQUARE = upper;
             }
         }
 
+        //对方发射功率（ADIF: RX_PWR）
         [ObservableProperty]
-        private string _rxPower = string.Empty;
+        private string _RX_PWR = string.Empty;
 
+        //我方发射功率（ADIF: TX_PWR）
         [ObservableProperty]
-        private string _txPower = string.Empty;
+        private string _TX_PWR = string.Empty;
 
+        //对方QTH城市（ADIF: QTH）
         [ObservableProperty]
-        private string _qth = string.Empty;
+        private string _QTH = string.Empty;
 
+        //电台型号（ADIF: RIG）
         [ObservableProperty]
-        private string _rig = string.Empty;
+        private string _RIG = string.Empty;
 
+        //天线类型（项目自定义，ADIF 无对应，保留）
         [ObservableProperty]
         private string _ant = string.Empty;
 
+        //发射高度（项目自定义，ADIF 无对应，保留）
         [ObservableProperty]
         private string _height = string.Empty;
 
+        //操作员（项目自定义，ADIF 无对应，保留）
         [ObservableProperty]
         private string _operator = string.Empty;
 
+        //DMR数字ID（项目自定义，ADIF 无对应，保留）
         [ObservableProperty]
         private string _DigID = string.Empty;
 
+        //分组ID（项目自定义）
         [ObservableProperty]
         private int _GroupID = 0;
 
+        //星级ID（项目自定义）
         [ObservableProperty]
         private int _StarID = 0;
 
+        //是否收到QSL卡片（ADIF: QSL_RCVD；当前 string 是/否，bool 转换在转换工具中处理）
         [ObservableProperty]
-        private string _IsQSL=string.Empty;
+        private string _QSL_RCVD = string.Empty;
 
+        //QSL卡片接收日期（ADIF: QSLRDATE）
         [ObservableProperty]
-        private DateTime? _QslReceiveTime ;
+        private DateTime? _QSLRDATE;
 
+        //QSL卡片发送日期（ADIF: QSLSDATE）
         [ObservableProperty]
-        private DateTime? _QslSendTime;
+        private DateTime? _QSLSDATE;
 
+        //QSL卡片接收地址（项目自定义，保留）
         [ObservableProperty]
         private string _QslAddress = string.Empty;
 
+        //QSL邮政编码（项目自定义，保留）
         [ObservableProperty]
         private string _PostalCode = string.Empty;
 
+        //QSL接收人姓名（项目自定义，保留）
         [ObservableProperty]
         private string _ReceiverName = string.Empty;
 
+        //QSL接收人联系方式（项目自定义，保留）
         [ObservableProperty]
         private string _ReceiverContact = string.Empty;
 
+        //天气（项目自定义，保留）
         [ObservableProperty]
         private string _Weather = string.Empty;
 
+        //温度（项目自定义，保留）
         [ObservableProperty]
         private string _Temperature = string.Empty;
 
@@ -180,7 +217,7 @@ namespace SharpLog.ViewModel
         public string? SelectedPropCode => _SelectPROPItem?.Code;
         public string? SelectedCommCode => _SelectCommMode?.Code;
 
-        // 【只读计算属性，自动获取Name，无需手动同步】 
+        // 【只读计算属性，自动获取Name，无需手动同步】
         public string? SelectedPropName => _SelectPROPItem?.Name;
         public string? SelectedCommName => _SelectCommMode?.Name;
 
@@ -207,8 +244,8 @@ namespace SharpLog.ViewModel
             AllQsoLogList = a.Result.Data.ToList();
             ShowLogInView();
 
-            CallSign=CallSign.ToUpper();
-            GridLocator = GridLocator.ToUpper();    
+            CALL = CALL.ToUpper();
+            GRIDSQUARE = GRIDSQUARE.ToUpper();
 
 
             //打开计时器刷新，每秒刷新
@@ -278,9 +315,10 @@ namespace SharpLog.ViewModel
             if (CanAddLog())
             {
                 Task<(bool Success, string? WarningMessage)> Result = AddDBDataAsync<QsoLog>(ConvertMainViewToQsoLog(
-                    StartTimeDT, EndTimeDT, ZoneName, CallSign, Freq, SelectedCommCode, Rst, Rrst,
-                    GridLocator, RxPower, TxPower, Qth, Rig, Ant, Rmks, Height, Operator, SelectedPropCode, DigID,
-                    GroupID, StarID, IsQSL, QslReceiveTime, QslSendTime, QslAddress, ReceiverName, PostalCode, ReceiverContact));
+                    QSO_DATE, TIME_ON, QSO_DATE_OFF, TIME_OFF, ZoneName, CALL, FREQ, SelectedCommCode,
+                    RST_RCVD, RST_SENT, GRIDSQUARE, RX_PWR, TX_PWR, QTH, RIG, Ant, COMMENT,
+                    Height, Operator, SelectedPropCode, DigID,
+                    GroupID, StarID, QSL_RCVD, QSLRDATE, QSLSDATE, QslAddress, ReceiverName, PostalCode, ReceiverContact));
 
                 if (!Result.Result.Success)
                 {
@@ -308,29 +346,68 @@ namespace SharpLog.ViewModel
             {
                 LogUseTime = UtcNow;
                 IsUseUtcTime = !IsUseUtcTime;
-                StartTimeDT = LogUseTime.DateTime;
-                EndTimeDT = LogUseTime.DateTime;
+                SetStartTimeFromLogUseTime();
+                SetEndTimeFromLogUseTime();
             }
             else
             {
                 LogUseTime = LocalNow;
                 IsUseUtcTime = !IsUseUtcTime;
-                StartTimeDT = LogUseTime.DateTime;
-                EndTimeDT = LogUseTime.DateTime;
+                SetStartTimeFromLogUseTime();
+                SetEndTimeFromLogUseTime();
             }
         }
 
+        /// <summary>
+        /// 点击开始日期标签 → 填入当前日志时间（QSO_DATE + TIME_ON）
+        /// </summary>
         [RelayCommand]
-        private void StartTimeTextClick_TimeInPutStartTime() => StartTimeDT = LogUseTime.DateTime;
+        private void QsoDateClick_SetStartTime() => SetStartTimeFromLogUseTime();
 
+        /// <summary>
+        /// 点击结束日期标签 → 填入当前日志时间（QSO_DATE_OFF + TIME_OFF）
+        /// </summary>
         [RelayCommand]
-        private void EndTimeTextClick_TimeInPutEndTime() => EndTimeDT = LogUseTime.DateTime;
+        private void QsoDateOffClick_SetEndTime() => SetEndTimeFromLogUseTime();
 
         #endregion
 
 
 
         #region 辅助方法
+
+        /// <summary>
+        /// 将 LogUseTime 的日期+时间填入开始字段（QSO_DATE / TIME_ON）
+        /// </summary>
+        private void SetStartTimeFromLogUseTime()
+        {
+            QSO_DATE = LogUseTime.DateTime;
+            TIME_ON = LogUseTime.DateTime.ToString("HHmmss");
+        }
+
+        /// <summary>
+        /// 将 LogUseTime 的日期+时间填入结束字段（QSO_DATE_OFF / TIME_OFF）
+        /// </summary>
+        private void SetEndTimeFromLogUseTime()
+        {
+            QSO_DATE_OFF = LogUseTime.DateTime;
+            TIME_OFF = LogUseTime.DateTime.ToString("HHmmss");
+        }
+
+        /// <summary>
+        /// 组合日期+时间为 DateTime（用于校验开始早于结束）
+        /// </summary>
+        private static DateTime? CombineDateTime(DateTime? date, string? time)
+        {
+            if (date == null) return null;
+            var d = date.Value.Date;
+            if (!string.IsNullOrWhiteSpace(time)
+                && TimeOnly.TryParseExact(time, "HHmmss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var t))
+            {
+                return d + t.ToTimeSpan();
+            }
+            return d;
+        }
 
         /// <summary>
         /// 将 QsoLog 对象转换为 OneLog 对象，并添加到 QsoLogCollection 中
@@ -365,22 +442,25 @@ namespace SharpLog.ViewModel
         /// <returns></returns>
         private bool CanAddLog()
         {
-            (bool isValid, string errorMessage) = QsoLogValidator.ValidateLogInput(CallSign, Freq);
+            (bool isValid, string errorMessage) = QsoLogValidator.ValidateLogInput(CALL, FREQ);
 
-            // 检查必填字段是否为空
-            if (string.IsNullOrWhiteSpace(CallSign) || string.IsNullOrWhiteSpace(Freq) || string.IsNullOrWhiteSpace(StartTimeDT.ToString()) || string.IsNullOrWhiteSpace(EndTimeDT.ToString()) || string.IsNullOrWhiteSpace(SelectedCommCode))
+            // 检查必填字段是否为空（QSO_DATE/TIME_ON/CALL/FREQ/MODE）
+            if (string.IsNullOrWhiteSpace(CALL) || string.IsNullOrWhiteSpace(FREQ) || QSO_DATE == null
+                || string.IsNullOrWhiteSpace(TIME_ON) || string.IsNullOrWhiteSpace(SelectedCommCode))
             {
                 ShowMessInMessStr("请填写所有必填字段！");
                 return false;
             }
             // 检查频率是否为有效的数字
-            if (!double.TryParse(Freq, out double frequency))
+            if (!double.TryParse(FREQ, out double frequency))
             {
                 ShowMessInMessStr("频率必须是有效的数字！");
                 return false;
             }
-            // 检查开始时间是否早于结束时间
-            if (StartTimeDT >= EndTimeDT)
+            // 检查开始时间是否早于结束时间（QSO_DATE+TIME_ON vs QSO_DATE_OFF+TIME_OFF）
+            DateTime? start = CombineDateTime(QSO_DATE, TIME_ON);
+            DateTime? end = CombineDateTime(QSO_DATE_OFF, TIME_OFF);
+            if (start != null && end != null && start >= end)
             {
                 ShowMessInMessStr("开始时间必须早于结束时间！");
                 return false;
@@ -394,7 +474,6 @@ namespace SharpLog.ViewModel
         }
 
         #endregion
-
 
 
 

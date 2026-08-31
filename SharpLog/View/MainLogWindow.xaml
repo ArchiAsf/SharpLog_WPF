@@ -403,26 +403,35 @@
                                 Grid.Column="0"
                                 Style="{StaticResource CardPanelStyle}">
                                 <Border.InputBindings>
-                                    <MouseBinding Command="{Binding StartTimeTextClick_TimeInPutStartTimeCommand}" MouseAction="LeftClick" />
+                                    <MouseBinding Command="{Binding QsoDateClick_SetStartTimeCommand}" MouseAction="LeftClick" />
                                 </Border.InputBindings>
-                                <!--  字段标签：开始时间 StartTime  -->
+                                <!--  字段标签：开始日期 QSO_DATE（ADIF）  -->
                                 <Label
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
                                     <TextBlock TextAlignment="Center">
-                                        ·开始时间<LineBreak />
-                                        StartTime</TextBlock>
+                                        ·开始日期<LineBreak />
+                                        QSO_DATE</TextBlock>
                                 </Label>
                             </Border>
-                            <!--  开始时间输入框  -->
+                            <!--  开始日期+开始时间输入框（ADIF: QSO_DATE + TIME_ON）  -->
                             <Border
                                 Grid.Row="0"
                                 Grid.Column="1"
                                 Grid.ColumnSpan="2"
                                 Style="{StaticResource InCardPanelStyle}">
-                                <hc:DateTimePicker SelectedDateTime="{Binding StartTimeDT, Mode=TwoWay}" Style="{StaticResource TimeInPut_HC}" />
-
+                                <StackPanel
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                                    <hc:DatePicker SelectedDate="{Binding QSO_DATE, Mode=TwoWay}" />
+                                    <TextBox
+                                        Width="90"
+                                        Text="{Binding TIME_ON, Mode=TwoWay}"
+                                        Style="{StaticResource UnitTextBoxStyle}"
+                                        Tag="HHmmss" />
+                                </StackPanel>
                             </Border>
 
                             <Border
@@ -430,26 +439,35 @@
                                 Grid.Column="3"
                                 Style="{StaticResource CardPanelStyle}">
                                 <Border.InputBindings>
-                                    <MouseBinding Command="{Binding EndTimeTextClick_TimeInPutEndTimeCommand}" MouseAction="LeftClick" />
+                                    <MouseBinding Command="{Binding QsoDateOffClick_SetEndTimeCommand}" MouseAction="LeftClick" />
                                 </Border.InputBindings>
-                                <!--  字段标签：结束时间 EndTime  -->
+                                <!--  字段标签：结束日期 QSO_DATE_OFF（ADIF）  -->
                                 <Label
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
                                     <TextBlock TextAlignment="Center">
-                                        ·结束时间<LineBreak />
-                                        EndTime</TextBlock>
+                                        ·结束日期<LineBreak />
+                                        QSO_DATE_OFF</TextBlock>
                                 </Label>
                             </Border>
-                            <!--  结束时间输入框  -->
+                            <!--  结束日期+结束时间输入框（ADIF: QSO_DATE_OFF + TIME_OFF）  -->
                             <Border
                                 Grid.Row="0"
                                 Grid.Column="4"
                                 Grid.ColumnSpan="2"
                                 Style="{StaticResource InCardPanelStyle}">
-                                <hc:DateTimePicker SelectedDateTime="{Binding EndTimeDT, Mode=TwoWay}" Style="{StaticResource TimeInPut_HC}" />
-
+                                <StackPanel
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                                    <hc:DatePicker SelectedDate="{Binding QSO_DATE_OFF, Mode=TwoWay}" />
+                                    <TextBox
+                                        Width="90"
+                                        Text="{Binding TIME_OFF, Mode=TwoWay}"
+                                        Style="{StaticResource UnitTextBoxStyle}"
+                                        Tag="HHmmss" />
+                                </StackPanel>
                             </Border>
 
                             <Border
@@ -457,43 +475,43 @@
                                 Grid.Column="6"
                                 Grid.ColumnSpan="2"
                                 Style="{StaticResource CardPanelStyle}">
-                                <!--  字段标签：备注 RMKS  -->
+                                <!--  字段标签：备注 COMMENT（ADIF）  -->
                                 <Label
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
                                     <TextBlock TextAlignment="Center">
                                         备注<LineBreak />
-                                        RMKS</TextBlock>
+                                        COMMENT</TextBlock>
                                 </Label>
                             </Border>
                             <Border
                                 Grid.Row="1"
                                 Grid.Column="0"
                                 Style="{StaticResource CardPanelStyle}">
-                                <!--  字段标签：呼号 CallSign  -->
+                                <!--  字段标签：呼号 CALL（ADIF）  -->
                                 <Label
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
                                     <TextBlock TextAlignment="Center">
                                         ·呼号<LineBreak />
-                                        CallSign</TextBlock>
+                                        CALL</TextBlock>
                                 </Label>
                             </Border>
-                            <!--  呼号输入框  -->
+                            <!--  呼号输入框（ADIF: CALL）  -->
                             <Border
                                 Grid.Row="1"
                                 Grid.Column="1"
                                 Grid.ColumnSpan="3"
                                 Style="{StaticResource InCardPanelStyle}">
                                 <TextBox
-                                    x:Name="CallSignInPutBox"
+                                    x:Name="CALLInPutBox"
                                     FontSize="22"
                                     FontFamily="Consolas"
                                     Foreground="{StaticResource AccentTextColor}"
                                     Style="{StaticResource DarkTextBoxStyle}"
-                                    Text="{Binding CallSign, Mode=TwoWay}" />
+                                    Text="{Binding CALL, Mode=TwoWay}" />
                             </Border>
                             <Border
                                 Grid.Row="1"
@@ -506,7 +524,7 @@
                                     Style="{StaticResource LabelMainTitleStyle}">
                                     <TextBlock TextAlignment="Center">
                                         ·模式<LineBreak />
-                                        Mode</TextBlock>
+                                        MODE</TextBlock>
                                 </Label>
                             </Border>
                             <!--  模式输入框  -->
@@ -522,7 +540,7 @@
 
                             </Border>
 
-                            <!--  备注多行输入框（纵向跨6行，右侧大区域）  -->
+                            <!--  备注多行输入框（ADIF: COMMENT，纵向跨6行，右侧大区域）  -->
                             <Border
                                 Grid.Row="1"
                                 Grid.RowSpan="7"
@@ -530,12 +548,12 @@
                                 Grid.ColumnSpan="2"
                                 Style="{StaticResource InCardPanelStyle}">
                                 <TextBox
-                                    x:Name="RmksInPutBox"
+                                    x:Name="COMMENTInPutBox"
                                     VerticalContentAlignment="Top"
                                     AcceptsReturn="True"
                                     FontSize="14"
                                     Style="{StaticResource DarkTextBoxStyle}"
-                                    Text="{Binding Rmks, Mode=TwoWay}"
+                                    Text="{Binding COMMENT, Mode=TwoWay}"
                                     TextAlignment="Justify"
                                     TextWrapping="Wrap"
                                     VerticalScrollBarVisibility="Auto" />
@@ -545,76 +563,76 @@
                                 Grid.Row="2"
                                 Grid.Column="0"
                                 Style="{StaticResource CardPanelStyle}">
-                                <!--  字段标签：频率 Freq  -->
+                                <!--  字段标签：频率 FREQ（ADIF，单位kHz）  -->
                                 <Label
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
                                     <TextBlock TextAlignment="Center">
                                         ·频率<LineBreak />
-                                        Freq</TextBlock>
+                                        FREQ</TextBlock>
                                 </Label>
                             </Border>
-                            <!--  频率输入框  -->
+                            <!--  频率输入框（ADIF: FREQ，kHz）  -->
                             <Border
                                 Grid.Row="2"
                                 Grid.Column="1"
                                 Style="{StaticResource InCardPanelStyle}">
                                 <TextBox
-                                    x:Name="FreqInPutBox"
+                                    x:Name="FREQInPutBox"
                                     Style="{StaticResource UnitTextBoxStyle}"
                                     Tag="kHz"
-                                    Text="{Binding Freq, Mode=TwoWay}" />
+                                    Text="{Binding FREQ, Mode=TwoWay}" />
                             </Border>
 
                             <Border
                                 Grid.Row="2"
                                 Grid.Column="2"
                                 Style="{StaticResource CardPanelStyle}">
-                                <!--  字段标签：信号报告_收 RST  -->
+                                <!--  字段标签：信号报告_收 RST_RCVD（ADIF）  -->
                                 <Label
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
                                     <TextBlock TextAlignment="Center">
                                         信号报告_收<LineBreak />
-                                        RST</TextBlock>
+                                        RST_RCVD</TextBlock>
                                 </Label>
                             </Border>
-                            <!--  接收信号报告输入框  -->
+                            <!--  接收信号报告输入框（ADIF: RST_RCVD）  -->
                             <Border
                                 Grid.Row="2"
                                 Grid.Column="3"
                                 Style="{StaticResource InCardPanelStyle}">
                                 <TextBox
-                                    x:Name="RstInPutBox"
+                                    x:Name="RST_RCVDInPutBox"
                                     Style="{StaticResource DarkTextBoxStyle}"
-                                    Text="{Binding Rst, Mode=TwoWay}" />
+                                    Text="{Binding RST_RCVD, Mode=TwoWay}" />
                             </Border>
 
                             <Border
                                 Grid.Row="2"
                                 Grid.Column="4"
                                 Style="{StaticResource CardPanelStyle}">
-                                <!--  字段标签：信号报告_发 RRST  -->
+                                <!--  字段标签：信号报告_发 RST_SENT（ADIF）  -->
                                 <Label
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
                                     <TextBlock TextAlignment="Center">
                                         信号报告_发<LineBreak />
-                                        RRST</TextBlock>
+                                        RST_SENT</TextBlock>
                                 </Label>
                             </Border>
-                            <!--  发射信号报告输入框  -->
+                            <!--  发射信号报告输入框（ADIF: RST_SENT）  -->
                             <Border
                                 Grid.Row="2"
                                 Grid.Column="5"
                                 Style="{StaticResource InCardPanelStyle}">
                                 <TextBox
-                                    x:Name="RrstInPutBox"
+                                    x:Name="RST_SENTInPutBox"
                                     Style="{StaticResource DarkTextBoxStyle}"
-                                    Text="{Binding Rrst, Mode=TwoWay}" />
+                                    Text="{Binding RST_SENT, Mode=TwoWay}" />
                             </Border>
 
 
@@ -622,79 +640,79 @@
                                 Grid.Row="3"
                                 Grid.Column="0"
                                 Style="{StaticResource CardPanelStyle}">
-                                <!--  字段标签：网格 GRID  -->
+                                <!--  字段标签：网格 GRIDSQUARE（ADIF）  -->
                                 <Label
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
                                     <TextBlock TextAlignment="Center">
                                         网格<LineBreak />
-                                        Grid</TextBlock>
+                                        GRIDSQUARE</TextBlock>
                                 </Label>
                             </Border>
-                            <!--  网格输入框  -->
+                            <!--  网格输入框（ADIF: GRIDSQUARE）  -->
                             <Border
                                 Grid.Row="3"
                                 Grid.Column="1"
                                 Style="{StaticResource InCardPanelStyle}">
                                 <TextBox
-                                    x:Name="GridInPutBox"
+                                    x:Name="GRIDSQUAREInPutBox"
                                     Style="{StaticResource DarkTextBoxStyle}"
-                                    Text="{Binding GridLocator, Mode=TwoWay}" />
+                                    Text="{Binding GRIDSQUARE, Mode=TwoWay}" />
                             </Border>
 
                             <Border
                                 Grid.Row="3"
                                 Grid.Column="2"
                                 Style="{StaticResource CardPanelStyle}">
-                                <!--  字段标签：发射功率_收 Power  -->
+                                <!--  字段标签：发射功率_收 RX_PWR（ADIF）  -->
                                 <Label
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
                                     <TextBlock TextAlignment="Center">
                                         发射功率_收<LineBreak />
-                                        Power</TextBlock>
+                                        RX_PWR</TextBlock>
                                 </Label>
                             </Border>
-                            <!--  接收功率输入框  -->
+                            <!--  接收功率输入框（ADIF: RX_PWR）  -->
                             <Border
                                 Grid.Row="3"
                                 Grid.Column="3"
                                 Grid.ColumnSpan="1"
                                 Style="{StaticResource InCardPanelStyle}">
                                 <TextBox
-                                    x:Name="RxPowerInPutBox"
+                                    x:Name="RX_PWRInPutBox"
                                     Style="{StaticResource UnitTextBoxStyle}"
                                     Tag="W"
-                                    Text="{Binding RxPower, Mode=TwoWay}" />
+                                    Text="{Binding RX_PWR, Mode=TwoWay}" />
                             </Border>
 
                             <Border
                                 Grid.Row="3"
                                 Grid.Column="4"
                                 Style="{StaticResource CardPanelStyle}">
-                                <!--  字段标签：发射功率_发 Power  -->
+                                <!--  字段标签：发射功率_发 TX_PWR（ADIF）  -->
                                 <Label
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
                                     <TextBlock TextAlignment="Center">
                                         发射功率_发<LineBreak />
-                                        Power</TextBlock>
+                                        TX_PWR</TextBlock>
                                 </Label>
                             </Border>
-                            <!--  发射功率输入框  -->
+                            <!--  发射功率输入框（ADIF: TX_PWR）  -->
                             <Border
                                 Grid.Row="3"
                                 Grid.Column="5"
                                 Grid.ColumnSpan="1"
                                 Style="{StaticResource InCardPanelStyle}">
                                 <TextBox
-                                    x:Name="TxPowerInPutBox"
+                                    x:Name="TX_PWRInPutBox"
                                     Style="{StaticResource UnitTextBoxStyle}"
                                     Tag="W"
-                                    Text="{Binding TxPower, Mode=TwoWay}" />
+                                    Text="{Binding TX_PWR, Mode=TwoWay}" />
                             </Border>
 
                             <Border
@@ -711,16 +729,16 @@
                                         QTH</TextBlock>
                                 </Label>
                             </Border>
-                            <!--  QTH地理位置输入框  -->
+                            <!--  QTH地理位置输入框（ADIF: QTH）  -->
                             <Border
                                 Grid.Row="4"
                                 Grid.Column="1"
                                 Grid.ColumnSpan="5"
                                 Style="{StaticResource InCardPanelStyle}">
                                 <TextBox
-                                    x:Name="QthInPutBox"
+                                    x:Name="QTHInPutBox"
                                     Style="{StaticResource DarkTextBoxStyle}"
-                                    Text="{Binding Qth, Mode=TwoWay}" />
+                                    Text="{Binding QTH, Mode=TwoWay}" />
                             </Border>
 
                             <Border
@@ -737,16 +755,16 @@
                                         RIG</TextBlock>
                                 </Label>
                             </Border>
-                            <!--  设备RIG输入框  -->
+                            <!--  设备RIG输入框（ADIF: RIG）  -->
                             <Border
                                 Grid.Row="5"
                                 Grid.Column="1"
                                 Grid.ColumnSpan="5"
                                 Style="{StaticResource InCardPanelStyle}">
                                 <TextBox
-                                    x:Name="RigInPutBox"
+                                    x:Name="RIGInPutBox"
                                     Style="{StaticResource DarkTextBoxStyle}"
-                                    Text="{Binding Rig, Mode=TwoWay}" />
+                                    Text="{Binding RIG, Mode=TwoWay}" />
                             </Border>
 
                             <Border
@@ -836,14 +854,14 @@
                                 Grid.Row="8"
                                 Grid.Column="0"
                                 Style="{StaticResource CardPanelStyle}">
-                                <!--  字段标签：通联方式  -->
+                                <!--  字段标签：通联方式 PROP_MODE（ADIF）  -->
                                 <Label
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
                                     <TextBlock TextAlignment="Center">
                                         通联方式<LineBreak />
-                                        PROPMode</TextBlock>
+                                        PROP_MODE</TextBlock>
                                 </Label>
                             </Border>
                             <!--  通联方式 Propagation Mode输入框  -->
@@ -1001,12 +1019,12 @@
                                             </Label>
                                         </Border>
 
-                                        <!--  下拉选择框：是 / 否  -->
+                                        <!--  下拉选择框：是 / 否（ADIF: QSL_RCVD）  -->
                                         <Border
                                             Grid.Row="1"
                                             Grid.Column="3"
                                             Padding="0,2,0,2">
-                                            <hc:ComboBox Text="{Binding IsQSL}">
+                                            <hc:ComboBox Text="{Binding QSL_RCVD}">
                                                 <hc:ComboBox.Items>
                                                     <system:String>是</system:String>
                                                     <system:String>否</system:String>
@@ -1025,12 +1043,12 @@
                                             </Label>
                                         </Border>
 
-                                        <!--  QSL收到日期选择器  -->
+                                        <!--  QSL收到日期选择器（ADIF: QSLRDATE）  -->
                                         <Border
                                             Grid.Row="2"
                                             Grid.Column="1"
                                             Padding="0,2,0,2">
-                                            <hc:DatePicker SelectedDate="{Binding QslReceiveTime}" />
+                                            <hc:DatePicker SelectedDate="{Binding QSLRDATE}" />
                                         </Border>
 
                                         <!--  QSL卡发出时间 标签  -->
@@ -1043,12 +1061,12 @@
                                             </Label>
                                         </Border>
 
-                                        <!--  QSL发出日期选择器  -->
+                                        <!--  QSL发出日期选择器（ADIF: QSLSDATE）  -->
                                         <Border
                                             Grid.Row="2"
                                             Grid.Column="3"
                                             Padding="0,2,0,2">
-                                            <hc:DatePicker SelectedDate="{Binding QslSendTime}" />
+                                            <hc:DatePicker SelectedDate="{Binding QSLSDATE}" />
                                         </Border>
 
                                         <!--  ====================== 第3行：QSL卡片邮寄地址标题 ======================  -->

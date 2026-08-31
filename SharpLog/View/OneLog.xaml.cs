@@ -58,14 +58,14 @@ namespace SharpLog
             DependencyProperty.Register(nameof(TimeZoneSuffix), typeof(string), typeof(OneLog));
         #endregion
 
-        #region 通联模式、传播方式
-        public string Mode
+        #region 通联模式、传播方式（命名已统一为 ADIF 规范）
+        public string MODE
         {
-            get => (string)GetValue(ModeProperty);
-            set => SetValue(ModeProperty, value);
+            get => (string)GetValue(MODEProperty);
+            set => SetValue(MODEProperty, value);
         }
-        public static readonly DependencyProperty ModeProperty =
-            DependencyProperty.Register(nameof(Mode), typeof(string), typeof(OneLog));
+        public static readonly DependencyProperty MODEProperty =
+            DependencyProperty.Register(nameof(MODE), typeof(string), typeof(OneLog));
 
         public string PropModeText
         {
@@ -76,33 +76,33 @@ namespace SharpLog
             DependencyProperty.Register(nameof(PropModeText), typeof(string), typeof(OneLog));
         #endregion
 
-        #region 呼号、信号报告
-        public string CallSign
+        #region 呼号、信号报告（命名已统一为 ADIF 规范）
+        public string CALL
         {
-            get => (string)GetValue(CallSignProperty);
-            set => SetValue(CallSignProperty, value);
+            get => (string)GetValue(CALLProperty);
+            set => SetValue(CALLProperty, value);
         }
-        public static readonly DependencyProperty CallSignProperty =
-            DependencyProperty.Register(nameof(CallSign), typeof(string), typeof(OneLog));
+        public static readonly DependencyProperty CALLProperty =
+            DependencyProperty.Register(nameof(CALL), typeof(string), typeof(OneLog));
 
-        public string RRST
+        public string RST_SENT
         {
-            get => (string)GetValue(RstReceivedProperty);
-            set => SetValue(RstReceivedProperty, value);
+            get => (string)GetValue(RST_SENTProperty);
+            set => SetValue(RST_SENTProperty, value);
         }
-        public static readonly DependencyProperty RstReceivedProperty =
-            DependencyProperty.Register(nameof(RRST), typeof(string), typeof(OneLog));
+        public static readonly DependencyProperty RST_SENTProperty =
+            DependencyProperty.Register(nameof(RST_SENT), typeof(string), typeof(OneLog));
 
-        public string RST
+        public string RST_RCVD
         {
-            get => (string)GetValue(RstSentProperty);
-            set => SetValue(RstSentProperty, value);
+            get => (string)GetValue(RST_RCVDProperty);
+            set => SetValue(RST_RCVDProperty, value);
         }
-        public static readonly DependencyProperty RstSentProperty =
-            DependencyProperty.Register(nameof(RST), typeof(string), typeof(OneLog));
+        public static readonly DependencyProperty RST_RCVDProperty =
+            DependencyProperty.Register(nameof(RST_RCVD), typeof(string), typeof(OneLog));
         #endregion
 
-        #region 频率、网格定位
+        #region 频率、网格定位（命名已统一为 ADIF 规范）
         public string DisplayFrequency
         {
             get => (string)GetValue(DisplayFrequencyProperty);
@@ -111,13 +111,13 @@ namespace SharpLog
         public static readonly DependencyProperty DisplayFrequencyProperty =
             DependencyProperty.Register(nameof(DisplayFrequency), typeof(string), typeof(OneLog));
 
-        public string Locator
+        public string GRIDSQUARE
         {
-            get => (string)GetValue(LocatorProperty);
-            set => SetValue(LocatorProperty, value);
+            get => (string)GetValue(GRIDSQUAREProperty);
+            set => SetValue(GRIDSQUAREProperty, value);
         }
-        public static readonly DependencyProperty LocatorProperty =
-            DependencyProperty.Register(nameof(Locator), typeof(string), typeof(OneLog));
+        public static readonly DependencyProperty GRIDSQUAREProperty =
+            DependencyProperty.Register(nameof(GRIDSQUARE), typeof(string), typeof(OneLog));
         #endregion
 
         #region QTH、电台、天线、操作员
@@ -129,13 +129,13 @@ namespace SharpLog
         public static readonly DependencyProperty QTHProperty =
             DependencyProperty.Register(nameof(QTH), typeof(string), typeof(OneLog));
 
-        public string Rig
+        public string RIG
         {
-            get => (string)GetValue(RigProperty);
-            set => SetValue(RigProperty, value);
+            get => (string)GetValue(RIGProperty);
+            set => SetValue(RIGProperty, value);
         }
-        public static readonly DependencyProperty RigProperty =
-            DependencyProperty.Register(nameof(Rig), typeof(string), typeof(OneLog));
+        public static readonly DependencyProperty RIGProperty =
+            DependencyProperty.Register(nameof(RIG), typeof(string), typeof(OneLog));
 
         public string Antenna
         {

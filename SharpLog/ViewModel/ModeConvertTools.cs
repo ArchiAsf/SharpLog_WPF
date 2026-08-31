@@ -1,6 +1,7 @@
-﻿using SharpLog.Model;
+using SharpLog.Model;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,64 +12,84 @@ namespace SharpLog.ViewModel
     {
         /// <summary>
         /// 将输入框中的参数转换为QsoLog对象
+        /// 字段命名已统一为 ADIF 3.1.7 规范名称
         /// </summary>
-        /// <param name="callSign"></param>
-        /// <param name="freq"></param>
-        /// <param name="rst"></param>
-        /// <param name="Rrst"></param>
-        /// <param name="gridLocator"></param>
-        /// <param name="rxPower"></param>
-        /// <param name="txPower"></param>
-        /// <param name="qth"></param>
-        /// <param name="rig"></param>
-        /// <param name="ant"></param>
-        /// <param name="startTimeDT"></param>
-        /// <param name="endTimeDT"></param>
-        /// <param name="rmks"></param>
+        /// <param name="qsoDate">通联开始日期（ADIF: QSO_DATE）</param>
+        /// <param name="timeOn">通联开始时间（ADIF: TIME_ON，HHmmss）</param>
+        /// <param name="qsoDateOff">通联结束日期（ADIF: QSO_DATE_OFF）</param>
+        /// <param name="timeOff">通联结束时间（ADIF: TIME_OFF，HHmmss）</param>
+        /// <param name="timeZone">时区</param>
+        /// <param name="call">对方呼号（ADIF: CALL）</param>
+        /// <param name="freq">频率（kHz 输入）</param>
+        /// <param name="mode">通联模式（ADIF: MODE）</param>
+        /// <param name="rstRcvd">收到的信号报告（ADIF: RST_RCVD）</param>
+        /// <param name="rstSent">发出的信号报告（ADIF: RST_SENT）</param>
+        /// <param name="gridSquare">网格定位（ADIF: GRIDSQUARE）</param>
+        /// <param name="rxPower">对方发射功率（ADIF: RX_PWR）</param>
+        /// <param name="txPower">我方发射功率（ADIF: TX_PWR）</param>
+        /// <param name="qth">对方城市（ADIF: QTH）</param>
+        /// <param name="rig">电台型号（ADIF: RIG）</param>
+        /// <param name="ant">天线类型（项目自定义）</param>
+        /// <param name="comment">备注（ADIF: COMMENT）</param>
+        /// <param name="height">发射高度（项目自定义）</param>
+        /// <param name="op">操作员（项目自定义）</param>
+        /// <param name="propMode">传播模式（ADIF: PROP_MODE）</param>
+        /// <param name="digId">DMR数字ID（项目自定义）</param>
+        /// <param name="groupID">分组ID（项目自定义）</param>
+        /// <param name="starID">星级ID（项目自定义）</param>
+        /// <param name="qslRcvd">是否收到QSL卡片（ADIF: QSL_RCVD，string 是/否）</param>
+        /// <param name="qslRDate">QSL接收日期（ADIF: QSLRDATE）</param>
+        /// <param name="qslSDate">QSL发送日期（ADIF: QSLSDATE）</param>
+        /// <param name="qslAddress">QSL地址（项目自定义）</param>
+        /// <param name="receiverName">收件人（项目自定义）</param>
+        /// <param name="postalCode">邮编（项目自定义）</param>
+        /// <param name="receiverContact">联系方式（项目自定义）</param>
         /// <returns></returns>
         public static QsoLog ConvertMainViewToQsoLog(
-            DateTime startTimeDT, DateTime endTimeDT,string TimeZone,
-            string callSign, string freq, string mode, string rst, string Rrst,
-            string gridLocator, string rxPower, string txPower,
+            DateTime? qsoDate, string? timeOn, DateTime? qsoDateOff, string? timeOff, string timeZone,
+            string call, string freq, string mode, string rstRcvd, string rstSent,
+            string gridSquare, string rxPower, string txPower,
             string qth, string rig, string ant,
-            string rmks, string height, string Op, string PropMode, string DigID,
+            string comment, string height, string op, string propMode, string digId,
 
-            int? groupID,int StarID,
-            string IsQSL, DateTime? QslReceiveTime, DateTime? QslSendTime,
-            string QslAddress, string ReceiverName, string PostalCode, string ReceiverContact)
+            int? groupID, int starID,
+            string qslRcvd, DateTime? qslRDate, DateTime? qslSDate,
+            string qslAddress, string receiverName, string postalCode, string receiverContact)
         {
             QsoLog qsoLog = new QsoLog
             {
-                StartTime = startTimeDT,
-                EndTime = endTimeDT,
-                TimeZone = TimeZone,
-                CallSign = callSign,
-                Frequency = double.Parse(freq),
-                Mode = mode,
-                RST = rst,
-                ReceivedRST = Rrst,
-                Locator = gridLocator,
-                RxPower = rxPower,
-                TxPower = txPower,
+                QSO_DATE = qsoDate,
+                TIME_ON = timeOn,
+                QSO_DATE_OFF = qsoDateOff,
+                TIME_OFF = timeOff,
+                TimeZone = timeZone,
+                CALL = call,
+                FREQ = double.Parse(freq),
+                MODE = mode,
+                RST_RCVD = rstRcvd,
+                RST_SENT = rstSent,
+                GRIDSQUARE = gridSquare,
+                RX_PWR = rxPower,
+                TX_PWR = txPower,
                 QTH = qth,
-                Rig = rig,
+                RIG = rig,
                 ANT = ant,
-                Remarks = rmks,
+                COMMENT = comment,
                 Height = height,
-                OP = Op,
-                PropMode = PropMode,
-                DigitalID = DigID,
+                OP = op,
+                PROP_MODE = propMode,
+                DigitalID = digId,
                 GroupID = groupID,
-                StarID = StarID,
-                IsQSL = IsQSL == "是" ? true : false,
-                QslReceiveTime = QslReceiveTime,
-                QslSendTime = QslSendTime,
-                QslAddress = QslAddress,
-                ReceiverName = ReceiverName,
-                PostalCode = PostalCode,
-                ReceiverContact = ReceiverContact,
+                StarID = starID,
+                QSL_RCVD = qslRcvd == "是" ? true : false,
+                QSLRDATE = qslRDate,
+                QSLSDATE = qslSDate,
+                QslAddress = qslAddress,
+                ReceiverName = receiverName,
+                PostalCode = postalCode,
+                ReceiverContact = receiverContact,
 
-                RadioOperator ="BG2GPT"
+                RadioOperator = "BG2GPT"
 
 
             };
@@ -76,7 +97,7 @@ namespace SharpLog.ViewModel
         }
 
         /// <summary>
-        /// 将QsoLog对象转换为OneLog对象
+        /// 将QsoLog对象转换为OneLog对象（日志卡片显示模型）
         /// </summary>
         /// <param name="qsoLog"></param>
         /// <returns></returns>
@@ -84,22 +105,40 @@ namespace SharpLog.ViewModel
         {
             OneLog oneLog = new OneLog
             {
-                CardSideBarColor = new System.Windows.Media.SolidColorBrush(StaticValues.ModeColorMap[qsoLog.Mode]),
-                StartTime = qsoLog.StartTime.ToString("yyyy/MM/dd-HH:mm:ss"),
-                EndTime = qsoLog.EndTime.ToString("yyyy/MM/dd-HH:mm:ss"),
+                CardSideBarColor = new System.Windows.Media.SolidColorBrush(StaticValues.ModeColorMap[qsoLog.MODE]),
+                // 开始时间显示：QSO_DATE(日期) + TIME_ON(时间)，格式 yyyy/MM/dd-HH:mm:ss
+                StartTime = CombineDateTimeString(qsoLog.QSO_DATE, qsoLog.TIME_ON),
+                // 结束时间显示：QSO_DATE_OFF + TIME_OFF
+                EndTime = CombineDateTimeString(qsoLog.QSO_DATE_OFF, qsoLog.TIME_OFF),
                 TimeZoneSuffix = qsoLog.TimeZone,
-                CallSign = qsoLog.CallSign,
-                DisplayFrequency = qsoLog.Frequency.ToString() + "khz",
-                Mode = qsoLog.Mode,
-                RST = qsoLog.RST,
-                RRST = qsoLog.ReceivedRST,
+                CALL = qsoLog.CALL,
+                DisplayFrequency = qsoLog.FREQ.ToString() + "khz",
+                MODE = qsoLog.MODE,
+                RST_RCVD = qsoLog.RST_RCVD,
+                RST_SENT = qsoLog.RST_SENT,
                 QTH = qsoLog.QTH,
-                Rig = qsoLog.Rig,
+                RIG = qsoLog.RIG,
                 Antenna = qsoLog.ANT,
                 Operator = qsoLog.OP,
-                Locator = qsoLog.Locator,
+                GRIDSQUARE = qsoLog.GRIDSQUARE,
             };
             return oneLog;
+        }
+
+        /// <summary>
+        /// 组合 日期+时间 为显示字符串（yyyy/MM/dd-HH:mm:ss），任一缺失则只显示存在的部分
+        /// </summary>
+        private static string CombineDateTimeString(DateTime? date, string? time)
+        {
+            string dateStr = date?.ToString("yyyy/MM/dd") ?? string.Empty;
+            string timeStr = string.Empty;
+            if (!string.IsNullOrWhiteSpace(time) && TimeOnly.TryParseExact(time, "HHmmss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var t))
+            {
+                timeStr = t.ToString("HH:mm:ss");
+            }
+            if (string.IsNullOrEmpty(dateStr)) return timeStr;
+            if (string.IsNullOrEmpty(timeStr)) return dateStr;
+            return dateStr + "-" + timeStr;
         }
 
     }

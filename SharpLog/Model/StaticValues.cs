@@ -235,25 +235,42 @@ namespace SharpLog.Model
 
 
         //生成一个将LogTable对象转换为OneLog对象的方法
+        //注意：字段命名已统一为 ADIF 3.1.7 规范名称
         public static OneLog ConvertToOneLog(QsoLog log)
         {
             return new OneLog
             {
-                CardSideBarColor = new System.Windows.Media.SolidColorBrush(StaticValues.ModeColorMap[log.Mode]),
-                StartTime = log.StartTime.ToString("yyyy/MM/dd-HH:mm:ss"),
-                EndTime = log.EndTime.ToString("yyyy/MM/dd-HH:mm:ss"),
+                CardSideBarColor = new System.Windows.Media.SolidColorBrush(StaticValues.ModeColorMap[log.MODE]),
+                StartTime = CombineQsoDateTime(log.QSO_DATE, log.TIME_ON),
+                EndTime = CombineQsoDateTime(log.QSO_DATE_OFF, log.TIME_OFF),
                 TimeZoneSuffix = log.TimeZone,
-                CallSign = log.CallSign,
-                DisplayFrequency = log.Frequency.ToString() + "khz",
-                Mode = log.Mode,
-                RST = log.RST,
-                RRST = log.ReceivedRST,
+                CALL = log.CALL,
+                DisplayFrequency = log.FREQ.ToString() + "khz",
+                MODE = log.MODE,
+                RST_RCVD = log.RST_RCVD,
+                RST_SENT = log.RST_SENT,
                 QTH = log.QTH,
-                Rig = log.Rig,
+                RIG = log.RIG,
                 Antenna = log.ANT,
                 Operator = log.OP,
-                Locator = log.Locator,
+                GRIDSQUARE = log.GRIDSQUARE,
             };
+        }
+
+        /// <summary>
+        /// 组合 日期+时间 为显示字符串（yyyy/MM/dd-HH:mm:ss）
+        /// </summary>
+        private static string CombineQsoDateTime(DateTime? date, string? time)
+        {
+            string dateStr = date?.ToString("yyyy/MM/dd") ?? string.Empty;
+            string timeStr = string.Empty;
+            if (!string.IsNullOrWhiteSpace(time) && TimeOnly.TryParseExact(time, "HHmmss", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var t))
+            {
+                timeStr = t.ToString("HH:mm:ss");
+            }
+            if (string.IsNullOrEmpty(dateStr)) return timeStr;
+            if (string.IsNullOrEmpty(timeStr)) return dateStr;
+            return dateStr + "-" + timeStr;
         }
 
 
