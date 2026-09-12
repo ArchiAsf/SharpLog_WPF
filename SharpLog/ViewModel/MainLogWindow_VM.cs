@@ -447,6 +447,8 @@ namespace SharpLog.ViewModel
                 StartTimeDT = LogUseTime.DateTime;
                 EndTimeDT = LogUseTime.DateTime;
             }
+
+            RefreshTime();
         }
 
         /// <summary>
