@@ -485,36 +485,62 @@
 
 
 
-    <!--  ==================== 仅保留【垂直滚动条样式】 ====================  -->
+    <!--  ==================== 滚动条滑块（Thumb）共用样式 ====================  -->
+    <!--  垂直/水平滚动条共用此滑块外观，改颜色只需改这里一处  -->
+    <Style x:Key="DarkScrollBarThumbStyle" TargetType="Thumb">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Thumb">
+                    <Border
+                        x:Name="thumbBorder"
+                        Background="{StaticResource ScrollBarThumbNormalBrush}"
+                        CornerRadius="4" />
+                    <ControlTemplate.Triggers>
+                        <!--  鼠标悬停：滑块变亮  -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="thumbBorder" Property="Background" Value="{StaticResource ScrollBarThumbHoverBrush}" />
+                        </Trigger>
+                        <!--  正在拖拽：滑块最亮  -->
+                        <Trigger Property="IsDragging" Value="True">
+                            <Setter TargetName="thumbBorder" Property="Background" Value="{StaticResource ScrollBarThumbDragBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  ==================== 【垂直滚动条】样式 ====================  -->
     <Style x:Key="DarkVerticalScrollBarStyle" TargetType="ScrollBar">
         <Style.Setters>
-            <Setter Property="Width" Value="1" />
+            <!--
+                ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+                【滚动条宽度】就在这里改！单位=像素，建议范围 6~12：
+                    6  = 纤细
+                    8  = 常规（当前值）
+                    10 = 更容易用鼠标点中
+                ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+            -->
+            <Setter Property="Width" Value="8" />
             <Setter Property="Background" Value="{StaticResource ScrollBarTrackBrush}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ScrollBar">
                         <Grid>
-                            <Border Background="{TemplateBinding Background}" />
-                            <Track x:Name="PART_Track">
+                            <!--  轨道底色  -->
+                            <Border Background="{TemplateBinding Background}" CornerRadius="4" />
+
+                            <!--
+                                ★ 关键属性：IsDirectionReversed="True" ★
+                                作用：让滑块的移动方向与内容滚动方向一致
+                                      （内容在顶部 → 滑块在顶部；向下滚动 → 滑块向下）
+                                注意：垂直滚动条【必须】加这个属性，否则方向会整个反过来
+                                      （表现为：内容在顶部时滑块却停在底部）
+                                水平滚动条则不需要此属性（见下方横向样式）
+                            -->
+                            <Track x:Name="PART_Track" IsDirectionReversed="True">
                                 <Track.Thumb>
-                                    <Thumb>
-                                        <Thumb.Template>
-                                            <ControlTemplate TargetType="Thumb">
-                                                <Border
-                                                    x:Name="thumbBorder"
-                                                    Background="{StaticResource ScrollBarThumbNormalBrush}"
-                                                    CornerRadius="4" />
-                                                <ControlTemplate.Triggers>
-                                                    <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter TargetName="thumbBorder" Property="Background" Value="{StaticResource ScrollBarThumbHoverBrush}" />
-                                                    </Trigger>
-                                                    <Trigger Property="IsDragging" Value="True">
-                                                        <Setter TargetName="thumbBorder" Property="Background" Value="{StaticResource ScrollBarThumbDragBrush}" />
-                                                    </Trigger>
-                                                </ControlTemplate.Triggers>
-                                            </ControlTemplate>
-                                        </Thumb.Template>
-                                    </Thumb>
+                                    <Thumb Style="{StaticResource DarkScrollBarThumbStyle}" />
                                 </Track.Thumb>
                             </Track>
                         </Grid>
@@ -524,8 +550,45 @@
         </Style.Setters>
     </Style>
 
-    <!--  ==================== ScrollViewer模板：彻底移除水平滚动条 ====================  -->
+    <!--  ==================== 【水平滚动条】样式 ====================  -->
+    <!--  用途：横向滚动时使用（配合下方的 DarkBothScrollViewerStyle 或单独给 ScrollBar 使用）  -->
+    <Style x:Key="DarkHorizontalScrollBarStyle" TargetType="ScrollBar">
+        <Style.Setters>
+            <!--
+                ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+                【横向滚动条高度】就在这里改！单位=像素，建议与垂直滚动条宽度保持一致：
+                    当前值 8（与垂直滚动条宽度一致）
+                ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+            -->
+            <Setter Property="Height" Value="8" />
+            <Setter Property="Background" Value="{StaticResource ScrollBarTrackBrush}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid>
+                            <!--  轨道底色  -->
+                            <Border Background="{TemplateBinding Background}" CornerRadius="4" />
+
+                            <!--
+                                水平方向使用 Track 的默认方向即可（无需 IsDirectionReversed）
+                                因为从左到右滚动时，滑块本来就应该从左往右移动
+                            -->
+                            <Track x:Name="PART_Track">
+                                <Track.Thumb>
+                                    <Thumb Style="{StaticResource DarkScrollBarThumbStyle}" />
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style.Setters>
+    </Style>
+
+    <!--  ==================== ScrollViewer 模板：仅垂直滚动条 ====================  -->
+    <!--  用途：右侧日志列表等只需上下滚动的区域（当前 MainLogWindow 使用此样式）  -->
     <Style x:Key="DarkOnlyVerticalScrollViewerStyle" TargetType="ScrollViewer">
+        <!--  水平滚动条彻底禁用（内容超宽时也不会出现横向滚动条）  -->
         <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
         <Setter Property="Template">
             <Setter.Value>
@@ -536,10 +599,19 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <!--  主体内容区域  -->
-                        <ScrollContentPresenter Grid.Column="0" />
+                        <!--  主体内容区域（承载要滚动的内容）  -->
+                        <ScrollContentPresenter
+                            Grid.Column="0"
+                            Margin="{TemplateBinding Padding}"
+                            CanContentScroll="{TemplateBinding CanContentScroll}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}" />
 
-                        <!--  仅垂直滚动条  -->
+                        <!--  垂直滚动条  -->
+                        <!--  说明：Visibility 必须绑定 ComputedVerticalScrollBarVisibility
+                                  （实际计算后的可见性），不能绑定 VerticalScrollBarVisibility
+                                  （那是设置值，类型为 ScrollBarVisibility 枚举，与 Visibility 不匹配，
+                                    会导致 VerticalScrollBarVisibility="Auto" 时无法正确显示）  -->
                         <ScrollBar
                             x:Name="PART_VerticalScrollBar"
                             Grid.Column="1"
@@ -548,8 +620,87 @@
                             Orientation="Vertical"
                             Style="{StaticResource DarkVerticalScrollBarStyle}"
                             ViewportSize="{TemplateBinding ViewportHeight}"
-                            Visibility="{TemplateBinding VerticalScrollBarVisibility}"
+                            Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
                             Value="{Binding VerticalOffset, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  ==================== ScrollViewer 模板：横竖双向滚动条 ====================  -->
+    <!--
+        用途：需要横向滚动的区域（如宽表格、长文本不换行的列表）改用此样式即可。
+
+        【横向滚动条开关】在使用处用属性控制，无需改本样式：
+            默认（不写）= Auto   → 内容超出宽度时自动出现横向滚动条
+            想关闭       = 在 ScrollViewer 上写 HorizontalScrollBarVisibility="Disabled"
+            想常显示     = 写 HorizontalScrollBarVisibility="Visible"
+
+        使用示例：
+            <ScrollViewer Style="{StaticResource DarkBothScrollViewerStyle}"
+                          HorizontalScrollBarVisibility="Auto">
+                ...内容...
+            </ScrollViewer>
+    -->
+    <Style x:Key="DarkBothScrollViewerStyle" TargetType="ScrollViewer">
+        <!--  两个方向都用 Auto：内容超出才出现对应滚动条，不超出则干净无痕  -->
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ScrollViewer">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <!--  主体内容区域  -->
+                        <ScrollContentPresenter
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Margin="{TemplateBinding Padding}"
+                            CanContentScroll="{TemplateBinding CanContentScroll}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}" />
+
+                        <!--  垂直滚动条（靠右）  -->
+                        <ScrollBar
+                            x:Name="PART_VerticalScrollBar"
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Maximum="{TemplateBinding ScrollableHeight}"
+                            Minimum="0"
+                            Orientation="Vertical"
+                            Style="{StaticResource DarkVerticalScrollBarStyle}"
+                            ViewportSize="{TemplateBinding ViewportHeight}"
+                            Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
+                            Value="{Binding VerticalOffset, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" />
+
+                        <!--  水平滚动条（靠下）  -->
+                        <ScrollBar
+                            x:Name="PART_HorizontalScrollBar"
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Maximum="{TemplateBinding ScrollableWidth}"
+                            Minimum="0"
+                            Orientation="Horizontal"
+                            Style="{StaticResource DarkHorizontalScrollBarStyle}"
+                            ViewportSize="{TemplateBinding ViewportWidth}"
+                            Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
+                            Value="{Binding HorizontalOffset, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" />
+
+                        <!--  右下角补角：横竖滚动条同时出现时填充角落的空白  -->
+                        <Border
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Background="{StaticResource ScrollBarTrackBrush}"
+                            Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
