@@ -522,6 +522,15 @@
                 ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
             -->
             <Setter Property="Width" Value="8" />
+            <!--
+                ★ 必须保留这一行，否则上面的 Width 改小于 16.8 不会生效！★
+                原因：WPF 主题样式（ThemeStyle）给 ScrollBar 设了
+                      MinWidth = SystemParameters.VerticalScrollBarWidth = 16.8
+                      而显式 Style 与主题样式是两个独立来源——本样式没设置 MinWidth 时，
+                      主题样式的 16.8 依然生效，实际宽度会被撑到 max(Width, 16.8)。
+                      显式写成 0 才能让 Width 真正说了算。
+            -->
+            <Setter Property="MinWidth" Value="0" />
             <Setter Property="Background" Value="{StaticResource ScrollBarTrackBrush}" />
             <Setter Property="Template">
                 <Setter.Value>
@@ -538,7 +547,10 @@
                                       （表现为：内容在顶部时滑块却停在底部）
                                 水平滚动条则不需要此属性（见下方横向样式）
                             -->
-                            <Track x:Name="PART_Track" IsDirectionReversed="True">
+                            <Track
+                                x:Name="PART_Track"
+                                IsDirectionReversed="True"
+                                Orientation="Vertical">
                                 <Track.Thumb>
                                     <Thumb Style="{StaticResource DarkScrollBarThumbStyle}" />
                                 </Track.Thumb>
@@ -561,6 +573,8 @@
                 ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
             -->
             <Setter Property="Height" Value="8" />
+            <!--  ★ 同垂直滚动条：必须覆盖主题样式强加的 MinHeight（同样约 16.8），否则高度改不小 ★  -->
+            <Setter Property="MinHeight" Value="0" />
             <Setter Property="Background" Value="{StaticResource ScrollBarTrackBrush}" />
             <Setter Property="Template">
                 <Setter.Value>
@@ -573,7 +587,7 @@
                                 水平方向使用 Track 的默认方向即可（无需 IsDirectionReversed）
                                 因为从左到右滚动时，滑块本来就应该从左往右移动
                             -->
-                            <Track x:Name="PART_Track">
+                            <Track x:Name="PART_Track" Orientation="Horizontal">
                                 <Track.Thumb>
                                     <Thumb Style="{StaticResource DarkScrollBarThumbStyle}" />
                                 </Track.Thumb>
