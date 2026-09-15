@@ -1,190 +1,72 @@
-﻿<!--
-    ====================================================================================
-    FormStyle.xaml —— SharpLog 界面样式字典（控件外观总表）
-    ====================================================================================
-    本文件集中定义整个程序所有控件的外观样式（颜色、字体、边框、模板等）。
-    配合 ColorDic.xaml 使用：ColorDic 管"用什么颜色"，本文件管"长什么样"。
-
-    在 App.xaml 中统一加载：
-        <ResourceDictionary Source="/Style/ColorDic.xaml" />
-        <ResourceDictionary Source="/Style/FormStyle.xaml" />
-
-    界面中使用方式：
-        <TextBox Style="{StaticResource DarkTextBoxStyle}" />
-        <Button  Style="{StaticResource PrimaryButtonStyle}" />
-
-    样式命名约定：
-        · 不带前缀（如 CardPanelStyle）  = 通用基础样式
-        · Dark 前缀                      = 深色主题专用样式
-        · In 前缀                        = 用于"卡片内部"的嵌套版本（InCardPanel、InDarkTab）
-        · 以 _ 结尾（如 TimeStyle_）      = 基础样式，仅供其他样式 BasedOn 继承，不直接使用
-
-    阅读提示：每个样式块上方都写明了【用途】【使用方式】【关键说明】，便于查找和修改。
-    ====================================================================================
--->
-<ResourceDictionary
+﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:hc="clr-namespace:HandyControl.Controls;assembly=HandyControl">
 
-    <!--
-        ================================================================================
-        一、窗口与卡片容器
-        ================================================================================
-    -->
 
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【01】主窗口基础样式 — LogMainWindowStyle                                   │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：设置主窗口的背景色与默认文字颜色                                     │
-        │ 使用：<Window Style="{StaticResource LogMainWindowStyle}">                  │
-        │ 说明：只定义最基础的两个属性，窗口内部的分区外观由                  │
-        │       CardPanelStyle / InCardPanelStyle 等负责                             │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+
+    <!--  ========== Style样式定义 全部带TargetType ==========  -->
+
+    <!--  1. Window 主窗体基础样式  -->
     <Style x:Key="LogMainWindowStyle" TargetType="Window">
-        <!--  窗体整体背景色（深灰黑）  -->
+        <!--  窗体背景色  -->
         <Setter Property="Background" Value="{StaticResource LogMainFormBackColor}" />
-        <!--  窗体内控件的默认文字颜色  -->
+        <!--  窗体内默认文字颜色  -->
         <Setter Property="Foreground" Value="{StaticResource LogMainFormFontColor}" />
     </Style>
 
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【02】卡片面板（外层） — CardPanelStyle                                     │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：界面中所有"分区卡片"的通用外观（相当于 WinForm 的 Panel）            │
-        │ 使用：<Border Style="{StaticResource CardPanelStyle}">                      │
-        │ 特点：颜色较浅的深灰底 + 圆角 + 细边框，用于划分界面区域                   │
-        │ 配套：卡片内部若要再嵌套一层，用 InCardPanelStyle（颜色更深，形成层次）    │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--  2. 卡片容器Border（替代WinForm Panel）结构性分区Border  -->
     <Style x:Key="CardPanelStyle" TargetType="Border">
-        <!--  卡片底色（比窗体背景稍亮，形成视觉分区）  -->
         <Setter Property="Background" Value="{StaticResource PanelBackColor}" />
-        <!--  卡片边框颜色  -->
         <Setter Property="BorderBrush" Value="{StaticResource PanelBorderColor}" />
-        <!--  边框粗细：四边各 1 像素  -->
         <Setter Property="BorderThickness" Value="1" />
-        <!--  圆角半径：6 像素  -->
         <Setter Property="CornerRadius" Value="6" />
-        <!--  内边距  -->
         <Setter Property="Padding" Value="1" />
-        <!--  外边距（卡片之间的间距）  -->
         <Setter Property="Margin" Value="2" />
     </Style>
 
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【03】卡片面板（内层） — InCardPanelStyle                                   │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：卡片内部再嵌套一层面板时使用，如输入框的外框、时间显示框             │
-        │ 使用：<Border Style="{StaticResource InCardPanelStyle}">                    │
-        │ 与上者区别：底色更深（近窗体色），与外层卡片形成"凹陷"的层次感             │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--  2. 卡片容器Border（替代WinForm Panel）内层需要使用的Border  -->
     <Style x:Key="InCardPanelStyle" TargetType="Border">
-        <!--  内层底色：比外层卡片更深，形成层次  -->
         <Setter Property="Background" Value="{StaticResource InPanelBackColor}" />
         <Setter Property="BorderBrush" Value="{StaticResource PanelBorderColor}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="CornerRadius" Value="6" />
         <Setter Property="Padding" Value="2.5" />
         <Setter Property="Margin" Value="2" />
+
     </Style>
 
-    <!--
-        ================================================================================
-        二、文字标签（Label）三级文字样式
-        ================================================================================
-        本项目文字分为三个层级，按重要性递减使用：
-            主标题  LabelMainTitleStyle     —— 字段名、标题（白色 + 半粗）
-            正文    LabelTextStyle          —— 主要内容文字
-            次要    LabelSecondaryNoteStyle —— 补充说明、辅助信息（灰色）
-    -->
-
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【04】Label 主标题样式 — LabelMainTitleStyle                                │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：界面中使用最频繁的文字样式，用于字段名、小标题                       │
-        │ 使用：<Label Style="{StaticResource LabelMainTitleStyle}">                  │
-        │ 特点：纯白文字 + 半粗体 + 无内边距                                         │
-        │ 注意：本样式是大量其他样式的继承基础（LittleLabel、EffectLabel 等都基于它）│
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--  3. Label 主标题样式  -->
     <Style x:Key="LabelMainTitleStyle" TargetType="Label">
-        <!--  文字颜色：纯白，保证在深色背景上清晰可读  -->
         <Setter Property="Foreground" Value="{StaticResource LabelMainTitleColor}" />
         <Setter Property="FontSize" Value="12" />
-        <!--  SemiBold：半粗体，比 Bold 柔和，适合深色界面  -->
         <Setter Property="FontWeight" Value="SemiBold" />
-        <!--  清除 Label 默认的内边距，避免文字位置偏移  -->
         <Setter Property="Padding" Value="0" />
     </Style>
 
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【05】Label 正文样式 — LabelTextStyle                                       │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：需要比主标题更"轻"的正文内容（字号更大，字重正常）                   │
-        │ 使用：<Label Style="{StaticResource LabelTextStyle}">                       │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--  4. Label 正文普通文字  -->
     <Style x:Key="LabelTextStyle" TargetType="Label">
         <Setter Property="Foreground" Value="{StaticResource LabelTextColor}" />
-        <!--  正文字号比标题大（14），且不加粗  -->
         <Setter Property="FontSize" Value="14" />
     </Style>
 
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【06】Label 次要备注样式 — LabelSecondaryNoteStyle                          │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：辅助说明文字、单位标注、补充信息                                     │
-        │ 使用：<Label Style="{StaticResource LabelSecondaryNoteStyle}">              │
-        │ 特点：灰白色（比主文字暗），字号 12，视觉上"退后一层"                      │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--  5. Label 次要备注文字  -->
     <Style x:Key="LabelSecondaryNoteStyle" TargetType="Label">
         <Setter Property="Foreground" Value="{StaticResource LabelSecondaryNoteColor}" />
         <Setter Property="FontSize" Value="12" />
     </Style>
 
-    <!--
-        ================================================================================
-        三、输入控件
-        ================================================================================
-    -->
-
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【07】暗色输入框 — DarkTextBoxStyle                                         │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：界面中所有文本框的标准外观（如呼号、QTH、信号报告等输入框）          │
-        │ 使用：<TextBox Style="{StaticResource DarkTextBoxStyle}"                    │
-        │                Text="{Binding CALL, Mode=TwoWay}" />                        │
-        │ 特点：                                                          │
-        │   · 深灰底 + 圆角 + 白色居中文字，输入时边框变蓝（主题色）                 │
-        │   · 重写模板是为了去掉 WPF 默认的浅色边框与背景（否则深色主题下很刺眼）    │
-        │ 若需要"右下角显示单位"的输入框，请改用 UnitTextBoxStyle（见下方第 19 项）  │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--  6. TextBox 暗色输入框（支持焦点切换边框颜色）  -->
     <Style x:Key="DarkTextBoxStyle" TargetType="TextBox">
         <Setter Property="Background" Value="{StaticResource NormalTextBoxBackColor}" />
         <Setter Property="Foreground" Value="{StaticResource NormalTextBoxTextColor}" />
         <Setter Property="BorderBrush" Value="{StaticResource NormalTextBoxBorderColor}" />
         <Setter Property="FontSize" Value="14" />
-        <!--  CaretBrush：输入光标的颜色（深色背景下白光标才看得见）  -->
         <Setter Property="CaretBrush" Value="#FFFFFFFF" />
-        <!--  文字水平居中  -->
         <Setter Property="TextAlignment" Value="Center" />
-        <!--  文字垂直居中  -->
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Padding" Value="0" />
 
-        <!--  重写控件模板：用自定义 Border 替换系统默认外观  -->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
@@ -194,7 +76,6 @@
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                         CornerRadius="4">
-                        <!--  PART_ContentHost 是 WPF 固定命名，不能改名，否则无法输入文字  -->
                         <ScrollViewer
                             x:Name="PART_ContentHost"
                             Margin="{TemplateBinding Padding}"
@@ -204,7 +85,6 @@
             </Setter.Value>
         </Setter>
 
-        <!--  状态触发器：获得焦点时文字变纯白、边框变蓝，提示"当前正在此输入"  -->
         <Style.Triggers>
             <Trigger Property="IsFocused" Value="True">
                 <Setter Property="Foreground" Value="{StaticResource FocusTextBoxTextColor}" />
@@ -214,100 +94,10 @@
         </Style.Triggers>
     </Style>
 
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【08】带单位后缀的输入框 — UnitTextBoxStyle                                 │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：输入框右下角自动显示单位（如 kHz、W、M），无须在界面另放单位标签     │
-        │ 使用：<TextBox Style="{StaticResource UnitTextBoxStyle}"                    │
-        │                Tag="kHz"                       ← 单位写在这里              │
-        │                Text="{Binding FREQ, Mode=TwoWay}" />                        │
-        │ 原理：模板中用 Grid 叠放"输入区 + 右下角小字"，小字内容绑定控件 Tag 属性   │
-        │ 注意：垂直/水平方向，Placeholder（单位）颜色为灰色半透明，不干扰输入       │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
-    <Style x:Key="UnitTextBoxStyle" TargetType="TextBox">
-        <!--  基础外观与普通输入框保持一致  -->
-        <Setter Property="Background" Value="{StaticResource NormalTextBoxBackColor}" />
-        <Setter Property="Foreground" Value="{StaticResource NormalTextBoxTextColor}" />
-        <Setter Property="BorderBrush" Value="{StaticResource NormalTextBoxBorderColor}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="FontSize" Value="14" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Padding" Value="8,4" />
-        <Setter Property="TextAlignment" Value="Center" />
-
-        <!--  重写模板：在原输入框基础上叠加"右下角单位文字"  -->
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="TextBox">
-                    <!--  最外层边框：负责背景、边框、圆角  -->
-                    <Border
-                        x:Name="Border"
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="4">
-
-                        <!--  内部网格：把"输入内容"和"单位文字"叠放在同一块区域  -->
-                        <Grid>
-                            <!--
-                                PART_ContentHost 是 WPF 固定命名，不能改名。
-                                Padding 右侧预留 42 像素，防止用户输入的文字与单位重叠。
-                            -->
-                            <ScrollViewer
-                                x:Name="PART_ContentHost"
-                                Padding="8,4,42,4"
-                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-
-                            <!--  右下角单位提示文字（内容取自控件的 Tag 属性）  -->
-                            <TextBlock
-                                Margin="0,0,3,1"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom"
-                                FontSize="8"
-                                Foreground="{StaticResource PlaceholderTextColor}"
-                                IsHitTestVisible="False"
-                                Opacity="0.6"
-                                Text="{TemplateBinding Tag}" />
-                        </Grid>
-                    </Border>
-
-                    <!--  状态触发器  -->
-                    <ControlTemplate.Triggers>
-                        <!--  获得焦点：边框变主题蓝并加粗，提示可输入  -->
-                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource FocusTextBoxBorderColor}" />
-                            <Setter TargetName="Border" Property="BorderThickness" Value="3" />
-                        </Trigger>
-                        <!--  控件禁用：整体半透明  -->
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter TargetName="Border" Property="Opacity" Value="0.5" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【09】主功能按钮 — PrimaryButtonStyle                                       │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：界面中的主要操作按钮（如"添加日志""时区转换"）                       │
-        │ 使用：<Button Style="{StaticResource PrimaryButtonStyle}" Content="添加日志" │
-        │                Command="{Binding AddLogBtnClickCommand}" />                 │
-        │ 四种状态：                                                                  │
-        │   常态 —— 主题蓝底白字                                                      │
-        │   悬浮 —— 变亮（鼠标移上去）                                                │
-        │   按下 —— 变暗（点击瞬间）                                                  │
-        │   禁用 —— 灰底灰字（IsEnabled=False）                                      │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--  7. 主功能按钮（支持悬浮、点击、禁用三种状态）  -->
     <Style x:Key="PrimaryButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="{StaticResource ButtonNormalBackColor}" />
         <Setter Property="Foreground" Value="{StaticResource ButtonNormalTextColor}" />
-        <!--  去掉系统默认边框，只保留自定义的圆角底色  -->
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Padding" Value="12,6" />
         <Setter Property="FontSize" Value="14" />
@@ -329,90 +119,52 @@
             </Setter.Value>
         </Setter>
         <Style.Triggers>
-            <!--  鼠标悬浮：底色变亮  -->
+            <!--  鼠标悬浮  -->
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{StaticResource ButtonHoverBackColor}" />
             </Trigger>
-            <!--  鼠标按下：底色变暗，产生"按下"的反馈  -->
+            <!--  鼠标按下点击  -->
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="{StaticResource ButtonClickBackColor}" />
             </Trigger>
-            <!--  控件禁用：灰底灰字，明确表示不可点击  -->
+            <!--  控件禁用状态  -->
             <Trigger Property="IsEnabled" Value="False">
                 <Setter Property="Background" Value="{StaticResource ButtonDisabledBackColor}" />
                 <Setter Property="Foreground" Value="{StaticResource ButtonDisabledTextColor}" />
             </Trigger>
         </Style.Triggers>
+
     </Style>
 
-    <!--
-        ================================================================================
-        四、DataGrid 表格（日志表格，对应原 WinForm 的 DataGridView）
-        ================================================================================
-        这一组共 4 个样式，需要配合使用：
-            LogDataGridStyle              —— 表格整体（背景、网格线、选择模式）
-            LogDataGridColumnHeaderStyle  —— 表头行
-            LogDataGridRowStyle           —— 数据行（含选中高亮）
-            LogDataGridCellStyle          —— 单元格内边距
-        使用示例：
-            <DataGrid Style="{StaticResource LogDataGridStyle}"
-                      ColumnHeaderStyle="{StaticResource LogDataGridColumnHeaderStyle}"
-                      RowStyle="{StaticResource LogDataGridRowStyle}"
-                      CellStyle="{StaticResource LogDataGridCellStyle}" />
-    -->
-
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【10】DataGrid 整体样式 — LogDataGridStyle                                  │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：日志查看表格的整体外观                                                │
-        │ 说明：只显示横向网格线（更接近现代表格风格），单选模式避免多选干扰         │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--  8. DataGrid 暗色日志表格（对应原DataGridView）  -->
     <Style x:Key="LogDataGridStyle" TargetType="DataGrid">
         <Setter Property="Background" Value="{StaticResource DgvRowNormalBackColor}" />
         <Setter Property="Foreground" Value="{StaticResource DgvRowNormalTextColor}" />
-        <!--  只显示列头，不显示行头（行头是 WPF 默认的左侧空白列）  -->
         <Setter Property="HeadersVisibility" Value="Column" />
-        <!--  只画横向网格线，不画竖线  -->
         <Setter Property="GridLinesVisibility" Value="Horizontal" />
         <Setter Property="HorizontalGridLinesBrush" Value="#FF30333A" />
         <Setter Property="BorderBrush" Value="{StaticResource PanelBorderColor}" />
         <Setter Property="BorderThickness" Value="1" />
-        <!--  单选模式：避免出现系统默认的浅色多选背景  -->
+        <!--  取消默认选中浅色背景干扰  -->
         <Setter Property="SelectionMode" Value="Single" />
     </Style>
 
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【11】DataGrid 表头样式 — LogDataGridColumnHeaderStyle                      │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：表格列头（字段名那一行）的外观                                        │
-        │ 特点：比数据行稍亮的底色 + 半粗体文字，与内容区分                          │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--  DataGrid 表头样式  -->
     <Style x:Key="LogDataGridColumnHeaderStyle" TargetType="DataGridColumnHeader">
         <Setter Property="Background" Value="{StaticResource DgvHeaderBackColor}" />
         <Setter Property="Foreground" Value="{StaticResource DgvHeaderTextColor}" />
         <Setter Property="BorderBrush" Value="{StaticResource DgvHeaderBorderColor}" />
-        <!--  只画右边框和下边框，形成分隔线  -->
         <Setter Property="BorderThickness" Value="0,0,1,1" />
         <Setter Property="Padding" Value="8,6" />
         <Setter Property="FontWeight" Value="SemiBold" />
     </Style>
 
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【12】DataGrid 数据行样式 — LogDataGridRowStyle                             │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：表格每一行的外观，重点是"选中行"的高亮效果                          │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--  DataGrid 数据行样式  -->
     <Style x:Key="LogDataGridRowStyle" TargetType="DataGridRow">
         <Setter Property="Background" Value="{StaticResource DgvRowNormalBackColor}" />
         <Setter Property="Foreground" Value="{StaticResource DgvRowNormalTextColor}" />
         <Style.Triggers>
-            <!--  该行被选中：底色变主题蓝、文字变纯白  -->
+            <!--  行选中样式  -->
             <Trigger Property="IsSelected" Value="True">
                 <Setter Property="Background" Value="{StaticResource DgvRowSelectedBackColor}" />
                 <Setter Property="Foreground" Value="{StaticResource DgvRowSelectedTextColor}" />
@@ -420,77 +172,47 @@
         </Style.Triggers>
     </Style>
 
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【13】DataGrid 单元格样式 — LogDataGridCellStyle                            │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：单元格的内边距（去掉系统默认的格线框）                               │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--  DataGrid单元格样式  -->
     <Style x:Key="LogDataGridCellStyle" TargetType="DataGridCell">
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Padding" Value="6,4" />
     </Style>
 
-    <!--
-        ================================================================================
-        五、TabControl 标签页（顶部"日志编辑 / 日志查看"切换）
-        ================================================================================
-        本项目有两套 Tab 样式，区别在于使用位置：
-            DarkTabControl / DarkTabItem      —— 用于窗口最外层的主标签页
-            InDarkTabControl / InDarkTabItem  —— 用于"卡片内部"的小标签页（更紧凑）
-    -->
-
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【14】TabControl 容器样式（主） — DarkTabControlStyle                       │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：最外层主标签页容器（"日志编辑""日志查看"）                           │
-        │ 使用：<TabControl Style="{StaticResource DarkTabControlStyle}">             │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--  TabControl 整体容器样式  -->
     <Style x:Key="DarkTabControlStyle" TargetType="TabControl">
-        <!--  内容区背景与主窗体一致，避免出现色差  -->
+        <!--  内容区域背景，和主窗体背景统一  -->
         <Setter Property="Background" Value="{StaticResource LogMainFormBackColor}" />
         <Setter Property="BorderBrush" Value="{StaticResource TabBorderBrush}" />
         <Setter Property="BorderThickness" Value="1" />
-        <!--  标签头显示在顶部  -->
+        <!--  标签头部对齐靠左  -->
         <Setter Property="TabStripPlacement" Value="Top" />
     </Style>
 
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【15】TabControl 容器样式（内嵌） — InDarkTabControlStyle                   │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：卡片内部的小标签页（如"其他信息"页签区）                             │
-        │ 特点：背景用卡片色（比窗体亮），并重写模板让内容区带圆角                   │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--  TabControl 整体容器样式-用于页面内的切换页面的使用  -->
     <Style x:Key="InDarkTabControlStyle" TargetType="TabControl">
+        <!--  内容区域背景，和主窗体背景统一  -->
         <Setter Property="Background" Value="{StaticResource PanelBackColor}" />
         <Setter Property="BorderBrush" Value="{StaticResource TabBorderBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Margin" Value="2" />
+        <!--  标签头部对齐靠左  -->
         <Setter Property="TabStripPlacement" Value="Top" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TabControl">
-                    <!--  上下两行：上面放标签头，下面放内容区  -->
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-
-                        <!--  标签头容器：IsItemsHost=True 表示这里是放置 TabItem 的地方  -->
+                        <!--  标签头部  -->
                         <TabPanel
                             x:Name="HeaderPanel"
                             Grid.Row="0"
                             Margin="0,0,0,0"
                             Background="{TemplateBinding Background}"
                             IsItemsHost="True" />
-
-                        <!--  内容区：带圆角边框，展示当前选中标签页的内容  -->
+                        <!--  标签内容区域  -->
                         <Border
                             x:Name="ContentPanel"
                             Grid.Row="1"
@@ -499,7 +221,6 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="6,6,6,6">
-                            <!--  PART_SelectedContentHost 为固定命名，负责呈现选中页内容  -->
                             <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent" />
                         </Border>
                     </Grid>
@@ -508,36 +229,26 @@
         </Setter>
     </Style>
 
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【16】TabItem 标签头样式（主） — DarkTabItemStyle                           │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：主标签页的单个标签按钮外观                                            │
-        │ 使用：<TabItem Header="日志编辑" Style="{StaticResource DarkTabItemStyle}"> │
-        │ 三种状态：                                                                  │
-        │   常态 —— 深灰底 + 灰白字                                                   │
-        │   悬浮 —— 底色稍亮                                                          │
-        │   选中 —— 底色变深 + 白色半粗字 + 顶部出现蓝色高亮条（3像素）              │
-        │ 说明：必须重写模板，否则 WPF 默认的选中白底会破坏深色主题整体感            │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+
+    <!--  TabItem 标签头部样式（核心，包含选中/悬浮触发器）  -->
+    <!--  TabItem 标签头部样式（修复选中出现白色背景问题）  -->
     <Style x:Key="DarkTabItemStyle" TargetType="TabItem">
         <Setter Property="Background" Value="{StaticResource TabItemNormalBackColor}" />
         <Setter Property="Foreground" Value="{StaticResource TabItemNormalTextColor}" />
         <Setter Property="BorderBrush" Value="{StaticResource TabBorderBrush}" />
-        <!--  只画上、左、右三边边框，底边不画（与内容区连通）  -->
         <Setter Property="BorderThickness" Value="1,1,1,0" />
         <Setter Property="Padding" Value="14,6" />
         <Setter Property="FontSize" Value="14" />
+        <!--<Setter Property="MinWidth" Value=""/>-->
         <Setter Property="Height" Value="28" />
         <Setter Property="Margin" Value="0,2,0,0" />
 
-        <!--  重写模板：消除系统默认的选中白色背景  -->
+        <!--  核心：重写控件模板，消除原生选中白色背景  -->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TabItem">
                     <Grid>
-                        <!--  标签底色与边框（顶部两角为圆角，与内容区衔接）  -->
+
                         <Border
                             x:Name="MainBorder"
                             Background="{TemplateBinding Background}"
@@ -545,7 +256,7 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="6,6,0,0" />
 
-                        <!--  顶部蓝色高亮条：仅选中时可见（默认隐藏）  -->
+                        <!--  顶部高亮蓝条，选中才显示  -->
                         <Border
                             x:Name="ActiveLine"
                             Height="3"
@@ -555,7 +266,6 @@
                             CornerRadius="3,3,3,3"
                             Visibility="Collapsed" />
 
-                        <!--  标签文字（内容来自 TabItem 的 Header 属性）  -->
                         <ContentPresenter
                             Margin="{TemplateBinding Padding}"
                             HorizontalAlignment="Center"
@@ -563,12 +273,12 @@
                             ContentSource="Header" />
                     </Grid>
 
+
+                    <!--  状态触发器：悬浮 / 选中  -->
                     <ControlTemplate.Triggers>
-                        <!--  鼠标悬浮：底色变亮  -->
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="MainBorder" Property="Background" Value="{StaticResource TabItemHoverBackColor}" />
                         </Trigger>
-                        <!--  选中状态：底色变深、文字变白加粗、顶部高亮条显示  -->
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="MainBorder" Property="Background" Value="{StaticResource TabItemSelectedBackColor}" />
                             <Setter Property="Foreground" Value="{StaticResource TabItemSelectedTextColor}" />
@@ -581,14 +291,9 @@
         </Setter>
     </Style>
 
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【17】TabItem 标签头样式（内嵌） — InDarkTabItemStyle                       │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：卡片内部小标签页的标签按钮（"其他信息"等）                           │
-        │ 与上者区别：内边距更小、字号 12、顶部高亮条更细（1.5 像素）                │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--  TabItem 标签头部样式（核心，包含选中/悬浮触发器）  -->
+    <!--  TabItem 标签头部样式（修复选中出现白色背景问题）  -->
+    <!--  页面内部用来切换页面的标签头部样式  -->
     <Style x:Key="InDarkTabItemStyle" TargetType="TabItem">
         <Setter Property="Background" Value="{StaticResource TabItemNormalBackColor}" />
         <Setter Property="Foreground" Value="{StaticResource TabItemNormalTextColor}" />
@@ -596,12 +301,15 @@
         <Setter Property="BorderThickness" Value="1,1,1,0" />
         <Setter Property="Padding" Value="14,2,14,0" />
         <Setter Property="FontSize" Value="12" />
+        <!--<Setter Property="MinWidth" Value=""/>-->
         <Setter Property="Height" Value="28" />
 
+        <!--  核心：重写控件模板，消除原生选中白色背景  -->
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TabItem">
                     <Grid>
+
                         <Border
                             x:Name="MainBorder"
                             Background="{TemplateBinding Background}"
@@ -609,7 +317,7 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             CornerRadius="6,6,0,0" />
 
-                        <!--  顶部高亮条（比主样式更细，适应紧凑布局）  -->
+                        <!--  顶部高亮蓝条，选中才显示  -->
                         <Border
                             x:Name="ActiveLine"
                             Height="1.5"
@@ -626,6 +334,8 @@
                             ContentSource="Header" />
                     </Grid>
 
+
+                    <!--  状态触发器：悬浮 / 选中  -->
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="MainBorder" Property="Background" Value="{StaticResource TabItemHoverBackColor}" />
@@ -642,13 +352,7 @@
         </Setter>
     </Style>
 
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【18】TabItem 内容容器 — DarkTabContentStyle                                │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：标签页内部的容器面板（需要手动包裹内容时使用）                       │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--  TabItem内部内容容器样式（标签页面板）  -->
     <Style x:Key="DarkTabContentStyle" TargetType="Border">
         <Setter Property="Background" Value="{StaticResource LogMainFormBackColor}" />
         <Setter Property="BorderBrush" Value="{StaticResource TabBorderBrush}" />
@@ -656,73 +360,99 @@
         <Setter Property="Padding" Value="10" />
     </Style>
 
-    <!--
-        ================================================================================
-        六、时间显示区样式（界面左侧的 UTC / 本地时间面板）
-        ================================================================================
-        继承关系（自上而下逐层细化）：
-            TimeStyle_  ─┬─▶ TimeLabelStyle   （"UTC时间""时区时间"等标题文字）
-                         ├─▶ TimeStyle        （大号时间数字，如 13:53:41）
-                         └─▶ TimeDataStyle    （小号日期文字）
-            InCardPanelStyle ─▶ TimeBorder    （时间数字的外框）
-    -->
 
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【19】时间文字基础样式 — TimeStyle_                                         │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：仅供其他时间样式继承的基础（下方三个都基于它）                       │
-        │ 注意：名字以下划线结尾，表示"不要直接使用"，请用具体的时间样式             │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
-    <Style x:Key="TimeStyle_" TargetType="Label">
-        <!--  水平、垂直都居中  -->
-        <Setter Property="HorizontalAlignment" Value="Center" />
-        <Setter Property="VerticalAlignment" Value="Center" />
-        <!--  清除默认间距，避免时间数字偏移  -->
-        <Setter Property="Padding" Value="0" />
-        <Setter Property="Margin" Value="0" />
+    <!--  ========== 带右下角单位后缀的 TextBox 样式（暗色主题适配） ==========  -->
+    <!--  使用方式：Style="{StaticResource UnitTextBoxStyle}"  Tag="填写单位，如 kHz / MHz / W"  -->
+    <Style x:Key="UnitTextBoxStyle" TargetType="TextBox">
+        <!--  基础默认值，和你现有普通输入框保持一致  -->
+        <Setter Property="Background" Value="{StaticResource NormalTextBoxBackColor}" />
+        <Setter Property="Foreground" Value="{StaticResource NormalTextBoxTextColor}" />
+        <Setter Property="BorderBrush" Value="{StaticResource NormalTextBoxBorderColor}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Padding" Value="8,4" />
+        <Setter Property="TextAlignment" Value="Center" />
+
+        <!--  核心：重写控件外观模板  -->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <!--  最外层边框：负责背景、边框、圆角  -->
+                    <Border
+                        x:Name="Border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="4">
+
+                        <!--  内部网格：层叠放置输入内容 + 单位文字  -->
+                        <Grid>
+                            <!--  【必须保留】输入内容宿主，PART_ContentHost 是WPF固定命名，不能改名  -->
+                            <!--  右侧Padding预留40px空间，防止输入文字和单位重叠  -->
+                            <ScrollViewer
+                                x:Name="PART_ContentHost"
+                                Padding="8,4,42,4"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+
+                            <!--  右下角单位提示文字  -->
+                            <TextBlock
+                                Margin="0,0,3,1"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                FontSize="8"
+                                Foreground="{StaticResource PlaceholderTextColor}"
+                                IsHitTestVisible="False"
+                                Opacity="0.6"
+                                Text="{TemplateBinding Tag}" />
+                        </Grid>
+                    </Border>
+
+                    <!--  触发器：输入框获得焦点时，边框变成主题蓝色  -->
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="{StaticResource FocusTextBoxBorderColor}" />
+                            <Setter TargetName="Border" Property="BorderThickness" Value="3" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Border" Property="Opacity" Value="0.5" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【20】时间标题文字 — TimeLabelStyle                                         │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途："UTC时间""时区时间"这类小标题                                         │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--  时间标题文字基础样式  -->
+    <Style x:Key="TimeStyle_" TargetType="Label">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Margin" Value="0" />
+
+    </Style>
+
+    <!--  时间标题文字样式  -->
     <Style
         x:Key="TimeLabelStyle"
         BasedOn="{StaticResource TimeStyle_}"
         TargetType="Label">
         <Setter Property="Foreground" Value="{StaticResource LabelMainTitleColor}" />
         <Setter Property="FontSize" Value="12" />
+
     </Style>
 
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【21】时间数字 — TimeStyle                                                  │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：显示大号的时间数字（如 13:53:41），是左侧面板的视觉焦点              │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--  时间显示文字样式  -->
     <Style
         x:Key="TimeStyle"
         BasedOn="{StaticResource TimeStyle_}"
         TargetType="Label">
-        <!--  大字号，便于远距离快速读数  -->
         <Setter Property="FontSize" Value="20" />
         <Setter Property="Foreground" Value="{StaticResource LabelMainTitleColor}" />
         <Setter Property="Padding" Value="0,0,0,0" />
     </Style>
 
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【22】日期文字 — TimeDataStyle                                              │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：时间下方的小号日期（yyyy/MM/dd）                                      │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--  日期显示文字样式  -->
     <Style
         x:Key="TimeDataStyle"
         BasedOn="{StaticResource TimeStyle_}"
@@ -731,64 +461,32 @@
         <Setter Property="Foreground" Value="{StaticResource TimeDataColor}" />
     </Style>
 
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【23】时间数字外框 — TimeBorder                                             │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：包裹大号时间数字的深色底框，突出显示时间                             │
-        │ 继承：基于 InCardPanelStyle，只覆盖内边距与对齐方式                        │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--  时间内容框格式  -->
     <Style
         x:Key="TimeBorder"
         BasedOn="{StaticResource InCardPanelStyle}"
         TargetType="Border">
-        <!--  左右留出充足内边距，让时间数字不贴边  -->
+
         <Setter Property="Padding" Value="18,0" />
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="Margin" Value="8,0,8,0" />
+
     </Style>
 
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【24】时区偏移文字 — UTCZoneStyle                                           │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：显示 "UTC" / "UTC+08:00" 这类时区标识（小号灰字）                    │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--  UTC时区加减文本  -->
     <Style x:Key="UTCZoneStyle" TargetType="Label">
         <Setter Property="Margin" Value="0,0,3,0" />
         <Setter Property="Padding" Value="0" />
         <Setter Property="FontSize" Value="8" />
         <Setter Property="Foreground" Value="{StaticResource TimeDataColor}" />
+
     </Style>
 
-    <!--
-        ================================================================================
-        七、滚动条与滚动容器（ScrollBar / ScrollViewer）
-        ================================================================================
-        四个样式配合使用：
-            DarkScrollBarThumbStyle          —— 滑块外观（垂直/水平共用，改颜色只改这里）
-            DarkVerticalScrollBarStyle       —— 垂直滚动条（宽度在这里调）
-            DarkHorizontalScrollBarStyle     —— 水平滚动条（高度在这里调）
-            DarkOnlyVerticalScrollViewerStyle —— 仅有垂直滚动的容器（右侧日志列表在用）
-            DarkBothScrollViewerStyle        —— 横竖都支持的容器（需要横向滚动时用）
 
-        常见修改位置：
-            · 想改滚动条粗细 → 见下方标有 ★ 的 Width / Height 属性
-            · 想改滑块颜色   → 改 ColorDic.xaml 中的 ScrollBarThumb* 系列颜色
-    -->
 
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【25】滚动条滑块 — DarkScrollBarThumbStyle                                  │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：滚动条上那个可拖动的"滑块"的外观，垂直与水平共用此样式               │
-        │ 优点：颜色只需在此处修改一处，两个方向的滚动条都会同步变化                 │
-        │ 三种状态：常态 / 鼠标悬停（变亮）/ 正在拖拽（最亮）                        │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--  ==================== 滚动条滑块（Thumb）共用样式 ====================  -->
+    <!--  垂直/水平滚动条共用此滑块外观，改颜色只需改这里一处  -->
     <Style x:Key="DarkScrollBarThumbStyle" TargetType="Thumb">
         <Setter Property="Template">
             <Setter.Value>
@@ -798,11 +496,11 @@
                         Background="{StaticResource ScrollBarThumbNormalBrush}"
                         CornerRadius="4" />
                     <ControlTemplate.Triggers>
-                        <!--  鼠标移到滑块上：变亮，提示可拖动  -->
+                        <!--  鼠标悬停：滑块变亮  -->
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="thumbBorder" Property="Background" Value="{StaticResource ScrollBarThumbHoverBrush}" />
                         </Trigger>
-                        <!--  正在拖拽滑块：最亮，给出明确的交互反馈  -->
+                        <!--  正在拖拽：滑块最亮  -->
                         <Trigger Property="IsDragging" Value="True">
                             <Setter TargetName="thumbBorder" Property="Background" Value="{StaticResource ScrollBarThumbDragBrush}" />
                         </Trigger>
@@ -812,45 +510,25 @@
         </Setter>
     </Style>
 
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【26】垂直滚动条 — DarkVerticalScrollBarStyle                               │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：上下滚动时的滚动条（如右侧日志列表）                                 │
-        │ 使用：一般由 ScrollViewer 模板内部引用，无需手动设置                       │
-        │                                                                            │
-        │ ★ 两个关键属性，修改宽度时两个都要注意：                                   │
-        │   1) Width    —— 滚动条宽度，就是你要调的那个值                            │
-        │   2) MinWidth —— 必须保留为 0！原因见下方注释                              │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--  ==================== 【垂直滚动条】样式 ====================  -->
     <Style x:Key="DarkVerticalScrollBarStyle" TargetType="ScrollBar">
         <Style.Setters>
             <!--
-                ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-                【滚动条宽度】改这里！单位=像素，建议范围 4~12：
-                    4  = 非常纤细
+                ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+                【滚动条宽度】就在这里改！单位=像素，建议范围 6~12：
                     6  = 纤细（当前值）
                     8  = 常规
                     10 = 更容易用鼠标点中
-                ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+                ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
             -->
             <Setter Property="Width" Value="6" />
-
             <!--
-                ★ 必须保留这一行，否则上面的 Width 改小于 16.8 就不会生效！★
-
-                原因说明：
-                  WPF 的主题样式（ThemeStyle）给 ScrollBar 预设了
-                      MinWidth = SystemParameters.VerticalScrollBarWidth ≈ 16.8 像素
-                  （也就是 Windows 系统标准滚动条的宽度）
-
-                  而"自定义样式"和"主题样式"是两个独立的来源——本样式若没有显式设置
-                  MinWidth，主题样式里的 16.8 依旧会起作用，于是实际宽度会被撑到
-                  max(你设的Width, 16.8)。表现出来就是：
-                      改成 100 → 生效（100 > 16.8）
-                      改成 8   → 无效（被撑回 16.8）
-                  显式写 0 才能让上面的 Width 真正说了算。
+                ★ 必须保留这一行，否则上面的 Width 改小于 16.8 不会生效！★
+                原因：WPF 主题样式（ThemeStyle）给 ScrollBar 设了
+                      MinWidth = SystemParameters.VerticalScrollBarWidth = 16.8
+                      而显式 Style 与主题样式是两个独立来源——本样式没设置 MinWidth 时，
+                      主题样式的 16.8 依然生效，实际宽度会被撑到 max(Width, 16.8)。
+                      显式写成 0 才能让 Width 真正说了算。
             -->
             <Setter Property="MinWidth" Value="0" />
             <Setter Property="Background" Value="{StaticResource ScrollBarTrackBrush}" />
@@ -858,16 +536,16 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="ScrollBar">
                         <Grid>
-                            <!--  轨道底色（滑块滑动的背景长条）  -->
+                            <!--  轨道底色  -->
                             <Border Background="{TemplateBinding Background}" CornerRadius="4" />
 
                             <!--
                                 ★ 关键属性：IsDirectionReversed="True" ★
-                                作用：让滑块方向与内容滚动方向一致
-                                      （内容在顶部 → 滑块在顶部；向下滚动 → 滑块跟着往下）
-                                注意：垂直滚动条【必须】写这个属性，否则方向会整个反过来
-                                      （表现为：内容明明在顶部，滑块却停在最底部）
-                                水平滚动条则不需要（见下一个样式）
+                                作用：让滑块的移动方向与内容滚动方向一致
+                                      （内容在顶部 → 滑块在顶部；向下滚动 → 滑块向下）
+                                注意：垂直滚动条【必须】加这个属性，否则方向会整个反过来
+                                      （表现为：内容在顶部时滑块却停在底部）
+                                水平滚动条则不需要此属性（见下方横向样式）
                             -->
                             <Track
                                 x:Name="PART_Track"
@@ -884,30 +562,18 @@
         </Style.Setters>
     </Style>
 
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【27】水平滚动条 — DarkHorizontalScrollBarStyle                             │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：左右滚动时的滚动条（出现在容器底部）                                 │
-        │ 启用方式：给 ScrollViewer 设置 HorizontalScrollBarVisibility 属性，         │
-        │           或直接使用 DarkBothScrollViewerStyle（见下一项）                 │
-        │ 与垂直滚动条的区别：用 Height 而非 Width 控制粗细，且不需要方向反转属性    │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--  ==================== 【水平滚动条】样式 ====================  -->
+    <!--  用途：横向滚动时使用（配合下方的 DarkBothScrollViewerStyle 或单独给 ScrollBar 使用）  -->
     <Style x:Key="DarkHorizontalScrollBarStyle" TargetType="ScrollBar">
         <Style.Setters>
             <!--
-                ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-                【横向滚动条高度】改这里！单位=像素，建议与垂直滚动条宽度保持一致：
-                    当前值 8（通常与垂直滚动条的 Width 设为相同数值更好看）
-                ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+                ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+                【横向滚动条高度】就在这里改！单位=像素，建议与垂直滚动条宽度保持一致：
+                    当前值 8（与垂直滚动条宽度一致）
+                ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
             -->
             <Setter Property="Height" Value="8" />
-
-            <!--
-                ★ 同垂直滚动条：必须覆盖主题样式强加的 MinHeight（同样约 16.8）
-                  不写这一行的话，Height 改小于 16.8 时不会生效。
-            -->
+            <!--  ★ 同垂直滚动条：必须覆盖主题样式强加的 MinHeight（同样约 16.8），否则高度改不小 ★  -->
             <Setter Property="MinHeight" Value="0" />
             <Setter Property="Background" Value="{StaticResource ScrollBarTrackBrush}" />
             <Setter Property="Template">
@@ -918,9 +584,8 @@
                             <Border Background="{TemplateBinding Background}" CornerRadius="4" />
 
                             <!--
-                                水平方向不需要 IsDirectionReversed：
-                                从左往右滚动时，滑块本来就该从左往右移动，默认方向即正确。
-                                Orientation 必须显式写成 Horizontal，否则会按垂直方向布局。
+                                水平方向使用 Track 的默认方向即可（无需 IsDirectionReversed）
+                                因为从左到右滚动时，滑块本来就应该从左往右移动
                             -->
                             <Track x:Name="PART_Track" Orientation="Horizontal">
                                 <Track.Thumb>
@@ -934,33 +599,21 @@
         </Style.Setters>
     </Style>
 
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【28】滚动容器：仅垂直滚动 — DarkOnlyVerticalScrollViewerStyle              │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：只允许上下滚动的区域（如界面右侧的日志卡片列表）                     │
-        │ 使用：<ScrollViewer Style="{StaticResource DarkOnlyVerticalScrollViewerStyle}"│
-        │                   VerticalScrollBarVisibility="Visible">                   │
-        │                       ...要滚动的内容...                                    │
-        │       </ScrollViewer>                                                      │
-        │ 特点：水平方向彻底禁用（内容再宽也不会出现横向滚动条）                     │
-        │ 说明：重写模板是为了把系统默认滚动条换成上面自定义的细滚动条               │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--  ==================== ScrollViewer 模板：仅垂直滚动条 ====================  -->
+    <!--  用途：右侧日志列表等只需上下滚动的区域（当前 MainLogWindow 使用此样式）  -->
     <Style x:Key="DarkOnlyVerticalScrollViewerStyle" TargetType="ScrollViewer">
-        <!--  水平滚动条禁用，只保留垂直方向  -->
+        <!--  水平滚动条彻底禁用（内容超宽时也不会出现横向滚动条）  -->
         <Setter Property="HorizontalScrollBarVisibility" Value="Disabled" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ScrollViewer">
-                    <!--  两列布局：左边放内容，右边放垂直滚动条  -->
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <!--  内容宿主：所有子元素都显示在这里  -->
+                        <!--  主体内容区域（承载要滚动的内容）  -->
                         <ScrollContentPresenter
                             Grid.Column="0"
                             Margin="{TemplateBinding Padding}"
@@ -968,13 +621,11 @@
                             Content="{TemplateBinding Content}"
                             ContentTemplate="{TemplateBinding ContentTemplate}" />
 
-                        <!--
-                            垂直滚动条
-                            注意 Visibility 绑定的是 ComputedVerticalScrollBarVisibility
-                            （"实际计算后"的可见性），不能绑 VerticalScrollBarVisibility
-                            （那是用户设置值，类型是 ScrollBarVisibility 枚举，与
-                              Visibility 枚举类型不匹配，会导致 Auto 模式显示异常）
-                        -->
+                        <!--  垂直滚动条  -->
+                        <!--  说明：Visibility 必须绑定 ComputedVerticalScrollBarVisibility
+                                  （实际计算后的可见性），不能绑定 VerticalScrollBarVisibility
+                                  （那是设置值，类型为 ScrollBarVisibility 枚举，与 Visibility 不匹配，
+                                    会导致 VerticalScrollBarVisibility="Auto" 时无法正确显示）  -->
                         <ScrollBar
                             x:Name="PART_VerticalScrollBar"
                             Grid.Column="1"
@@ -991,35 +642,28 @@
         </Setter>
     </Style>
 
+    <!--  ==================== ScrollViewer 模板：横竖双向滚动条 ====================  -->
     <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【29】滚动容器：横竖双向 — DarkBothScrollViewerStyle                        │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：既需要上下滚动、也需要左右滚动的区域（如很宽的表格）                 │
-        │ 使用：<ScrollViewer Style="{StaticResource DarkBothScrollViewerStyle}">     │
-        │                   ...内容...                                                │
-        │       </ScrollViewer>                                                      │
-        │                                                                            │
-        │ 【横向滚动条怎么开关】不用改本样式，在使用的地方写属性即可：               │
-        │     不写该属性   → Auto     内容超出宽度时才自动出现横向滚动条（默认）     │
-        │     ="Disabled"  → 关闭     永远不显示横向滚动条                           │
-        │     ="Visible"   → 常显     始终显示横向滚动条                             │
-        │                                                                            │
-        │ 使用示例（想关闭横向滚动）：                                               │
-        │   <ScrollViewer Style="{StaticResource DarkBothScrollViewerStyle}"         │
-        │                 HorizontalScrollBarVisibility="Disabled">                  │
-        │       ...内容...                                                            │
-        │   </ScrollViewer>                                                          │
-        └────────────────────────────────────────────────────────────────────────────┘
+        用途：需要横向滚动的区域（如宽表格、长文本不换行的列表）改用此样式即可。
+
+        【横向滚动条开关】在使用处用属性控制，无需改本样式：
+            默认（不写）= Auto   → 内容超出宽度时自动出现横向滚动条
+            想关闭       = 在 ScrollViewer 上写 HorizontalScrollBarVisibility="Disabled"
+            想常显示     = 写 HorizontalScrollBarVisibility="Visible"
+
+        使用示例：
+            <ScrollViewer Style="{StaticResource DarkBothScrollViewerStyle}"
+                          HorizontalScrollBarVisibility="Auto">
+                ...内容...
+            </ScrollViewer>
     -->
     <Style x:Key="DarkBothScrollViewerStyle" TargetType="ScrollViewer">
-        <!--  两个方向都用 Auto：内容超出才出现滚动条，不超出时界面干净无线条  -->
+        <!--  两个方向都用 Auto：内容超出才出现对应滚动条，不超出则干净无痕  -->
         <Setter Property="VerticalScrollBarVisibility" Value="Auto" />
         <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ScrollViewer">
-                    <!--  两行两列：内容区 + 右侧垂直条 + 底部横向条 + 右下角补角  -->
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -1030,7 +674,7 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <!--  内容宿主（占据左上角主区域）  -->
+                        <!--  主体内容区域  -->
                         <ScrollContentPresenter
                             Grid.Row="0"
                             Grid.Column="0"
@@ -1039,7 +683,7 @@
                             Content="{TemplateBinding Content}"
                             ContentTemplate="{TemplateBinding ContentTemplate}" />
 
-                        <!--  右侧垂直滚动条  -->
+                        <!--  垂直滚动条（靠右）  -->
                         <ScrollBar
                             x:Name="PART_VerticalScrollBar"
                             Grid.Row="0"
@@ -1052,7 +696,7 @@
                             Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"
                             Value="{Binding VerticalOffset, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" />
 
-                        <!--  底部横向滚动条  -->
+                        <!--  水平滚动条（靠下）  -->
                         <ScrollBar
                             x:Name="PART_HorizontalScrollBar"
                             Grid.Row="1"
@@ -1065,7 +709,7 @@
                             Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"
                             Value="{Binding HorizontalOffset, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" />
 
-                        <!--  右下角补角：横竖滚动条同时出现时，填充角落的空白区域  -->
+                        <!--  右下角补角：横竖滚动条同时出现时填充角落的空白  -->
                         <Border
                             Grid.Row="1"
                             Grid.Column="1"
@@ -1077,88 +721,52 @@
         </Setter>
     </Style>
 
-    <!--
-        ================================================================================
-        八、HandyControl 第三方控件适配
-        ================================================================================
-    -->
-
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【30】日期时间选择器 — TimeInPut_HC                                         │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：把 HandyControl 的 DateTimePicker 适配成深色主题外观                 │
-        │ 使用：<hc:DateTimePicker Style="{StaticResource TimeInPut_HC}"              │
-        │                          SelectedDateTime="{Binding StartTimeDT, Mode=TwoWay}" />│
-        │ 说明：BasedOn 继承 HandyControl 自带的样式，只覆盖日期格式与配色，          │
-        │       保留其原生的日历弹窗等全部功能                                       │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
     <Style
         x:Key="TimeInPut_HC"
         BasedOn="{StaticResource {x:Type hc:DateTimePicker}}"
         TargetType="hc:DateTimePicker">
-        <!--  日期时间显示格式，与 ADIF 习惯保持一致  -->
         <Setter Property="DateTimeFormat" Value="yyyy/MM/dd-HH:mm:ss" />
         <Setter Property="Background" Value="{StaticResource NormalTextBoxBackColor}" />
         <Setter Property="FontSize" Value="13" />
+
     </Style>
 
-    <!--
-        ================================================================================
-        九、其他小样式（卡片内小表格 / 状态栏）
-        ================================================================================
-    -->
-
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【31】小表格标签 — LittleLabelStyle                                         │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途："其他信息"区域内小表格的字段标签（分组、星标、QSL 等）               │
-        │ 继承：基于 LabelMainTitleStyle，增加居中与内边距调整                       │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--小表格里面的标签样式-->
     <Style
         x:Key="LittleLabelStyle"
         BasedOn="{StaticResource LabelMainTitleStyle}"
         TargetType="Label">
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontSize" Value="12 " />
     </Style>
 
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【32】小表格卡片 — LittleCardPanelStyle                                     │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途："其他信息"区域内小表格的单元格背景                                   │
-        │ 继承：基于 CardPanelStyle，缩小内边距与外边距以适应密集排列                │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--小表格里面的卡片面板-->
     <Style
         x:Key="LittleCardPanelStyle"
         BasedOn="{StaticResource CardPanelStyle}"
         TargetType="Border">
         <Setter Property="Padding" Value="5,0,5,0" />
         <Setter Property="Margin" Value="2,1,2,1" />
+
     </Style>
 
-    <!--
-        ┌────────────────────────────────────────────────────────────────────────────┐
-        │ 【33】状态栏文字 — EffectLabelStyle                                         │
-        ├────────────────────────────────────────────────────────────────────────────┤
-        │ 用途：窗口底部状态栏的文字（如"当前时区：UTC"）                            │
-        │ 继承：基于 LabelMainTitleStyle，字号加大到 14 便于阅读                     │
-        └────────────────────────────────────────────────────────────────────────────┘
-    -->
+    <!--状态栏里面的文字标签样式-->
     <Style
         x:Key="EffectLabelStyle"
         BasedOn="{StaticResource LabelMainTitleStyle}"
         TargetType="Label">
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontSize" Value="14 " />
         <Setter Property="Margin" Value="3,8,0,8" />
+        
+        
     </Style>
+
+
+
+
+
 
 </ResourceDictionary>
