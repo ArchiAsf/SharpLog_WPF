@@ -14,9 +14,8 @@ using System.Windows.Threading;
 using static SharpLog.Model.StaticValues;
 using static SharpLog.DB.SharpLogDbTools;
 using static SharpLog.ViewModel.ModeConvertTools;
-using hc = HandyControl.Controls;   
-using HandyControl.Data;
-using SharpLog.View;
+using static SharpLog.ToolsBox.MessageTools;
+
 
 namespace SharpLog.ViewModel
 {
@@ -487,56 +486,7 @@ namespace SharpLog.ViewModel
             });
         }
 
-        /// <summary>
-        /// 显示错误消息提示，2 秒后自动隐藏。
-        /// </summary>
-        /// <param name="Value">提示文本</param>
-        private async Task ShowErrorMess_OnMainView(string Value)
-        {
-            //MessageShowStr = Value;
-            //MessShowISVisibility = Visibility.Visible;
-            //await Task.Delay(2000);
-            //MessShowISVisibility = Visibility.Hidden;
-            //MessageShowStr = string.Empty;
 
-            hc.Growl.Error(new GrowlInfo
-            {
-                Message = Value,
-                ShowDateTime = false,
-                StaysOpen = false,
-                WaitTime = 2,
-                Token="WarningShowBox",
-                IconKey = "ErrorGeometry",
-                IconBrushKey = "DangerBrush"
-
-
-            });
-        }
-
-        /// <summary>
-        /// 显示成功消息提示，2 秒后自动隐藏。
-        /// </summary>
-        /// <param name="Value">提示文本</param>
-        private async Task ShowSuccessMess_OnMainView(string Value)
-        {
-            //MessageShowStr = Value;
-            //MessShowISVisibility = Visibility.Visible;
-            //await Task.Delay(2000);
-            //MessShowISVisibility = Visibility.Hidden;
-            //MessageShowStr = string.Empty;
-
-            hc.Growl.Success(new GrowlInfo
-            {
-                Message = Value,
-                ShowDateTime = false,
-                StaysOpen = false,
-                WaitTime = 2,
-                Token = "WarningShowBox",
-                IconKey = "SuccessGeometry",
-                IconBrushKey = "SuccessBrush"
-
-            });
-        }
 
         /// <summary>
         /// 添加日志前的输入校验，全部通过才允许写入数据库：
