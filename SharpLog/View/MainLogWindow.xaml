@@ -24,9 +24,15 @@
                 <Grid ShowGridLines="False">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="200" />
-                        <ColumnDefinition MinWidth="780" MaxWidth="15000" Width="780*" />
-                        <ColumnDefinition MinWidth="360" MaxWidth="600" Width="103*" />
-                        <ColumnDefinition Width="273*"/>
+                        <ColumnDefinition
+                            Width="780*"
+                            MinWidth="780"
+                            MaxWidth="15000" />
+                        <ColumnDefinition
+                            Width="103*"
+                            MinWidth="360"
+                            MaxWidth="600" />
+                        <ColumnDefinition Width="273*" />
 
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -63,7 +69,8 @@
                         Grid.Row="1"
                         Grid.RowSpan="2"
                         Grid.Column="0"
-                        Style="{StaticResource CardPanelStyle}" Margin="2,2,2,2">
+                        Margin="2,2,2,2"
+                        Style="{StaticResource CardPanelStyle}">
 
                         <!--  左侧栏划分表格  -->
                         <Grid>
@@ -374,7 +381,8 @@
                     <Border
                         Grid.Row="1"
                         Grid.Column="1"
-                        Style="{StaticResource CardPanelStyle}" Margin="2,2,2,2">
+                        Margin="2,2,2,2"
+                        Style="{StaticResource CardPanelStyle}">
                         <Grid Grid.RowSpan="2" Grid.Column="1">
 
                             <Grid.ColumnDefinitions>
@@ -909,7 +917,8 @@
                     <TabControl
                         Grid.Row="2"
                         Grid.Column="1"
-                        Style="{StaticResource InDarkTabControlStyle}" Margin="2,2,2,2">
+                        Margin="2,2,2,2"
+                        Style="{StaticResource InDarkTabControlStyle}">
                         <TabItem
                             Height="18"
                             Header="其他信息"
@@ -1181,8 +1190,9 @@
                         Grid.Row="1"
                         Grid.RowSpan="3"
                         Grid.Column="2"
+                        Grid.ColumnSpan="2"
                         Margin="2,2,2,2"
-                        Style="{StaticResource CardPanelStyle}" Grid.ColumnSpan="2">
+                        Style="{StaticResource CardPanelStyle}">
                         <ScrollViewer
                             HorizontalScrollBarVisibility="Disabled"
                             Style="{StaticResource DarkOnlyVerticalScrollViewerStyle}"
@@ -1247,7 +1257,8 @@
                         Grid.Row="2"
                         Grid.RowSpan="2"
                         Grid.Column="2"
-                        Margin="0,0,18,0" Grid.ColumnSpan="2">
+                        Grid.ColumnSpan="2"
+                        Margin="0,0,18,0">
                         <Border
                             Padding="10,0,10,0"
                             HorizontalAlignment="Right"
@@ -1290,6 +1301,19 @@
                         </Border>
 
                     </Border>
+                    
+                    <!--尝试使用hc实现消息提示-->
+                    <StackPanel
+                        Margin="0,340,5,10"
+                        Width="auto"
+                        Grid.RowSpan="4"
+                        Grid.Column="2"
+                        Grid.ColumnSpan="2"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        hc:Growl.GrowlParent="True"
+                        hc:Growl.ShowMode="Append"
+                        hc:Growl.Token="WarningShowBox" />
 
 
                 </Grid>

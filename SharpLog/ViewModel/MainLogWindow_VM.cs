@@ -14,6 +14,9 @@ using System.Windows.Threading;
 using static SharpLog.Model.StaticValues;
 using static SharpLog.DB.SharpLogDbTools;
 using static SharpLog.ViewModel.ModeConvertTools;
+using hc = HandyControl.Controls;   
+using HandyControl.Data;
+using SharpLog.View;
 
 namespace SharpLog.ViewModel
 {
@@ -414,11 +417,11 @@ namespace SharpLog.ViewModel
 
                 if (!Result.Result.Success)
                 {
-                    ShowMessInMessStr(Result.Result.WarningMessage ?? "添加日志记录失败！");
+                    ShowErrorMess_OnMainView(Result.Result.WarningMessage ?? "添加日志记录失败！");
                 }
                 else
                 {
-                    ShowMessInMessStr("日志记录添加成功！");
+                    ShowSuccessMess_OnMainView("日志记录添加成功！");
                     ShowLogInView();
                 }
             }
@@ -485,16 +488,54 @@ namespace SharpLog.ViewModel
         }
 
         /// <summary>
-        /// 显示消息提示（右下角提示框），2 秒后自动隐藏。
+        /// 显示错误消息提示，2 秒后自动隐藏。
         /// </summary>
         /// <param name="Value">提示文本</param>
-        private async Task ShowMessInMessStr(string Value)
+        private async Task ShowErrorMess_OnMainView(string Value)
         {
-            MessageShowStr = Value;
-            MessShowISVisibility = Visibility.Visible;
-            await Task.Delay(2000);
-            MessShowISVisibility = Visibility.Hidden;
-            MessageShowStr = string.Empty;
+            //MessageShowStr = Value;
+            //MessShowISVisibility = Visibility.Visible;
+            //await Task.Delay(2000);
+            //MessShowISVisibility = Visibility.Hidden;
+            //MessageShowStr = string.Empty;
+
+            hc.Growl.Error(new GrowlInfo
+            {
+                Message = Value,
+                ShowDateTime = false,
+                StaysOpen = false,
+                WaitTime = 2,
+                Token="WarningShowBox",
+                IconKey = "ErrorGeometry",
+                IconBrushKey = "DangerBrush"
+
+
+            });
+        }
+
+        /// <summary>
+        /// 显示成功消息提示，2 秒后自动隐藏。
+        /// </summary>
+        /// <param name="Value">提示文本</param>
+        private async Task ShowSuccessMess_OnMainView(string Value)
+        {
+            //MessageShowStr = Value;
+            //MessShowISVisibility = Visibility.Visible;
+            //await Task.Delay(2000);
+            //MessShowISVisibility = Visibility.Hidden;
+            //MessageShowStr = string.Empty;
+
+            hc.Growl.Success(new GrowlInfo
+            {
+                Message = Value,
+                ShowDateTime = false,
+                StaysOpen = false,
+                WaitTime = 2,
+                Token = "WarningShowBox",
+                IconKey = "SuccessGeometry",
+                IconBrushKey = "SuccessBrush"
+
+            });
         }
 
         /// <summary>
@@ -513,25 +554,25 @@ namespace SharpLog.ViewModel
             if (string.IsNullOrWhiteSpace(CALL) || string.IsNullOrWhiteSpace(FREQ)
                 || string.IsNullOrWhiteSpace(SelectedCommCode))
             {
-                ShowMessInMessStr("请填写所有必填字段！");
+                ShowErrorMess_OnMainView("请填写所有必填字段！");
                 return false;
             }
             // 检查频率是否为有效的数字
             if (!double.TryParse(FREQ, out double frequency))
             {
-                ShowMessInMessStr("频率必须是有效的数字！");
+                ShowErrorMess_OnMainView("频率必须是有效的数字！");
                 return false;
             }
             // 检查开始时间是否早于结束时间（复合 DateTime 直接比较）
             if (StartTimeDT >= EndTimeDT)
             {
-                ShowMessInMessStr("开始时间必须早于结束时间！");
+                ShowErrorMess_OnMainView("开始时间必须早于结束时间！");
                 return false;
             }
             // 波段合法性校验结果
             if (!isValid)
             {
-                ShowMessInMessStr(errorMessage);
+                ShowErrorMess_OnMainView(errorMessage);
                 return false;
             }
             return true;
