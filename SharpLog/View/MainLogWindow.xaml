@@ -24,21 +24,22 @@
                 <Grid ShowGridLines="False">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="200" />
-                        <ColumnDefinition MinWidth="780" MaxWidth="15000" />
-                        <ColumnDefinition MinWidth="380" MaxWidth="600" />
+                        <ColumnDefinition MinWidth="780" MaxWidth="15000" Width="780*" />
+                        <ColumnDefinition MinWidth="360" MaxWidth="600" Width="103*" />
+                        <ColumnDefinition Width="273*"/>
 
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="35" />
-                        <RowDefinition MinHeight="355" MaxHeight="600" />
-                        <RowDefinition MinHeight="220" MaxHeight="100000000" />
+                        <RowDefinition MinHeight="380" MaxHeight="600" />
+                        <RowDefinition MinHeight="200" MaxHeight="100000000" />
                         <RowDefinition Height="40" />
                     </Grid.RowDefinitions>
 
                     <!--  顶部工具栏容器  -->
                     <Border
                         Grid.Row="0"
-                        Grid.ColumnSpan="3"
+                        Grid.ColumnSpan="4"
                         Margin="2,2,2,2"
                         Style="{StaticResource CardPanelStyle}">
 
@@ -62,7 +63,7 @@
                         Grid.Row="1"
                         Grid.RowSpan="2"
                         Grid.Column="0"
-                        Style="{StaticResource CardPanelStyle}">
+                        Style="{StaticResource CardPanelStyle}" Margin="2,2,2,2">
 
                         <!--  左侧栏划分表格  -->
                         <Grid>
@@ -373,7 +374,7 @@
                     <Border
                         Grid.Row="1"
                         Grid.Column="1"
-                        Style="{StaticResource CardPanelStyle}">
+                        Style="{StaticResource CardPanelStyle}" Margin="2,2,2,2">
                         <Grid Grid.RowSpan="2" Grid.Column="1">
 
                             <Grid.ColumnDefinitions>
@@ -908,7 +909,7 @@
                     <TabControl
                         Grid.Row="2"
                         Grid.Column="1"
-                        Style="{StaticResource InDarkTabControlStyle}">
+                        Style="{StaticResource InDarkTabControlStyle}" Margin="2,2,2,2">
                         <TabItem
                             Height="18"
                             Header="其他信息"
@@ -923,7 +924,16 @@
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
 
-                                <Border BorderBrush="{StaticResource TabBorderBrush}" BorderThickness="0,0,1,0" />
+
+                                <Border BorderBrush="{StaticResource TabBorderBrush}" BorderThickness="0,0,1,0">
+                                    <ScrollViewer
+                                        Grid.Column="1"
+                                        HorizontalScrollBarVisibility="Disabled"
+                                        Style="{StaticResource DarkOnlyVerticalScrollViewerStyle}"
+                                        VerticalScrollBarVisibility="Visible">
+                                        <Border />
+                                    </ScrollViewer>
+                                </Border>
 
                                 <ScrollViewer
                                     Grid.Column="1"
@@ -931,7 +941,7 @@
                                     Style="{StaticResource DarkOnlyVerticalScrollViewerStyle}"
                                     VerticalScrollBarVisibility="Visible">
                                     <!--  日志其他信息区  -->
-                                    <Border Height="240" >
+                                    <Border Height="240" Padding="0,0,1.5,0">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition />
@@ -1170,14 +1180,17 @@
                     <Border
                         Grid.Row="1"
                         Grid.RowSpan="3"
-                        Grid.Column="3"
+                        Grid.Column="2"
                         Margin="2,2,2,2"
-                        Style="{StaticResource CardPanelStyle}">
+                        Style="{StaticResource CardPanelStyle}" Grid.ColumnSpan="2">
                         <ScrollViewer
                             HorizontalScrollBarVisibility="Disabled"
                             Style="{StaticResource DarkOnlyVerticalScrollViewerStyle}"
                             VerticalScrollBarVisibility="Visible">
-                            <ItemsControl x:Name="QsoItemsControl" ItemsSource="{Binding QsoLogCollection}">
+                            <ItemsControl
+                                x:Name="QsoItemsControl"
+                                Padding="0,0,1,0"
+                                ItemsSource="{Binding QsoLogCollection}">
                                 <!--  布局面板：动态项排列方式  -->
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -1234,7 +1247,7 @@
                         Grid.Row="2"
                         Grid.RowSpan="2"
                         Grid.Column="2"
-                        Margin="0,0,18,0">
+                        Margin="0,0,18,0" Grid.ColumnSpan="2">
                         <Border
                             Padding="10,0,10,0"
                             HorizontalAlignment="Right"

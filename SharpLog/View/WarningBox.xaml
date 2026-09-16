@@ -5,8 +5,23 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SharpLog.View"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+             d:DesignHeight="450" d:DesignWidth="800"
+             Height="auto"
+             Width="auto">
+    <Border Style="{StaticResource InCardPanelStyle}" BorderThickness="2" BorderBrush="{StaticResource PanelBorderColor}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="8*"/>
+            </Grid.RowDefinitions>
+
+            <Border Margin="0" Style="{StaticResource InCardPanelStyle}" BorderThickness="0,0,0,2" CornerRadius="0">
+                
+            </Border>
+            <Border>
+                
+            </Border>
+        </Grid>
+    </Border>
+
 </UserControl>
