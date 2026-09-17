@@ -213,7 +213,8 @@
                 Style="{StaticResource QsoNormalLabelStyle}" />
                 <Label
                 Grid.Row="6"
-                Grid.Column="6"
+                Grid.Column="5"
+                Grid.ColumnSpan="2"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Content="{Binding PropModeText, RelativeSource={RelativeSource AncestorType=UserControl}}"

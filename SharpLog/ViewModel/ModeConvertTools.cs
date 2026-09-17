@@ -130,7 +130,6 @@ namespace SharpLog.ViewModel
         ///    （数据库中存的是 DIGITALVOICE + DSTAR，卡片上要显示 "D-STAR"）；
         /// 3. 卡片左侧竖条颜色 = 模式显示名对应的配色（含兜底，不会因未知模式崩溃）；
         /// 4. 频率显示：FREQ 数值 + "khz" 后缀。
-        /// ⚠️ 已知问题：未设置 PropModeText（卡片上的传播模式不显示）。
         /// </summary>
         /// <param name="qsoLog">数据库实体</param>
         /// <returns>卡片显示模型</returns>

@@ -1266,13 +1266,13 @@
                         </Grid>
                     </Border>
 
-                    <!--使用hc实现消息提示-->
+                    <!--  使用hc实现消息提示  -->
                     <StackPanel
-                        Margin="0,340,5,10"
-                        Width="auto"
                         Grid.RowSpan="4"
                         Grid.Column="2"
                         Grid.ColumnSpan="2"
+                        Width="auto"
+                        Margin="0,340,5,10"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom"
                         hc:Growl.GrowlParent="True"
@@ -1287,5 +1287,62 @@
 
 
         <TabItem Header="日志查看" Style="{StaticResource DarkTabItemStyle}" />
+
+        <TabItem Header="设置" Style="{StaticResource DarkTabItemStyle}">
+            <Border Style="{StaticResource CardPanelStyle}">
+                <ScrollViewer
+                    HorizontalScrollBarVisibility="Disabled"
+                    Style="{StaticResource DarkOnlyVerticalScrollViewerStyle}"
+                    VerticalScrollBarVisibility="Visible">
+                    <StackPanel >
+                        <Border Style="{StaticResource OptionCardPanelStyle}">
+                            <Grid >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="2*" />
+                                    <RowDefinition Height="8*" />
+                                </Grid.RowDefinitions>
+                                <!--标题-->
+                                <Border Style="{StaticResource OptionCardTitilePanelStyle}" Grid.Row="0">
+                                    <hc:Divider
+                                        Margin="-1,0,-1,0"
+                                        VerticalAlignment="Top"
+                                        Content="本地台站设置"
+                                        Style="{StaticResource OptionDividerStyle}" />
+                                </Border>
+                                <!--选项区-->
+                                <Border Grid.Row="1">
+                                    <Grid ShowGridLines="True">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="40"/>
+                                            <RowDefinition Height="40"/>
+                                            <RowDefinition Height="40"/>
+                                            <RowDefinition Height="40"/>
+                                            <RowDefinition Height="40"/>
+                                            <RowDefinition Height="40"/>
+                                        </Grid.RowDefinitions>
+                                    </Grid>
+
+                                </Border>
+                            </Grid>
+                        </Border>
+
+
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+
+        </TabItem>
     </TabControl>
 </Window>
