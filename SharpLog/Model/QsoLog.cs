@@ -204,7 +204,7 @@ namespace SharpLog.Model
         /// </summary>
         public int? GroupID { get; set; }
 
-        /// <summary>
+        /// <summary> 
         /// 通联所属星级 ID（项目自定义字段，可选，用于分级管理，0-5）。
         /// </summary>
         public int? StarID { get; set; }
