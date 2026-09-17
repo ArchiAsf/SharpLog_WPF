@@ -852,7 +852,7 @@
                                 Grid.Row="8"
                                 Grid.Column="0"
                                 Style="{StaticResource CardPanelStyle}">
-                                <!--  字段标签：通联方式 PROP_MODE（ADIF）  -->
+                                <!--  字段标签：传播模式 PROP_MODE（ADIF）  -->
                                 <Label
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
