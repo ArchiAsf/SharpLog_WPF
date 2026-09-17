@@ -15,33 +15,6 @@ namespace SharpLog.ToolsBox
         ///
         /// ════════════════════════════════════════════════════════════════════════
         /// 【必须写 IsCustom = true，否则错误提示永远不会自动消失】
-        ///
-        /// 这是 HandyControl 3.5.1 的一个内置行为（反编译 Growl.InitGrowlInfo 可见）：
-        ///
-        ///     case InfoType.Error:
-        ///         if (!growlInfo.IsCustom)          // ← 未设置 IsCustom 时进入
-        ///         {
-        ///             growlInfo.IconKey      = "ErrorGeometry";
-        ///             growlInfo.IconBrushKey = "DangerBrush";
-        ///             growlInfo.StaysOpen    = true;   // ★ 覆盖掉调用方设置的值
-        ///         }
-        ///         break;
-        ///
-        /// 而 Growl.Update() 的结尾是：
-        ///
-        ///     if (!_staysOpen) StartTimer();        // 常驻时不启动关闭计时器
-        ///
-        /// 两处合起来的结果：Error 类型的消息被强制设为 StaysOpen = true，
-        /// 关闭计时器压根不会启动，提示框就一直挂在右下角。
-        /// 调用方写 StaysOpen = false 是无效的——它会被上面那段代码覆盖。
-        ///
-        /// 对比：InfoType.Success / Info / Warning 三个分支中没有 set_StaysOpen 这一句，
-        /// 所以成功提示能正常倒计时关闭，只有 Error 和 Fatal 会常驻。
-        ///
-        /// 【解决办法】
-        /// 设置 IsCustom = true，跳过整个 if (!IsCustom) 代码块，
-        /// StaysOpen 便保持为 false，关闭计时器正常启动。
-        ///
         /// 副作用：设为自定义后 HandyControl 不再自动填充图标，
         /// 因此下面的 IconKey / IconBrushKey 必须显式给出（取值与它的默认值一致，
         /// 视觉效果不会发生变化）。
