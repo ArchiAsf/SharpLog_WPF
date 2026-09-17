@@ -775,7 +775,7 @@
         <Setter Property="MinWidth" Value="1330" />
         <Setter Property="MaxWidth" Value="1500" />
         <Setter Property="BorderThickness" Value="2" />
-        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Padding" Value="0" />
 
 
     </Style>
@@ -799,6 +799,30 @@
         <Setter Property="FontSize" Value="18" />
         <Setter Property="LineStroke" Value="{StaticResource PanelBorderColor}" />
     </Style>
+
+
+    <!--  设置里面的标签的Border样式  -->
+    <Style
+        x:Key="InOptionCardPanelStyle"
+        BasedOn="{StaticResource CardPanelStyle}"
+        TargetType="Border">
+        <Setter Property="Padding" Value="5,0,5,0" />
+        <Setter Property="Margin" Value="2,1,2,1" />
+
+    </Style>
+
+    <!--  设置里面的标签样式  -->
+    <Style
+        x:Key="InOptionLabelStyle"
+        BasedOn="{StaticResource LabelMainTitleStyle}"
+        TargetType="Label">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="18 " />
+    </Style>
+
+    <!--  设置里面的输入面板  -->
+    <Style x:Key="InOptionInPutPanelStyle" TargetType="Border" />
 
 
 

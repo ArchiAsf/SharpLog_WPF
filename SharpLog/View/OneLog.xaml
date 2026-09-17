@@ -62,7 +62,7 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="10" />
-                <ColumnDefinition/>
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -78,7 +78,10 @@
                 BorderThickness="0,0,2,0"
                 CornerRadius="8,0,0,8" />
 
-            <Grid  Grid.Row="0" Grid.Column="1" Margin="0,2,0,2">
+            <Grid
+                Grid.Row="0"
+                Grid.Column="1"
+                Margin="0,2,0,2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1" />
                     <!--  0 侧边条 固定  -->
@@ -110,145 +113,145 @@
                 </Grid.RowDefinitions>
                 <!--  第0行 编号1  -->
                 <Label
-                Grid.Row="0"
-                Grid.Column="1"
-                Grid.ColumnSpan="2"
-                Margin="2,0,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Content="{Binding StartTime, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                Style="{StaticResource QsoNormalLabelStyle}" />
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="2"
+                    Margin="2,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Content="{Binding StartTime, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Style="{StaticResource QsoNormalLabelStyle}" />
                 <Label
-                Grid.Row="0"
-                Grid.Column="3"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Content="{Binding TimeZoneSuffix, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                Style="{StaticResource QsoSmallLabelStyle}" />
+                    Grid.Row="0"
+                    Grid.Column="3"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Content="{Binding TimeZoneSuffix, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Style="{StaticResource QsoSmallLabelStyle}" />
                 <Label
-                Grid.Row="0"
-                Grid.RowSpan="2"
-                Grid.Column="5"
-                Grid.ColumnSpan="2"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Content="{Binding MODE, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                Style="{StaticResource QsoBigLabelStyle}" />
+                    Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="5"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="{Binding MODE, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Style="{StaticResource QsoBigLabelStyle}" />
 
 
                 <!--  第1行 编号2  -->
                 <Label
-                Grid.Row="1"
-                Grid.Column="1"
-                Grid.ColumnSpan="2"
-                Margin="2,0,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Content="{Binding EndTime, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                Style="{StaticResource QsoNormalLabelStyle}" />
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="2"
+                    Margin="2,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Content="{Binding EndTime, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Style="{StaticResource QsoNormalLabelStyle}" />
                 <Label
-                Grid.Row="1"
-                Grid.Column="3"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Content="{Binding TimeZoneSuffix, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                Style="{StaticResource QsoSmallLabelStyle}" />
+                    Grid.Row="1"
+                    Grid.Column="3"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Content="{Binding TimeZoneSuffix, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Style="{StaticResource QsoSmallLabelStyle}" />
 
                 <!--  第2行 编号3 无d  -->
 
 
                 <!--  第3行 编号4 呼号行【1.5倍高度】  -->
                 <Label
-                Grid.Row="3"
-                Grid.Column="1"
-                Grid.ColumnSpan="3"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Content="{Binding CALL, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                Style="{StaticResource CallSignBigLabelStyle}" />
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="3"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="{Binding CALL, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Style="{StaticResource CallSignBigLabelStyle}" />
                 <Label
-                Grid.Row="3"
-                Grid.Column="5"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Content="{Binding RST_RCVD, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                Style="{StaticResource QsoBigLabelStyle}" />
+                    Grid.Row="3"
+                    Grid.Column="5"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="{Binding RST_RCVD, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Style="{StaticResource QsoBigLabelStyle}" />
                 <Label
-                Grid.Row="3"
-                Grid.Column="6"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Content="{Binding RST_SENT, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                Style="{StaticResource QsoBigLabelStyle}" />
+                    Grid.Row="3"
+                    Grid.Column="6"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="{Binding RST_SENT, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Style="{StaticResource QsoBigLabelStyle}" />
 
                 <!--  第4行 编号5 频率行【1.25倍高度】  -->
                 <Label
-                Grid.Row="4"
-                Grid.Column="1"
-                Grid.ColumnSpan="3"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Content="{Binding DisplayFrequency, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                Style="{StaticResource QsoMidLabelStyle}" />
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="3"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="{Binding DisplayFrequency, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Style="{StaticResource QsoMidLabelStyle}" />
                 <Label
-                Grid.Row="4"
-                Grid.Column="5"
-                Grid.ColumnSpan="2"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Content="{Binding GRIDSQUARE, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                Style="{StaticResource QsoMidLabelStyle}" />
+                    Grid.Row="4"
+                    Grid.Column="5"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="{Binding GRIDSQUARE, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Style="{StaticResource QsoMidLabelStyle}" />
 
                 <!--  第5行 编号6 空白  -->
 
                 <!--  第6行 编号7 QTH  -->
                 <Label
-                Grid.Row="6"
-                Grid.Column="1"
-                Grid.ColumnSpan="4"
-                Margin="2,0,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Content="{Binding QTH, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                Style="{StaticResource QsoNormalLabelStyle}" />
+                    Grid.Row="6"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="4"
+                    Margin="2,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Content="{Binding QTH, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Style="{StaticResource QsoNormalLabelStyle}" />
                 <Label
-                Grid.Row="6"
-                Grid.Column="5"
-                Grid.ColumnSpan="2"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Content="{Binding PropModeText, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                Style="{StaticResource QsoNormalLabelStyle}" />
+                    Grid.Row="6"
+                    Grid.Column="5"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="{Binding PropModeText, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Style="{StaticResource QsoNormalLabelStyle}" />
 
                 <!--  第7行 编号8 设备Rig  -->
                 <Label
-                Grid.Row="7"
-                Grid.Column="1"
-                Grid.ColumnSpan="4"
-                Margin="2,0,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Content="{Binding RIG, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                Style="{StaticResource QsoNormalLabelStyle}" />
+                    Grid.Row="7"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="4"
+                    Margin="2,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Content="{Binding RIG, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Style="{StaticResource QsoNormalLabelStyle}" />
 
                 <!--  第8行 编号9 天线 + 操作员  -->
                 <Label
-                Grid.Row="8"
-                Grid.Column="1"
-                Grid.ColumnSpan="4"
-                Margin="2,0,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
-                Content="{Binding Antenna, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                Style="{StaticResource QsoNormalLabelStyle}" />
+                    Grid.Row="8"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="4"
+                    Margin="2,0,0,0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Content="{Binding Antenna, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Style="{StaticResource QsoNormalLabelStyle}" />
                 <Label
-                Grid.Row="8"
-                Grid.Column="5"
-                Grid.ColumnSpan="2"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Content="{Binding Operator, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                Style="{StaticResource QsoNormalLabelStyle}" />
+                    Grid.Row="8"
+                    Grid.Column="5"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="{Binding Operator, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Style="{StaticResource QsoNormalLabelStyle}" />
             </Grid>
         </Grid>
 

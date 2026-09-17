@@ -292,6 +292,94 @@ namespace SharpLog.ViewModel
         [ObservableProperty]
         private string _ZoneName = string.Empty;
 
+        #region 本地台站设置（设置页专用，属性名尽可能采用 ADIF 标准字段）
+
+        // 说明：本组属性描述【本站】的信息，与通联记录里的对方信息（CALL、QTH 等）无关。
+        // ADIF 规范中，本站信息统一使用 MY_ 前缀（或 STATION_/OPERATOR 等专用字段），
+        // 导出 ADIF 文件时写入文件头，供对方软件识别本站台站资料。
+        // 其中“通讯地址 / QSL邮寄地址 / 电子邮箱”三项在 ADIF 中没有对应的本站字段
+        // （ADIF 的 ADDRESS、EMAIL 均指对方电台），故采用项目自定义命名。
+
+        /// <summary>
+        /// 本站呼号（ADIF: STATION_CALLSIGN），通联时本站实际使用的呼号。
+        /// ⚠ 注意与通联记录的 CALL（对方呼号）区分。
+        /// </summary>
+        [ObservableProperty]
+        private string _STATION_CALLSIGN = string.Empty;
+
+        /// <summary>
+        /// 日志操作员呼号（ADIF: OPERATOR）。
+        /// ADIF 规范：若 STATION_CALLSIGN 缺失，OPERATOR 同时视为本站呼号与操作员呼号。
+        /// </summary>
+        [ObservableProperty]
+        private string _OPERATOR = string.Empty;
+
+        /// <summary>本站 DXCC 实体代码（ADIF: MY_DXCC）。</summary>
+        [ObservableProperty]
+        private string _MY_DXCC = string.Empty;
+
+        /// <summary>本站 CQ 分区，取值 1~40（ADIF: MY_CQ_ZONE）。</summary>
+        [ObservableProperty]
+        private string _MY_CQ_ZONE = string.Empty;
+
+        /// <summary>本站 ITU 分区，取值 1~90（ADIF: MY_ITU_ZONE）。</summary>
+        [ObservableProperty]
+        private string _MY_ITU_ZONE = string.Empty;
+
+        /// <summary>本站 Maidenhead 网格定位，2/4/6/8 字符（ADIF: MY_GRIDSQUARE）。</summary>
+        [ObservableProperty]
+        private string _MY_GRIDSQUARE = string.Empty;
+
+        /// <summary>本站所属 DXCC 实体名称（ADIF: MY_COUNTRY）。</summary>
+        [ObservableProperty]
+        private string _MY_COUNTRY = string.Empty;
+
+        /// <summary>本站经度（ADIF: MY_LON）。</summary>
+        [ObservableProperty]
+        private string _MY_LON = string.Empty;
+
+        /// <summary>本站纬度（ADIF: MY_LAT）。</summary>
+        [ObservableProperty]
+        private string _MY_LAT = string.Empty;
+
+        /// <summary>本站邮政编码（ADIF: MY_POSTAL_CODE）。</summary>
+        [ObservableProperty]
+        private string _MY_POSTAL_CODE = string.Empty;
+
+        /// <summary>
+        /// 台站地址（ADIF: MY_STREET，即本站街道地址，指电台架设所在地）。
+        /// </summary>
+        [ObservableProperty]
+        private string _MY_STREET = string.Empty;
+
+        /// <summary>
+        /// 通讯地址（项目自定义，ADIF 中无对应的本站字段）。
+        /// 与台站地址的区别：台站地址是电台架设地，通讯地址是信件收件地址。
+        /// </summary>
+        [ObservableProperty]
+        private string _MY_MailAddress = string.Empty;
+
+        /// <summary>QSL 卡片邮寄地址（项目自定义，ADIF 中无对应的本站字段）。</summary>
+        [ObservableProperty]
+        private string _MY_QslAddress = string.Empty;
+
+        /// <summary>
+        /// 本站电子邮箱（项目自定义）。
+        /// ⚠ 不能复用 ADIF 的 EMAIL 字段——那个指的是对方电台的邮箱。
+        /// </summary>
+        [ObservableProperty]
+        private string _MY_Email = string.Empty;
+
+        /// <summary>本站天线描述（ADIF: MY_ANTENNA）。</summary>
+        [ObservableProperty]
+        private string _MY_ANTENNA = string.Empty;
+
+        /// <summary>本站设备描述（ADIF: MY_RIG）。</summary>
+        [ObservableProperty]
+        private string _MY_RIG = string.Empty;
+
+        #endregion
+
         /// <summary>
         /// 传播模式下拉列表数据源（静态，见 StaticValues.Set_PropagationModeList）。
         /// 首项为「（不指定）」（Code = null），其余为 ADIF 官方 20 条传播模式。
