@@ -1259,57 +1259,7 @@
                         </Grid>
                     </Border>
 
-                    <!--  消息提示框  -->
-                    <Border
-                        Grid.Row="2"
-                        Grid.RowSpan="2"
-                        Grid.Column="2"
-                        Grid.ColumnSpan="2"
-                        Margin="0,0,18,0">
-                        <Border
-                            Padding="10,0,10,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Style="{StaticResource InCardPanelStyle}"
-                            Visibility="{Binding MessShowISVisibility}">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="2*" />
-                                    <RowDefinition Height="8*" />
-                                </Grid.RowDefinitions>
-                                <Border
-                                    Grid.Row="0"
-                                    BorderBrush="{StaticResource PanelBorderColor}"
-                                    BorderThickness="0,0,0,1">
-                                    <Label
-                                        Margin="0,3,0,3"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        Style="{StaticResource LabelMainTitleStyle}">
-                                        <TextBlock Text="提示" TextAlignment="Center" />
-                                    </Label>
-                                </Border>
-
-
-                                <!--  消息提示内容  -->
-                                <Label
-                                    Grid.Row="1"
-                                    Margin="0,5,0,5"
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock Text="{Binding MessageShowStr}" TextAlignment="Center" />
-                                </Label>
-
-
-                            </Grid>
-
-
-                        </Border>
-
-                    </Border>
-                    
-                    <!--尝试使用hc实现消息提示-->
+                    <!--使用hc实现消息提示-->
                     <StackPanel
                         Margin="0,340,5,10"
                         Width="auto"
@@ -1321,7 +1271,6 @@
                         hc:Growl.GrowlParent="True"
                         hc:Growl.ShowMode="Append"
                         hc:Growl.Token="WarningShowBox" />
-
 
                 </Grid>
             </Border>

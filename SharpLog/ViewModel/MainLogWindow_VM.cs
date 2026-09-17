@@ -337,7 +337,6 @@ namespace SharpLog.ViewModel
         /// 1. 初始化下拉列表数据源与默认选中项；
         /// 2. 从数据库加载全部日志并刷新右侧卡片；
         /// 3. 启动每秒时间刷新定时器。
-        /// ⚠️ 已知问题：GetAllDBDataAsync().Result 同步等待会阻塞 UI 线程，后续建议改异步。
         /// </summary>
         public MainLogWindow_VM()
         {

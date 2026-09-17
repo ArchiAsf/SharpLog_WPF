@@ -28,7 +28,7 @@ namespace SharpLog.ToolsBox
                 Message = Value,
                 ShowDateTime = false,
                 StaysOpen = false,
-                WaitTime = 2,
+                WaitTime = 1,
                 Token = "WarningShowBox",
                 IconKey = "ErrorGeometry",
                 IconBrushKey = "DangerBrush"

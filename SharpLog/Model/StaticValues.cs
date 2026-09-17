@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
-using static SharpLog.Model.RadioValues;
 using System.Windows.Media;
 
 namespace SharpLog.Model
