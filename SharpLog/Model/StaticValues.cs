@@ -10,15 +10,65 @@ namespace SharpLog.Model
     {
 
 
+        /// <summary>
+        /// 传播模式下拉列表：界面显示名 ↔ ADIF PROP_MODE 代码的映射表。
+        ///
+        /// ════════════════════════════════════════════════════════════════════
+        /// 【数据来源】
+        /// 20 条 Code 全部取自 ADIF 3.1.7 官方枚举表
+        /// （程序目录 ADIFCode_Json\enumerations_propagation_mode.json，
+        ///   由 AdifDataLoader 加载，可在 AdifDataLoader.PropagationModes 中查询）。
+        /// 官方该枚举共 20 条，已全部收录，未做取舍。
+        ///
+        /// 【首项「（不指定）」】
+        /// PROP_MODE 在 ADIF 中是可选字段，绝大多数通联记录并不填写它。
+        /// 首项即表示「本次未记录传播方式」：Code 为 null →
+        /// 存库时 QsoLog.PROP_MODE 写 NULL，导出 ADIF 时该字段整体省略。
+        /// 该项同时也是默认选中项，避免把某个具体传播方式（如 F2）
+        /// 无差别写进每一条日志，造成事后无法清洗的数据污染。
+        ///
+        /// 【排序原则】
+        /// 常用方式排在最前（便于下拉一次即可选中），其余按官方代码字母序排列，
+        /// 网络链路类（EchoLink / IRLP / 互联网辅助）单独归为一组。
+        ///
+        /// 【已修正的历史问题】
+        /// 原列表首项 Code = "Simplex"（尾部还含一个零宽字符 U+200C）、
+        /// 末项 Code = "REPEATER"，两者都不是 ADIF 官方代码：
+        ///   · 官方的中继/转发器代码是 "RPT"；
+        ///   · "Simplex"（单工）根本不是传播模式，ADIF 枚举中无此值。
+        /// 现已全部替换为官方标准值。
+        /// ════════════════════════════════════════════════════════════════════
+        /// </summary>
         public static readonly ObservableCollection<PropagationItem> Set_PropagationModeList = new ObservableCollection<PropagationItem>()
         {
-            new PropagationItem{ Name = " ", Code = "Simplex‌" },
-            new PropagationItem { Name = "F2 电离层", Code = "F2" },
-            new PropagationItem { Name = "ES 偶发E", Code = "ES" },
-            new PropagationItem { Name = "MS 流星散射", Code = "MS" },
-            new PropagationItem { Name = "EME 月面反射", Code = "EME" },
-            new PropagationItem { Name = "SAT 卫星", Code = "SAT" },
-            new PropagationItem { Name = "中继 Repeater", Code = "REPEATER" }
+            // 默认项：不记录传播方式（Code 为 null → 存库写 NULL，导出 ADIF 时省略该字段）
+            new PropagationItem { DisplayName = "（不指定）", Code = null },
+
+            // ────────────── 常用传播方式（10 项）──────────────
+            new PropagationItem { DisplayName = "F2层反射 F2",       Code = "F2"    },
+            new PropagationItem { DisplayName = "偶发E层 ES",         Code = "ES"    },
+            new PropagationItem { DisplayName = "流星散射 MS",        Code = "MS"    },
+            new PropagationItem { DisplayName = "月面反射 EME",       Code = "EME"   },
+            new PropagationItem { DisplayName = "卫星转发 SAT",       Code = "SAT"   },
+            new PropagationItem { DisplayName = "中继/转发器 RPT",    Code = "RPT"   },
+            new PropagationItem { DisplayName = "对流层波导 TR",      Code = "TR"    },
+            new PropagationItem { DisplayName = "视距传播 LOS",       Code = "LOS"   },
+            new PropagationItem { DisplayName = "地波 GWAVE",         Code = "GWAVE" },
+            new PropagationItem { DisplayName = "极光 AUR",           Code = "AUR"   },
+
+            // ────────────── 其他传播方式（7 项，按官方代码字母序）──────────────
+            new PropagationItem { DisplayName = "飞机散射 AS",        Code = "AS"    },
+            new PropagationItem { DisplayName = "极光E层 AUE",        Code = "AUE"   },
+            new PropagationItem { DisplayName = "后向散射 BS",        Code = "BS"    },
+            new PropagationItem { DisplayName = "场向不规则体 FAI",    Code = "FAI"   },
+            new PropagationItem { DisplayName = "电离层散射 ION",     Code = "ION"   },
+            new PropagationItem { DisplayName = "雨散射 RS",          Code = "RS"    },
+            new PropagationItem { DisplayName = "跨赤道传播 TEP",     Code = "TEP"   },
+
+            // ────────────── 网络链路类（3 项）──────────────
+            new PropagationItem { DisplayName = "EchoLink网络 ECH",   Code = "ECH"      },
+            new PropagationItem { DisplayName = "IRLP网络 IRL",       Code = "IRL"      },
+            new PropagationItem { DisplayName = "互联网辅助 INTERNET", Code = "INTERNET" }
         };
 
         /// <summary>

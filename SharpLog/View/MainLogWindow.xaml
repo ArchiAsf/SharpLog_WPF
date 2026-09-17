@@ -869,9 +869,16 @@
                                 Grid.ColumnSpan="2"
                                 Style="{StaticResource InCardPanelStyle}">
 
+                                <!--
+                                    传播模式下拉框。
+                                    DisplayMemberPath 指向 PropagationItem.DisplayName
+                                    （格式为「中文 + 代码」，如 "F2层反射 F2"）。
+                                    选中首项「（不指定）」时 Code 为 null，
+                                    存库时 QsoLog.PROP_MODE 写 NULL。
+                                -->
                                 <ComboBox
                                     Background="{StaticResource NormalTextBoxBackColor}"
-                                    DisplayMemberPath="Name"
+                                    DisplayMemberPath="DisplayName"
                                     ItemsSource="{Binding PropagationModeList}"
                                     SelectedItem="{Binding SelectPROPItem}" />
 

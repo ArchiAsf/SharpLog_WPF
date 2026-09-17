@@ -96,8 +96,13 @@ namespace SharpLog
         public static readonly DependencyProperty MODEProperty =
             DependencyProperty.Register(nameof(MODE), typeof(string), typeof(OneLog));
 
-        /// <summary>传播模式文本（ADIF: PROP_MODE）。
-        /// ⚠️ 已知问题：ModeConvertTools 转换时未赋值，卡片上暂不显示。</summary>
+        /// <summary>
+        /// 卡片上显示的传播模式文字（ADIF: PROP_MODE），如 "F2层反射 F2"。
+        ///
+        /// 由 ModeConvertTools.ResolvePropDisplayName 从 PROP_MODE 代码反查得到；
+        /// 未记录传播方式（数据库中为 NULL）时为空串，卡片上该处不显示内容。
+        /// （此前的「转换时未赋值、卡片不显示」问题已于 2026-09-18 修复。）
+        /// </summary>
         public string PropModeText
         {
             get => (string)GetValue(PropModeTextProperty);

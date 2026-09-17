@@ -265,7 +265,8 @@ namespace SharpLog.ViewModel
 
         /// <summary>
         /// 当前选中的传播模式下拉项（绑定 ComboBox SelectedItem）。
-        /// 通过 SelectedPropCode 获取 ADIF 代码（存库值）。
+        /// 通过 SelectedPropCode 获取 ADIF 代码（存库值）；
+        /// 选中首项「（不指定）」时 Code 为 null，存库 PROP_MODE 写 NULL。
         /// </summary>
         [ObservableProperty]
         private PropagationItem? _SelectPROPItem;
@@ -291,7 +292,10 @@ namespace SharpLog.ViewModel
         [ObservableProperty]
         private string _ZoneName = string.Empty;
 
-        /// <summary>传播模式下拉列表数据源（静态，见 StaticValues）。</summary>
+        /// <summary>
+        /// 传播模式下拉列表数据源（静态，见 StaticValues.Set_PropagationModeList）。
+        /// 首项为「（不指定）」（Code = null），其余为 ADIF 官方 20 条传播模式。
+        /// </summary>
         public ObservableCollection<PropagationItem> PropagationModeList { get; }
 
         /// <summary>
@@ -321,8 +325,8 @@ namespace SharpLog.ViewModel
         /// </summary>
         public string? SelectedSubmodeCode => _SelectCommMode?.Submode;
 
-        /// <summary>选中传播模式的显示名称（只读）。</summary>
-        public string? SelectedPropName => _SelectPROPItem?.Name;
+        /// <summary>选中传播模式的显示名称（只读，如 "F2层反射 F2"，仅用于界面展示）。</summary>
+        public string? SelectedPropName => _SelectPROPItem?.DisplayName;
 
         /// <summary>选中通联模式的显示名称（只读，如 "D-STAR"，仅用于界面展示，不写库）。</summary>
         public string? SelectedCommName => _SelectCommMode?.DisplayName;

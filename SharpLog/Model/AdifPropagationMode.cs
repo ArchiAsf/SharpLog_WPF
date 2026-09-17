@@ -22,10 +22,17 @@ namespace SharpLog.Model
     ///     · TROPO 对流层波导
     ///   该值对应 ADIF 文件中的 PROP_MODE 字段。
     ///
-    ///   ⚠ 本项目当前下拉列表（StaticValues.Set_PropagationModeList）中的
-    ///     "REPEATER" 并非 ADIF 官方代码，官方为 "RPT"；
-    ///     且列表首项的 Name 与 Code 含有多余空格与不可见字符。
-    ///     此问题已记录在待办事项中，后续做"ADIF 合规性修正"时处理。
+    ///   ✅ 本项目下拉列表（StaticValues.Set_PropagationModeList）已于 2026-09-18 完成标准化：
+    ///     · 官方 20 条代码全部收录；
+    ///     · 原 "REPEATER" 改为官方的 "RPT"；
+    ///     · 原首项带零宽字符（U+200C）的 "Simplex" 并非 ADIF 官方值，已删除，
+    ///       改为 Code 为 null 的「（不指定）」项，并作为默认选中项。
+    ///
+    ///   【与本类的分工】
+    ///     · 本类（AdifPropagationMode）保存的是**官方原始数据**（含英文描述），
+    ///       由 AdifDataLoader 加载，用于校验与查询；
+    ///     · 下拉列表使用的是**带中文显示名的 PropagationItem**，
+    ///       两者职责不同，不要混用。
     /// </summary>
     public class AdifPropagationMode
     {

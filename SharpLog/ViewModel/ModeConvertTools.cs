@@ -53,7 +53,7 @@ namespace SharpLog.ViewModel
         /// <param name="comment">备注（ADIF: COMMENT）</param>
         /// <param name="height">发射高度（项目自定义）</param>
         /// <param name="op">操作员（项目自定义）</param>
-        /// <param name="propMode">传播模式（ADIF: PROP_MODE，来自下拉选中项的 Code）</param>
+        /// <param name="propMode">传播模式（ADIF: PROP_MODE，来自下拉选中项的 Code；选「（不指定）」时传 null）</param>
         /// <param name="digId">DMR 数字 ID（项目自定义）</param>
         /// <param name="groupID">分组 ID（项目自定义）</param>
         /// <param name="starID">星级 ID（项目自定义）</param>
@@ -70,7 +70,7 @@ namespace SharpLog.ViewModel
             string call, string freq, string mode, string? submode, string rstRcvd, string rstSent,
             string gridSquare, string rxPower, string txPower,
             string qth, string rig, string ant,
-            string comment, string height, string op, string propMode, string digId,
+            string comment, string height, string op, string? propMode, string digId,
 
             int? groupID, int starID,
             string qslRcvd, DateTime? qslRDate, DateTime? qslSDate,
@@ -153,6 +153,9 @@ namespace SharpLog.ViewModel
                 DisplayFrequency = qsoLog.FREQ.ToString() + "khz",
                 // 卡片上显示的是模式显示名（如 "D-STAR"），不是 ADIF 主模式（如 "DIGITALVOICE"）
                 MODE = modeDisplayName,
+                // 传播模式显示名：由 PROP_MODE 代码反查（如 "F2" → "F2层反射 F2"）；
+                // 未记录传播方式（库中为 NULL）时返回空串，卡片上该处显示为空白
+                PropModeText = ResolvePropDisplayName(qsoLog.PROP_MODE),
                 RST_RCVD = qsoLog.RST_RCVD,
                 RST_SENT = qsoLog.RST_SENT,
                 QTH = qsoLog.QTH,
@@ -226,6 +229,31 @@ namespace SharpLog.ViewModel
             }
 
             return StaticValues.DefaultModeColor;
+        }
+
+        /// <summary>
+        /// 由 ADIF 的 PROP_MODE 代码反查界面显示名（如 "F2" → "F2层反射 F2"）。
+        ///
+        /// 转换规则：
+        /// 1. 在 Set_PropagationModeList 中按 Code 匹配（忽略大小写），命中则返回其 DisplayName；
+        /// 2. 代码为空（NULL，即用户选了「（不指定）」）时返回空串，卡片上不显示内容；
+        /// 3. 列表中找不到（外部导入的 ADIF 文件可能带本项目未收录的代码）则原样返回代码。
+        ///
+        /// 注意：首项「（不指定）」的 Code 为 null，
+        /// string.Equals(null, code) 在 code 非空时恒为 false，不会被误匹配。
+        /// </summary>
+        /// <param name="code">ADIF 传播模式代码（QsoLog.PROP_MODE），可为 null</param>
+        /// <returns>界面显示名；未记录传播方式时返回空串</returns>
+        public static string ResolvePropDisplayName(string? code)
+        {
+            // 未记录传播方式 → 卡片上不显示任何内容
+            if (string.IsNullOrWhiteSpace(code)) return string.Empty;
+
+            var item = StaticValues.Set_PropagationModeList.FirstOrDefault(
+                m => string.Equals(m.Code, code, StringComparison.OrdinalIgnoreCase));
+
+            // 命中则用中文显示名，未收录则原样显示 ADIF 代码
+            return item?.DisplayName ?? code;
         }
 
         /// <summary>
