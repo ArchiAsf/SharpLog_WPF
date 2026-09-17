@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -21,22 +21,72 @@ namespace SharpLog.Model
             new PropagationItem { Name = "SAT 卫星", Code = "SAT" },
             new PropagationItem { Name = "中继 Repeater", Code = "REPEATER" }
         };
-        public static readonly ObservableCollection<CommMode> Set_CommModeList = new ObservableCollection<CommMode>()
-        {
-            new CommMode{ Name = "FM", Code = "FM" },
-            new CommMode{ Name = "AM", Code = "AM" },
-            new CommMode{ Name = "CW", Code = "CW" },
-            new CommMode{ Name = "SSB", Code = "SSB" },
-            new CommMode{ Name = "FT8", Code = "FT8" },
-            new CommMode{ Name = "FT4", Code = "FT4" },
-            new CommMode{ Name = "SSTV", Code = "SSTV" },
-            new CommMode{ Name = "DMR", Code = "DMR" },
-            new CommMode{ Name = "C4FM", Code = "C4FM" },
-            new CommMode{ Name = "D-STAR", Code = "D-STAR" },
-            new CommMode{ Name = "NXDN", Code = "NXDN" },
-            new CommMode{ Name = "Packet", Code = "Packet" },
-            new CommMode{ Name = "MSK144", Code = "MSK144" }
 
+        /// <summary>
+        /// 通联模式下拉列表：界面显示名 ↔ ADIF MODE/SUBMODE 的映射表。
+        ///
+        /// ════════════════════════════════════════════════════════════════════
+        /// 【数据来源】
+        /// 每一项的 Mode / Submode 取值均来自 ADIF 3.1.7 官方枚举表
+        /// （程序目录 ADIFCode_Json\enumerations_mode.json，由 AdifDataLoader 加载），
+        /// 已逐项与官方数据核对，保证导出的 ADIF 文件能被其他日志软件正确识别。
+        ///
+        /// 【为什么只有 23 项】
+        /// 官方 MODE 有 91 个、SUBMODE 有 196 个，其中绝大多数
+        /// （如 FST4W、ISCAT、Q65、DOMINO 等）业余场合极少使用。
+        /// 本列表按「常用程度」精选 23 项，覆盖绝大多数实际通联场景，并按模式类型分组。
+        /// 后续如需扩展，请从 AdifDataLoader.Modes 中挑选并补充到本列表。
+        ///
+        /// 【特别注意：以下选项存库的是「主模式 + 子模式」两个字段】
+        ///   FT4    → MODE=MFSK,         SUBMODE=FT4
+        ///   PSK31  → MODE=PSK,          SUBMODE=PSK31
+        ///   JS8    → MODE=MFSK,         SUBMODE=JS8
+        ///   DMR    → MODE=DIGITALVOICE, SUBMODE=DMR
+        ///   D-STAR → MODE=DIGITALVOICE, SUBMODE=DSTAR
+        ///   C4FM   → MODE=DIGITALVOICE, SUBMODE=C4FM
+        ///   M17    → MODE=DIGITALVOICE, SUBMODE=M17
+        /// 这样导出 ADIF 后，其他软件既能识别大类（如数字语音），
+        /// 又能区分具体制式（DMR / D-STAR / C4FM）。
+        /// 其余无子模式的选项，SUBMODE 字段留空（null），不写库。
+        /// ════════════════════════════════════════════════════════════════════
+        /// </summary>
+        public static readonly ObservableCollection<ModeItem> Set_CommModeList = new ObservableCollection<ModeItem>()
+        {
+            // ────────────── 语音类（3 项）──────────────
+            new ModeItem { DisplayName = "SSB", Mode = "SSB" },
+            new ModeItem { DisplayName = "FM",  Mode = "FM"  },
+            new ModeItem { DisplayName = "AM",  Mode = "AM"  },
+
+            // ────────────── 电码类（1 项）──────────────
+            new ModeItem { DisplayName = "CW",  Mode = "CW"  },
+
+            // ────────────── 数字弱信号类（10 项）──────────────
+            new ModeItem { DisplayName = "FT8",    Mode = "FT8"    },
+            new ModeItem { DisplayName = "FT4",    Mode = "MFSK",  Submode = "FT4"   },
+            new ModeItem { DisplayName = "RTTY",   Mode = "RTTY"   },
+            new ModeItem { DisplayName = "PSK31",  Mode = "PSK",   Submode = "PSK31" },
+            new ModeItem { DisplayName = "JS8",    Mode = "MFSK",  Submode = "JS8"   },
+            new ModeItem { DisplayName = "WSPR",   Mode = "WSPR"   },
+            new ModeItem { DisplayName = "JT65",   Mode = "JT65"   },
+            new ModeItem { DisplayName = "MSK144", Mode = "MSK144" },
+            new ModeItem { DisplayName = "OLIVIA", Mode = "OLIVIA" },
+            new ModeItem { DisplayName = "MFSK",   Mode = "MFSK"   },
+
+            // ────────────── 数字语音类（5 项）──────────────
+            new ModeItem { DisplayName = "DMR",    Mode = "DIGITALVOICE", Submode = "DMR"   },
+            new ModeItem { DisplayName = "D-STAR", Mode = "DIGITALVOICE", Submode = "DSTAR" },
+            new ModeItem { DisplayName = "C4FM",   Mode = "DIGITALVOICE", Submode = "C4FM"  },
+            new ModeItem { DisplayName = "M17",    Mode = "DIGITALVOICE", Submode = "M17"   },
+            // 不指明具体制式时的通用项，只写主模式，不写子模式
+            new ModeItem { DisplayName = "数字语音", Mode = "DIGITALVOICE" },
+
+            // ────────────── 图像类（2 项）──────────────
+            new ModeItem { DisplayName = "SSTV",   Mode = "SSTV"   },
+            new ModeItem { DisplayName = "ATV",    Mode = "ATV"    },
+
+            // ────────────── 数据类（2 项）──────────────
+            new ModeItem { DisplayName = "PKT",    Mode = "PKT"    },
+            new ModeItem { DisplayName = "ARDOP",  Mode = "ARDOP"  }
         };
 
 
@@ -117,70 +167,121 @@ namespace SharpLog.Model
         //   · 频率校验与波段查询请使用 AdifDataLoader.Bands
         // ============================================================
 
+        // ============================================================
+        // 【已移除】原 ModulationMode 枚举
+        // ------------------------------------------------------------
+        // 移除原因：该枚举与 ADIF 3.1.7 的「MODE + SUBMODE」两级体系冲突——
+        // 枚举里的 FT4、DMR、C4FM、D_STAR、NXDN、Packet 在 ADIF 中都不是主模式
+        // （FT4 是 MFSK 的子模式，DMR/C4FM/D-STAR 是 DIGITALVOICE 的子模式），
+        // 按枚举值存库会导致导出的 ADIF 文件不符合规范；
+        // 且该枚举在全项目中无任何引用（死代码）。
+        // 现由 Set_CommModeList（ModeItem 列表）承载通联模式数据。
+        // ============================================================
 
         /// <summary>
-        /// 业余无线电通联模式枚举
+        /// 卡片配色字典：键 = ModeItem.DisplayName（界面显示名），值 = 卡片左侧竖条颜色。
+        ///
+        /// ════════════════════════════════════════════════════════════════════
+        /// 【键为什么用显示名而不是 MODE】
+        /// ADIF 中 DMR、D-STAR、C4FM、M17 的 MODE 都是 DIGITALVOICE，
+        /// 若按 MODE 配色，这四种制式会挤在同一个颜色里无法区分。
+        /// 因此配色统一按界面显示名（如 "D-STAR"）索引，
+        /// 由 ModeConvertTools.ResolveDisplayName(MODE, SUBMODE) 反查后取色。
+        ///
+        /// 【取色务必用 TryGetValue】
+        /// 本字典必须与 Set_CommModeList 的 23 项保持一致。
+        /// 若数据库中存在历史数据，或导入了外部的 ADIF 文件，
+        /// 其中出现了字典里没有的模式名，直接用索引器 ModeColorMap[key]
+        /// 会抛 KeyNotFoundException 导致程序崩溃，
+        /// 应改用 TryGetValue，未命中时回落到 DefaultModeColor。
+        /// ════════════════════════════════════════════════════════════════════
         /// </summary>
-        public enum ModulationMode
-        {
-            FM = 0,
-            AM = 1,
-            SSB = 2,
-            CW = 3,
-            FT8 = 4,
-            FT4 = 5,
-            SSTV = 6,
-            DMR = 7,
-            C4FM = 8,
-            D_STAR = 9,
-            NXDN = 10,
-            Packet = 11,
-            MSK144 = 12
-        }
-
-
-        // 核心字典：键=通联模式名称，值=对应Color对象
         public static readonly Dictionary<string, Color> ModeColorMap = new Dictionary<string, Color>()
         {
-        // FM：橙黄色(255,153,0)——VHF/UHF最常用的调频模式，橙黄活力醒目，贴合日常通联的高频使用场景
-        { "FM", Color.FromArgb(255,255, 153, 0) },
-        
-        // AM：深棕色(102,51,0)——传统调幅模式，深棕自带复古质感，匹配AM模式的经典属性
-        { "AM", Color.FromArgb(255,102, 51, 0) },
-        
-        // CW：明黄色(255,204,0)——莫尔斯码经典模式，明黄是国际通用的警示/醒目色，匹配CW信号易识别的特征
-        { "CW", Color.FromArgb(255,255, 204, 0) },
+            // ────────────── 语音类 ──────────────
+            // SSB：浅蓝色(0,102,204)——HF频段主流语音模式，浅蓝专业冷静，贴合远距离通联的技术属性
+            { "SSB", Color.FromArgb(255, 0, 102, 204) },
 
-        // SSB：浅蓝色(0,102,204)——HF频段主流语音模式，浅蓝专业冷静，贴合远距离通联的技术属性
-        { "SSB", Color.FromArgb(255, 0, 102, 204) },
-        
-        // FT8：猩红色(220,20,60)——数字弱信号核心模式，猩红高对比度醒目，红色系突出数字模式的重要性，且不刺眼
-        { "FT8", Color.FromArgb(255, 220, 20, 60) },
-        
-        // FT4：番茄红(255,99,71)——FT8衍生模式，番茄红比猩红浅一度，同红色系但易区分，保持数字模式的视觉关联
-        { "FT4", Color.FromArgb(255,255, 99, 71) },
-        
-        // SSTV：粉紫色(255,51,153)——慢扫描电视模式，粉紫色彩丰富，贴合SSTV传图的视觉化特征
-        { "SSTV", Color.FromArgb(255,255, 51, 153) },
-        
-        // DMR：深灰色(102,102,102)——数字集群模式，深灰工业感强，匹配DMR商用/业余通用的稳重属性
-        { "DMR", Color.FromArgb(255, 102, 102, 102) },
-        
-        // C4FM：浅绿色(0,204,153)——数字调频模式，浅绿清新柔和，与FM橙黄形成区分，贴合数字调频的低功耗特征
-        { "C4FM", Color.FromArgb(255, 0, 204, 153) },
-        
-        // D-STAR：深蓝色(0,51,153)——数字星状网模式，深蓝科技感强，匹配“STAR（星）”的太空/远距离通联意象
-        { "D-STAR", Color.FromArgb(255, 0, 51, 153) },
-        
-        // NXDN：紫色(153,102,204)——窄带数字模式，紫色稳重且独特，与其他数字模式颜色形成区分
-        { "NXDN", Color.FromArgb(255, 153, 102, 204) },
-        
-        // Packet：浅灰色(204,204,204)——分组数据模式，浅灰轻量中性，贴合Packet低速数据传输的低调特征
-        { "Packet", Color.FromArgb(255, 204, 204, 204) },
-        
-        // MSK144：青蓝色(0,255,255)——流星散射模式，青蓝高饱和度鲜艳，像流星划过的亮色轨迹，视觉冲击力强
-        { "MSK144", Color.FromArgb(255, 0, 255, 255) }
+            // FM：橙黄色(255,153,0)——VHF/UHF最常用的调频模式，橙黄活力醒目，贴合日常通联的高频使用场景
+            { "FM", Color.FromArgb(255, 255, 153, 0) },
+
+            // AM：深棕色(102,51,0)——传统调幅模式，深棕自带复古质感，匹配AM模式的经典属性
+            { "AM", Color.FromArgb(255, 102, 51, 0) },
+
+            // ────────────── 电码类 ──────────────
+            // CW：明黄色(255,204,0)——莫尔斯码经典模式，明黄醒目，匹配CW信号易识别的特征
+            { "CW", Color.FromArgb(255, 255, 204, 0) },
+
+            // ────────────── 数字弱信号类 ──────────────
+            // FT8：猩红色(220,20,60)——数字弱信号核心模式，猩红高对比度醒目，红色系突出数字模式的重要性，且不刺眼
+            { "FT8", Color.FromArgb(255, 220, 20, 60) },
+
+            // FT4：番茄红(255,99,71)——FT8衍生模式，番茄红比猩红浅一度，同红色系但易区分，保持数字模式的视觉关联
+            { "FT4", Color.FromArgb(255, 255, 99, 71) },
+
+            // RTTY：琥珀橙(255,140,0)——最经典的电传打字模式，深橙带复古味，与FM的橙黄通过更红、更暗的色相区分
+            { "RTTY", Color.FromArgb(255, 255, 140, 0) },
+
+            // PSK31：天蓝色(0,153,204)——PSK系列代表模式，天蓝清爽，与SSB的深蓝形成同色系、不同明度的区分
+            { "PSK31", Color.FromArgb(255, 0, 153, 204) },
+
+            // JS8：暖橙黄(255,179,71)——FT8家族的通联扩展模式，橙黄比FT4更暖，提示其「数字+人工键盘通联」的混合属性
+            { "JS8", Color.FromArgb(255, 255, 179, 71) },
+
+            // WSPR：蓝紫色(138,43,226)——弱信号传播信标模式，蓝紫神秘感，匹配其「只发信标、不用于通联」的探测用途
+            { "WSPR", Color.FromArgb(255, 138, 43, 226) },
+
+            // JT65：深粉色(255,20,147)——EME月面反射经典模式，深粉高辨识度，与同族的FT8/FT4红色系拉开层次
+            { "JT65", Color.FromArgb(255, 255, 20, 147) },
+
+            // MSK144：青蓝色(0,255,255)——流星散射模式，青蓝高饱和度鲜艳，像流星划过的亮色轨迹，视觉冲击力强
+            { "MSK144", Color.FromArgb(255, 0, 255, 255) },
+
+            // OLIVIA：海洋绿(102,205,170)——低信噪比下的多频移键控模式，海绿柔和，贴合其「穿透噪声、稳定可靠」的特性
+            { "OLIVIA", Color.FromArgb(255, 102, 205, 170) },
+
+            // MFSK：中绿色(60,179,113)——MFSK家族的主模式（FT4/JS8 均属其子模式），中绿居中，呼应其「家族根节点」的地位
+            { "MFSK", Color.FromArgb(255, 60, 179, 113) },
+
+            // ────────────── 数字语音类 ──────────────
+            // DMR：深灰色(102,102,102)——数字集群模式，深灰工业感强，匹配DMR商用/业余通用的稳重属性
+            { "DMR", Color.FromArgb(255, 102, 102, 102) },
+
+            // D-STAR：深蓝色(0,51,153)——数字星状网模式，深蓝科技感强，契合「STAR（星）」的太空与远距离通联意象
+            { "D-STAR", Color.FromArgb(255, 0, 51, 153) },
+
+            // C4FM：浅绿色(0,204,153)——数字调频模式，浅绿清新柔和，与FM的橙黄形成区分，贴合数字调频的低功耗特征
+            { "C4FM", Color.FromArgb(255, 0, 204, 153) },
+
+            // M17：深青色(0,128,128)——开源数字语音项目，深青带开源社区的硬核技术气质，与D-STAR的深蓝区分
+            { "M17", Color.FromArgb(255, 0, 128, 128) },
+
+            // 数字语音：石板灰(112,128,144)——不指明具体制式时的通用项，石板灰中性克制，且与DMR的深灰、PKT的浅灰错开
+            { "数字语音", Color.FromArgb(255, 112, 128, 144) },
+
+            // ────────────── 图像类 ──────────────
+            // SSTV：粉紫色(255,51,153)——慢扫描电视模式，粉紫色彩丰富，贴合SSTV传图的视觉化特征
+            { "SSTV", Color.FromArgb(255, 255, 51, 153) },
+
+            // ATV：淡紫红(219,112,147)——业余电视模式，与SSTV同属图像类的紫调，但更浅更柔，便于并排区分
+            { "ATV", Color.FromArgb(255, 219, 112, 147) },
+
+            // ────────────── 数据类 ──────────────
+            // PKT：浅灰色(204,204,204)——分组数据模式，浅灰轻量中性，贴合分组无线低速数据传输的低调特征
+            { "PKT", Color.FromArgb(255, 204, 204, 204) },
+
+            // ARDOP：浅钢蓝(176,196,222)——HF频段的开源数据调制解调模式，钢蓝冷静，与PSK31的天蓝拉开明度差
+            { "ARDOP", Color.FromArgb(255, 176, 196, 222) }
         };
+
+        /// <summary>
+        /// 模式配色的兜底颜色（中性灰）。
+        ///
+        /// 使用场景：数据库中存在的模式名不在 ModeColorMap 内时
+        /// （例如早期的历史数据，或从外部 ADIF 文件导入的记录），
+        /// 用该颜色代替，避免取色失败导致程序崩溃。
+        /// </summary>
+        public static readonly Color DefaultModeColor = Color.FromArgb(255, 128, 128, 128);
 
         #endregion
 
@@ -199,44 +300,16 @@ namespace SharpLog.Model
 
 
 
-        //生成一个将LogTable对象转换为OneLog对象的方法
-        //注意：字段命名已统一为 ADIF 3.1.7 规范名称
-        public static OneLog ConvertToOneLog(QsoLog log)
-        {
-            return new OneLog
-            {
-                CardSideBarColor = new System.Windows.Media.SolidColorBrush(StaticValues.ModeColorMap[log.MODE]),
-                StartTime = CombineQsoDateTime(log.QSO_DATE, log.TIME_ON),
-                EndTime = CombineQsoDateTime(log.QSO_DATE_OFF, log.TIME_OFF),
-                TimeZoneSuffix = log.TimeZone,
-                CALL = log.CALL,
-                DisplayFrequency = log.FREQ.ToString() + "khz",
-                MODE = log.MODE,
-                RST_RCVD = log.RST_RCVD,
-                RST_SENT = log.RST_SENT,
-                QTH = log.QTH,
-                RIG = log.RIG,
-                Antenna = log.ANT,
-                Operator = log.OP,
-                GRIDSQUARE = log.GRIDSQUARE,
-            };
-        }
-
-        /// <summary>
-        /// 组合 日期+时间 为显示字符串（yyyy/MM/dd-HH:mm:ss）
-        /// </summary>
-        private static string CombineQsoDateTime(DateTime? date, string? time)
-        {
-            string dateStr = date?.ToString("yyyy/MM/dd") ?? string.Empty;
-            string timeStr = string.Empty;
-            if (!string.IsNullOrWhiteSpace(time) && TimeOnly.TryParseExact(time, "HHmmss", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out var t))
-            {
-                timeStr = t.ToString("HH:mm:ss");
-            }
-            if (string.IsNullOrEmpty(dateStr)) return timeStr;
-            if (string.IsNullOrEmpty(timeStr)) return dateStr;
-            return dateStr + "-" + timeStr;
-        }
+        // ============================================================
+        // 【已移除】原 ConvertToOneLog 方法与 CombineQsoDateTime 辅助方法
+        // ------------------------------------------------------------
+        // 移除原因：
+        //   1. 与 ViewModel\ModeConvertTools.cs 的 ConvertQsoLogToOneLog 功能完全重复，
+        //      两处各维护一份转换逻辑，改一处漏一处极易产生不一致；
+        //   2. 全项目中无任何调用（死代码），日志卡片统一走 ModeConvertTools 转换；
+        //   3. 原实现使用 ModeColorMap[log.MODE] 直接索引取色，
+        //      一旦遇到字典中没有的模式名就会抛 KeyNotFoundException 使程序崩溃。
+        // ============================================================
 
 
     }

@@ -115,6 +115,9 @@ namespace SharpLog.Migrations
                     b.Property<string>("ReceiverName")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("SUBMODE")
+                        .HasColumnType("TEXT");
+
                     b.Property<int?>("StarID")
                         .HasColumnType("INTEGER");
 

@@ -523,9 +523,16 @@
                                 Grid.Row="1"
                                 Grid.Column="5"
                                 Style="{StaticResource InCardPanelStyle}">
+                                <!--
+                                    通联模式下拉框。
+                                    DisplayMemberPath 指向 ModeItem.DisplayName（界面显示名，
+                                    如 "D-STAR"），而不是 Mode（ADIF 主模式 "DIGITALVOICE"），
+                                    这样用户看到的是自己熟悉的模式名。
+                                    选中项由 SelectedItem 绑定（不用 SelectedValue）。
+                                -->
                                 <ComboBox
                                     Background="{StaticResource NormalTextBoxBackColor}"
-                                    DisplayMemberPath="Name"
+                                    DisplayMemberPath="DisplayName"
                                     ItemsSource="{Binding CommModeList}"
                                     SelectedItem="{Binding SelectCommMode}" />
 

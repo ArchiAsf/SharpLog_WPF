@@ -87,12 +87,37 @@ namespace SharpLog.Model
         public double FREQ { get; set; }
 
         /// <summary>
-        /// 通联模式（ADIF: MODE），必填，全大写。
-        /// 取值参照 ADIF 官方 Mode 枚举：CW / SSB / FT8 / FT4 / FM / AM / SSTV / DMR 等，
-        /// 见 StaticValues.Set_CommModeList 下拉列表。
+        /// 通联主模式（ADIF: MODE），必填，全大写。
+        ///
+        /// ════════════════════════════════════════════════════════════════════
+        /// 【重要】本字段存的是 ADIF 官方主模式（MODE），不是界面显示名。
+        /// ADIF 3.1.7 采用「MODE + SUBMODE」两级体系，界面上的部分选项
+        /// 实际由「主模式 + 子模式」共同表示，例如：
+        ///   界面选「FT4」   → MODE="MFSK",         SUBMODE="FT4"
+        ///   界面选「D-STAR」→ MODE="DIGITALVOICE", SUBMODE="DSTAR"
+        ///   界面选「SSB」   → MODE="SSB",          SUBMODE=null（无子模式）
+        ///
+        /// 因此：
+        ///   · 写入时由 ModeConvertTools 从 ModeItem 取 Mode/Submode 分别赋值；
+        ///   · 显示时须用 ResolveDisplayName(MODE, SUBMODE) 反查回显示名，
+        ///     不能直接把 MODE 显示给用户（否则 DMR/D-STAR/C4FM 都显示成 DIGITALVOICE）；
+        ///   · 导出 ADIF 文件时本字段原样写出，SUBMODE 字段视有无子模式决定是否写出。
+        /// ════════════════════════════════════════════════════════════════════
         /// </summary>
         [Required(ErrorMessage = "通联模式不能为空")]
         public string MODE { get; set; }
+
+        /// <summary>
+        /// 通联子模式（ADIF: SUBMODE），可选，全大写，无子模式时为 null。
+        ///
+        /// 取值同样来自 ADIF 官方枚举（enumerations_mode.json 中各级模式的 Submodes），
+        /// 例如 FT4 / PSK31 / JS8 / DMR / DSTAR / C4FM / M17。
+        ///
+        /// 本字段的意义：让导出的 ADIF 文件既符合规范（MODE 为官方主模式），
+        /// 又能保留具体制式信息（SUBMODE 区分 DMR 与 D-STAR 等）。
+        /// 数据库中允许为 NULL，SQLite 会将其存储为 NULL 而非空串。
+        /// </summary>
+        public string? SUBMODE { get; set; }
 
         /// <summary>
         /// 通联所属操作员（项目自定义字段，ADIF 无对应字段，保留原名）。

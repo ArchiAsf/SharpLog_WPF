@@ -272,10 +272,12 @@ namespace SharpLog.ViewModel
 
         /// <summary>
         /// 当前选中的通联模式下拉项（绑定 ComboBox SelectedItem）。
-        /// 通过 SelectedCommCode 获取 ADIF 代码（存库值）。
+        /// 一个选项同时携带三个值：
+        ///   DisplayName（界面显示名）、Mode（ADIF 主模式）、Submode（ADIF 子模式），
+        /// 分别通过 SelectedCommName / SelectedCommCode / SelectedSubmodeCode 读取。
         /// </summary>
         [ObservableProperty]
-        private CommMode? _SelectCommMode;
+        private ModeItem? _SelectCommMode;
 
         /// <summary>消息提示框显示内容。</summary>
         [ObservableProperty]
@@ -292,8 +294,11 @@ namespace SharpLog.ViewModel
         /// <summary>传播模式下拉列表数据源（静态，见 StaticValues）。</summary>
         public ObservableCollection<PropagationItem> PropagationModeList { get; }
 
-        /// <summary>通联模式下拉列表数据源（静态，见 StaticValues）。</summary>
-        public ObservableCollection<CommMode> CommModeList { get; }
+        /// <summary>
+        /// 通联模式下拉列表数据源（静态，见 StaticValues.Set_CommModeList）。
+        /// 列表项为 ModeItem，同时携带显示名与 ADIF 的 MODE/SUBMODE 值。
+        /// </summary>
+        public ObservableCollection<ModeItem> CommModeList { get; }
 
         /// <summary>右侧日志卡片集合（OneLog 显示模型），新日志插入到顶部。</summary>
         public ObservableCollection<OneLog> QsoLogCollection { get; }
@@ -304,14 +309,23 @@ namespace SharpLog.ViewModel
         /// <summary>选中传播模式的 ADIF 代码（只读，自动从 SelectedItem 获取）。</summary>
         public string? SelectedPropCode => _SelectPROPItem?.Code;
 
-        /// <summary>选中通联模式的 ADIF 代码（只读，自动从 SelectedItem 获取）。</summary>
-        public string? SelectedCommCode => _SelectCommMode?.Code;
+        /// <summary>
+        /// 选中通联模式的 ADIF 主模式（只读，存库值）。
+        /// 例如选中「D-STAR」时为 "DIGITALVOICE"，选中「SSB」时为 "SSB"。
+        /// </summary>
+        public string? SelectedCommCode => _SelectCommMode?.Mode;
+
+        /// <summary>
+        /// 选中通联模式的 ADIF 子模式（只读，存库值）。
+        /// 例如选中「D-STAR」时为 "DSTAR"；无子模式的模式（如 SSB）为 null。
+        /// </summary>
+        public string? SelectedSubmodeCode => _SelectCommMode?.Submode;
 
         /// <summary>选中传播模式的显示名称（只读）。</summary>
         public string? SelectedPropName => _SelectPROPItem?.Name;
 
-        /// <summary>选中通联模式的显示名称（只读）。</summary>
-        public string? SelectedCommName => _SelectCommMode?.Name;
+        /// <summary>选中通联模式的显示名称（只读，如 "D-STAR"，仅用于界面展示，不写库）。</summary>
+        public string? SelectedCommName => _SelectCommMode?.DisplayName;
 
         /// <summary>每秒刷新时间的定时器（窗口关闭时由 View 停止）。</summary>
         public readonly DispatcherTimer _timer;
@@ -409,7 +423,8 @@ namespace SharpLog.ViewModel
             if (CanAddLog())
             {
                 Task<(bool Success, string? WarningMessage)> Result = AddDBDataAsync<QsoLog>(ConvertMainViewToQsoLog(
-                    StartTimeDT, EndTimeDT, ZoneName, CALL, FREQ, SelectedCommCode,
+                    // SelectedCommCode = ADIF 主模式（MODE），SelectedSubmodeCode = ADIF 子模式（SUBMODE）
+                    StartTimeDT, EndTimeDT, ZoneName, CALL, FREQ, SelectedCommCode, SelectedSubmodeCode,
                     RST_RCVD, RST_SENT, GRIDSQUARE, RX_PWR, TX_PWR, QTH, RIG, Ant, COMMENT,
                     Height, Operator, SelectedPropCode, DigID,
                     GroupID, StarID, QSL_RCVD, QSLRDATE, QSLSDATE, QslAddress, ReceiverName, PostalCode, ReceiverContact));

@@ -35,6 +35,8 @@ namespace SharpLog
 
         /// <summary>
         /// 卡片左侧竖条颜色（按通联模式配色，见 StaticValues.ModeColorMap）。
+        /// 由 ModeConvertTools.ResolveModeColor 取色：模式不在配色表内时回落到中性灰，
+        /// 不使用字典索引器直接取值，避免遇到未知模式（历史数据、外部导入）时抛异常。
         /// </summary>
         public SolidColorBrush CardSideBarColor
         {
@@ -79,7 +81,13 @@ namespace SharpLog
 
         #region 通联模式、传播方式
 
-        /// <summary>通联模式（ADIF: MODE，如 CW、SSB、FT8），卡片大字号显示。</summary>
+        /// <summary>
+        /// 卡片上显示的通联模式文字（大字号显示，如 "SSB"、"FT4"、"D-STAR"）。
+        ///
+        /// ⚠️ 注意：本属性承载的是【界面显示名】，不是数据库中的 ADIF 主模式。
+        /// 数据库里可能存 MODE="DIGITALVOICE" + SUBMODE="DSTAR"，
+        /// 经 ModeConvertTools.ResolveDisplayName 反查后，这里显示为 "D-STAR"。
+        /// </summary>
         public string MODE
         {
             get => (string)GetValue(MODEProperty);
