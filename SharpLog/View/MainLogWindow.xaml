@@ -858,11 +858,11 @@
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
                                     <TextBlock TextAlignment="Center">
-                                        通联方式<LineBreak />
+                                        传播模式<LineBreak />
                                         PROP_MODE</TextBlock>
                                 </Label>
                             </Border>
-                            <!--  通联方式 Propagation Mode输入框  -->
+                            <!--  传播模式 Propagation Mode输入框  -->
                             <Border
                                 Grid.Row="8"
                                 Grid.Column="1"
