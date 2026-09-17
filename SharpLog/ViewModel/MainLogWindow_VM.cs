@@ -292,6 +292,8 @@ namespace SharpLog.ViewModel
         [ObservableProperty]
         private string _ZoneName = string.Empty;
 
+        #endregion
+
         #region 本地台站设置（设置页专用，属性名尽可能采用 ADIF 标准字段）
 
         // 说明：本组属性描述【本站】的信息，与通联记录里的对方信息（CALL、QTH 等）无关。
@@ -422,7 +424,6 @@ namespace SharpLog.ViewModel
         /// <summary>每秒刷新时间的定时器（窗口关闭时由 View 停止）。</summary>
         public readonly DispatcherTimer _timer;
 
-        #endregion
 
         /// <summary>
         /// 构造函数：
