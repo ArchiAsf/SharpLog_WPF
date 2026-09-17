@@ -101,54 +101,19 @@ namespace SharpLog.Model
                 };
          */
 
-        /// <summary>
-        /// 公开只读的合法业余无线电频段字典
-        /// 键：标准化波段名（如"6m"、"20m"）
-        /// 值：频率区间（单位：MHz）
-        /// </summary>
-        public static readonly IReadOnlyDictionary<string, FrequencyRange> ValidAmateurBands =
-            new Dictionary<string, FrequencyRange>
-        {
-            // 长波/中波/短波（HF）
-            {"2200m", new FrequencyRange(0.1357, 0.1378)},    // 135.7KHz-137.8KHz
-            {"160m",  new FrequencyRange(1.8000, 2.0000)},    // 1.8MHz-2.0MHz
-            {"80m",   new FrequencyRange(3.5000, 3.9000)},    // 3.5MHz-3.9MHz
-            {"60m",   new FrequencyRange(5.3515, 5.3665)},    // 5.3515MHz-5.3665MHz
-            {"40m",   new FrequencyRange(7.0000, 7.2000)},    // 7.0MHz-7.2MHz
-            {"30m",   new FrequencyRange(10.1000, 10.1500)},  // 10.10MHz-10.15MHz
-            {"20m",   new FrequencyRange(14.0000, 14.3000)},  // 14.0MHz-14.3MHz
-            {"17m",   new FrequencyRange(18.0680, 18.1680)},  // 18.068MHz-18.1680MHz
-            {"15m",   new FrequencyRange(21.0000, 21.4500)},  // 21.00MHz-21.45MHz
-            {"12m",   new FrequencyRange(24.8900, 24.9900)},  // 24.89MHz-24.99MHz
-            {"10m",   new FrequencyRange(28.0000, 29.7000)},  // 28.0MHz-29.7MHz
-            
-            // 甚高频（VHF）
-            {"6m",    new FrequencyRange(50.0000, 54.0000)},  // 50MHz-54MHz
-            {"2m",    new FrequencyRange(144.0000, 148.0000)}, // 144MHz-148MHz
-            
-            // 特高频（UHF）
-            {"70cm",  new FrequencyRange(430.0000, 440.0000)}, // 430MHz-440MHz
-            {"23cm",  new FrequencyRange(1240.0000, 1300.0000)}, // 1240MHz-1300MHz
-            {"13cm",  new FrequencyRange(2300.0000, 2450.0000)}, // 2300MHz-2450MHz
-            
-            // 超高频（SHF）
-            {"9cm",   new FrequencyRange(3300.0000, 3500.0000)}, // 3300MHz-3500MHz
-            {"5cm",   new FrequencyRange(5650.0000, 5850.0000)}, // 5650MHz-5850MHz
-            {"3cm",   new FrequencyRange(10000.0000, 10500.0000)}, // 10.0GHz-10.5GHz
-            
-            // 极高频（EHF）/毫米波
-            {"1.2cm", new FrequencyRange(24000.0000, 24050.0000)}, // 24.00GHz-24.05GHz
-            {"1.2cm_ext", new FrequencyRange(24050.0000, 24250.0000)}, // 24.05GHz-24.25GHz
-            {"6mm",   new FrequencyRange(47000.0000, 47200.0000)}, // 47.0GHz-47.2GHz
-            {"4mm",   new FrequencyRange(76000.0000, 77500.0000)}, // 76.0GHz-77.5GHz
-            {"4mm_ext", new FrequencyRange(77500.0000, 78000.0000)}, // 77.5GHz-78.0GHz
-            {"4mm_ext2", new FrequencyRange(78000.0000, 81000.0000)}, // 78GHz-81GHz
-            {"2.5mm", new FrequencyRange(122250.0000, 123000.0000)}, // 122.25GHz-123.00GHz
-            {"2mm",   new FrequencyRange(134000.0000, 136000.0000)}, // 134GHz-136GHz
-            {"2mm_ext", new FrequencyRange(136000.0000, 141000.0000)}, // 136GHz-141GHz
-            {"1mm",   new FrequencyRange(241000.0000, 248000.0000)}, // 241GHz-248GHz
-            {"1mm_ext", new FrequencyRange(248000.0000, 250000.0000)} // 248GHz-250GHz
-        }.AsReadOnly();
+        // ============================================================
+        // 【已移除】原 ValidAmateurBands 硬编码波段表
+        // ------------------------------------------------------------
+        // 移除原因：该表与 ADIF 官方数据存在边界不一致，例如
+        //   80m：本表 3.5-3.9 MHz，官方 3.5-4.0 MHz
+        //   40m：本表 7.0-7.2 MHz，官方 7.0-7.3 MHz
+        // 会导致本项目校验通过的频率，在导入其他软件时被判为非法波段。
+        //
+        // 现改用 ADIF 官方 enumerations_band.json 的数据：
+        //   · 数据文件位于程序目录 ADIFCode_Json 文件夹，随程序发布一起复制
+        //   · 由 ToolsBox\AdifDataLoader 在程序启动时一次性加载到内存
+        //   · 频率校验与波段查询请使用 AdifDataLoader.Bands
+        // ============================================================
 
 
         /// <summary>

@@ -45,7 +45,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ADIFCode_Json\" />
+    <!--
+      ADIF 官方数据文件（波段表 / 通联模式表 / 传播模式表）。
+      配置为 Content 并设置 PreserveNewest，
+      使其随程序编译、打包、发布、迁移自动复制到输出目录，
+      程序运行时由 ToolsBox\AdifDataLoader 从输出目录读取。
+    -->
+    <Content Include="ADIFCode_Json\**\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
