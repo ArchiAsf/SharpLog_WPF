@@ -925,6 +925,7 @@
                                 <ScrollViewer
                                     Grid.Column="1"
                                     HorizontalScrollBarVisibility="Disabled"
+                                    VerticalAlignment="Top"
                                     Style="{StaticResource DarkOnlyVerticalScrollViewerStyle}"
                                     VerticalScrollBarVisibility="Visible">
                                     <!--  日志其他信息区  -->

@@ -39,7 +39,7 @@
     <!--  3. Label 主标题样式  -->
     <Style x:Key="LabelMainTitleStyle" TargetType="Label">
         <Setter Property="Foreground" Value="{StaticResource LabelMainTitleColor}" />
-        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FontSize" Value="15" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Padding" Value="0" />
     </Style>
@@ -786,7 +786,7 @@
         TargetType="Label">
         <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="VerticalAlignment" Value="Center" />
-        <Setter Property="FontSize" Value="12 " />
+        <Setter Property="FontSize" Value="13" />
     </Style>
 
     <!--  小表格里面的卡片面板  -->
