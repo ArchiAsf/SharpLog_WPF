@@ -85,6 +85,8 @@
     <!--  次要按钮（幽灵按钮/边框按钮）正常态  -->
     <SolidColorBrush x:Key="SecondaryButtonBorderColor" Color="#FF3C3F46" />
     <SolidColorBrush x:Key="SecondaryButtonHoverBackColor" Color="#FF2A2D33" />
+    <!--  次要按钮按下态（比 Hover 再亮一档，形成按压反馈）  -->
+    <SolidColorBrush x:Key="SecondaryButtonClickBackColor" Color="#FF343841" />
 
     <!--  危险操作按钮（删除、清空日志）红系配色  -->
     <SolidColorBrush x:Key="DangerButtonNormalBackColor" Color="#FFC0392B" />

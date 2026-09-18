@@ -136,6 +136,51 @@
 
     </Style>
 
+    <!--  7.1 次要功能按钮（幽灵按钮：透明底 + 细边框，用于取消 / 重置 / 浏览等非主操作）  -->
+    <Style x:Key="SecondaryButtonStyle" TargetType="Button">
+        <!--  透明背景 + 细边框，与主按钮的实心蓝形成「主次」对比  -->
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource LabelTextColor}" />
+        <Setter Property="BorderBrush" Value="{StaticResource SecondaryButtonBorderColor}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <!--  以下三项（内边距 / 字号 / 圆角）与主按钮完全一致，
+              保证两种按钮并排摆放时高度与圆角统一，不会一高一矮  -->
+        <Setter Property="Padding" Value="12,6" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border
+                        x:Name="Bd"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="4">
+                        <ContentPresenter
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="{TemplateBinding Content}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <!--  鼠标悬浮：只填充一层很淡的背景，边框保持不变  -->
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource SecondaryButtonHoverBackColor}" />
+            </Trigger>
+            <!--  鼠标按下：背景再亮一档，形成按压反馈  -->
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{StaticResource SecondaryButtonClickBackColor}" />
+            </Trigger>
+            <!--  禁用：文字与边框同时变暗，视觉上退到最弱  -->
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{StaticResource ButtonDisabledTextColor}" />
+                <Setter Property="BorderBrush" Value="{StaticResource DividerColor}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <!--  8. DataGrid 暗色日志表格（对应原DataGridView）  -->
     <Style x:Key="LogDataGridStyle" TargetType="DataGrid">
         <Setter Property="Background" Value="{StaticResource DgvRowNormalBackColor}" />
@@ -823,6 +868,12 @@
 
     <!--  设置里面的输入面板  -->
     <Style x:Key="InOptionInPutPanelStyle" TargetType="Border" />
+    
+    <!--设置里面的按钮-->
+    <Style x:Key="InOptionButtonStyle" TargetType="Button" >
+        <Setter Property="Margin" Value="3" />
+    </Style>
+    
 
 
 

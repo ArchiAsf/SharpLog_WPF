@@ -1290,374 +1290,399 @@
 
         <TabItem Header="设置" Style="{StaticResource DarkTabItemStyle}">
             <Border Style="{StaticResource CardPanelStyle}">
-                <ScrollViewer
-                    HorizontalScrollBarVisibility="Disabled"
-                    Style="{StaticResource DarkOnlyVerticalScrollViewerStyle}"
-                    VerticalScrollBarVisibility="Visible">
-                    <StackPanel>
-                        <Border Style="{StaticResource OptionCardPanelStyle}">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="2*" />
-                                    <RowDefinition Height="8*" />
-                                </Grid.RowDefinitions>
-                                <!--  标题  -->
-                                <Border Grid.Row="0" Style="{StaticResource OptionCardTitilePanelStyle}">
-                                    <hc:Divider
-                                        Margin="-1,0,-1,0"
-                                        VerticalAlignment="Top"
-                                        Content="本地台站设置"
-                                        Style="{StaticResource OptionDividerStyle}" />
-                                </Border>
-                                <!--  选项区  -->
-                                <Border Grid.Row="1">
-                                    <Grid ShowGridLines="True">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition />
-                                            <ColumnDefinition />
-                                            <ColumnDefinition />
-                                            <ColumnDefinition />
-                                            <ColumnDefinition />
-                                            <ColumnDefinition />
-                                            <ColumnDefinition />
-                                            <ColumnDefinition />
-                                            <ColumnDefinition />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="40" />
-                                            <RowDefinition Height="40" />
-                                            <RowDefinition Height="40" />
-                                            <RowDefinition Height="40" />
-                                            <RowDefinition Height="40" />
-                                            <RowDefinition Height="40" />
-                                        </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="40" />
+                    </Grid.RowDefinitions>
+                    <ScrollViewer
+                        Grid.Row="0"
+                        HorizontalScrollBarVisibility="Disabled"
+                        Style="{StaticResource DarkOnlyVerticalScrollViewerStyle}"
+                        VerticalScrollBarVisibility="Visible">
+                        <StackPanel>
+                            <Border Style="{StaticResource OptionCardPanelStyle}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="2*" />
+                                        <RowDefinition Height="8*" />
+                                    </Grid.RowDefinitions>
+                                    <!--  标题  -->
+                                    <Border Grid.Row="0" Style="{StaticResource OptionCardTitilePanelStyle}">
+                                        <hc:Divider
+                                            Margin="-1,0,-1,0"
+                                            VerticalAlignment="Top"
+                                            Content="本地台站设置"
+                                            Style="{StaticResource OptionDividerStyle}" />
+                                    </Border>
+                                    <!--  选项区  -->
+                                    <Border Grid.Row="1">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="40" />
+                                                <RowDefinition Height="40" />
+                                                <RowDefinition Height="5" />
+                                                <RowDefinition Height="40" />
+                                                <RowDefinition Height="40" />
+                                                <RowDefinition Height="40" />
+                                            </Grid.RowDefinitions>
 
-                                        <!--  ══════════════ 第 1 行 ══════════════  -->
+                                            <!--  ══════════════ 第 1 行 ══════════════  -->
 
-                                        <!--  呼号（ADIF: STATION_CALLSIGN，本站呼号）  -->
-                                        <Border
-                                            Grid.Row="0"
-                                            Grid.Column="0"
-                                            Style="{StaticResource InOptionCardPanelStyle}">
-                                            <Label Style="{StaticResource InOptionLabelStyle}">
-                                                <TextBlock Text="呼号" />
-                                            </Label>
-                                        </Border>
+                                            <!--  呼号（ADIF: STATION_CALLSIGN，本站呼号）  -->
+                                            <Border
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                Style="{StaticResource InOptionCardPanelStyle}">
+                                                <Label Style="{StaticResource InOptionLabelStyle}">
+                                                    <TextBlock Text="呼号" />
+                                                </Label>
+                                            </Border>
 
-                                        <Border
-                                            Grid.Row="0"
-                                            Grid.Column="1"
-                                            Padding="2,2,1,2"
-                                            Style="{StaticResource InOptionInPutPanelStyle}">
-                                            <TextBox Text="{Binding STATION_CALLSIGN}" />
-                                        </Border>
+                                            <Border
+                                                Grid.Row="0"
+                                                Grid.Column="1"
+                                                Padding="2,2,1,2"
+                                                Style="{StaticResource InOptionInPutPanelStyle}">
+                                                <TextBox Text="{Binding STATION_CALLSIGN}" />
+                                            </Border>
 
-                                        <!--  值班员（ADIF: OPERATOR，日志操作员呼号）  -->
-                                        <Border
-                                            Grid.Row="0"
-                                            Grid.Column="2"
-                                            Style="{StaticResource InOptionCardPanelStyle}">
-                                            <Label Style="{StaticResource InOptionLabelStyle}">
-                                                <TextBlock Text="值班员" />
-                                            </Label>
-                                        </Border>
+                                            <!--  值班员（ADIF: OPERATOR，日志操作员呼号）  -->
+                                            <Border
+                                                Grid.Row="0"
+                                                Grid.Column="2"
+                                                Style="{StaticResource InOptionCardPanelStyle}">
+                                                <Label Style="{StaticResource InOptionLabelStyle}">
+                                                    <TextBlock Text="值班员" />
+                                                </Label>
+                                            </Border>
 
-                                        <Border
-                                            Grid.Row="0"
-                                            Grid.Column="3"
-                                            Padding="2,2,1,2"
-                                            Style="{StaticResource InOptionInPutPanelStyle}">
-                                            <TextBox Text="{Binding OPERATOR}" />
-                                        </Border>
+                                            <Border
+                                                Grid.Row="0"
+                                                Grid.Column="3"
+                                                Padding="2,2,1,2"
+                                                Style="{StaticResource InOptionInPutPanelStyle}">
+                                                <TextBox Text="{Binding OPERATOR}" />
+                                            </Border>
 
-                                        <!--  DXCC代码（ADIF: MY_DXCC）  -->
-                                        <Border
-                                            Grid.Row="0"
-                                            Grid.Column="4"
-                                            Style="{StaticResource InOptionCardPanelStyle}">
-                                            <Label Style="{StaticResource InOptionLabelStyle}">
-                                                <TextBlock Text="DXCC代码" />
-                                            </Label>
-                                        </Border>
+                                            <!--  DXCC代码（ADIF: MY_DXCC）  -->
+                                            <Border
+                                                Grid.Row="0"
+                                                Grid.Column="4"
+                                                Style="{StaticResource InOptionCardPanelStyle}">
+                                                <Label Style="{StaticResource InOptionLabelStyle}">
+                                                    <TextBlock Text="DXCC代码" />
+                                                </Label>
+                                            </Border>
 
-                                        <Border
-                                            Grid.Row="0"
-                                            Grid.Column="5"
-                                            Padding="2,2,1,2"
-                                            Style="{StaticResource InOptionInPutPanelStyle}">
-                                            <TextBox Text="{Binding MY_DXCC}" />
-                                        </Border>
+                                            <Border
+                                                Grid.Row="0"
+                                                Grid.Column="5"
+                                                Padding="2,2,1,2"
+                                                Style="{StaticResource InOptionInPutPanelStyle}">
+                                                <TextBox Text="{Binding MY_DXCC}" />
+                                            </Border>
 
-                                        <!--  CQ分区（ADIF: MY_CQ_ZONE）  -->
-                                        <Border
-                                            Grid.Row="0"
-                                            Grid.Column="6"
-                                            Style="{StaticResource InOptionCardPanelStyle}">
-                                            <Label Style="{StaticResource InOptionLabelStyle}">
-                                                <TextBlock Text="CQ分区" />
-                                            </Label>
-                                        </Border>
+                                            <!--  CQ分区（ADIF: MY_CQ_ZONE）  -->
+                                            <Border
+                                                Grid.Row="0"
+                                                Grid.Column="6"
+                                                Style="{StaticResource InOptionCardPanelStyle}">
+                                                <Label Style="{StaticResource InOptionLabelStyle}">
+                                                    <TextBlock Text="CQ分区" />
+                                                </Label>
+                                            </Border>
 
-                                        <Border
-                                            Grid.Row="0"
-                                            Grid.Column="7"
-                                            Padding="2,2,1,2"
-                                            Style="{StaticResource InOptionInPutPanelStyle}">
-                                            <TextBox Text="{Binding MY_CQ_ZONE}" />
-                                        </Border>
+                                            <Border
+                                                Grid.Row="0"
+                                                Grid.Column="7"
+                                                Padding="2,2,1,2"
+                                                Style="{StaticResource InOptionInPutPanelStyle}">
+                                                <TextBox Text="{Binding MY_CQ_ZONE}" />
+                                            </Border>
 
-                                        <!--  ITU分区（ADIF: MY_ITU_ZONE）  -->
-                                        <Border
-                                            Grid.Row="0"
-                                            Grid.Column="8"
-                                            Style="{StaticResource InOptionCardPanelStyle}">
-                                            <Label Style="{StaticResource InOptionLabelStyle}">
-                                                <TextBlock Text="ITU分区" />
-                                            </Label>
-                                        </Border>
+                                            <!--  ITU分区（ADIF: MY_ITU_ZONE）  -->
+                                            <Border
+                                                Grid.Row="0"
+                                                Grid.Column="8"
+                                                Style="{StaticResource InOptionCardPanelStyle}">
+                                                <Label Style="{StaticResource InOptionLabelStyle}">
+                                                    <TextBlock Text="ITU分区" />
+                                                </Label>
+                                            </Border>
 
-                                        <Border
-                                            Grid.Row="0"
-                                            Grid.Column="9"
-                                            Padding="2,2,1,2"
-                                            Style="{StaticResource InOptionInPutPanelStyle}">
-                                            <TextBox Text="{Binding MY_ITU_ZONE}" />
-                                        </Border>
+                                            <Border
+                                                Grid.Row="0"
+                                                Grid.Column="9"
+                                                Padding="2,2,1,2"
+                                                Style="{StaticResource InOptionInPutPanelStyle}">
+                                                <TextBox Text="{Binding MY_ITU_ZONE}" />
+                                            </Border>
 
-                                        <!--  ══════════════ 第 2 行 ══════════════  -->
+                                            <!--  ══════════════ 第 2 行 ══════════════  -->
 
-                                        <!--  网格（ADIF: MY_GRIDSQUARE）  -->
-                                        <Border
-                                            Grid.Row="1"
-                                            Grid.Column="0"
-                                            Style="{StaticResource InOptionCardPanelStyle}">
-                                            <Label Style="{StaticResource InOptionLabelStyle}">
-                                                <TextBlock Text="网格" />
-                                            </Label>
-                                        </Border>
+                                            <!--  网格（ADIF: MY_GRIDSQUARE）  -->
+                                            <Border
+                                                Grid.Row="1"
+                                                Grid.Column="0"
+                                                Style="{StaticResource InOptionCardPanelStyle}">
+                                                <Label Style="{StaticResource InOptionLabelStyle}">
+                                                    <TextBlock Text="网格" />
+                                                </Label>
+                                            </Border>
 
-                                        <Border
-                                            Grid.Row="1"
-                                            Grid.Column="1"
-                                            Padding="2,2,1,2"
-                                            Style="{StaticResource InOptionInPutPanelStyle}">
-                                            <TextBox Text="{Binding MY_GRIDSQUARE}" />
-                                        </Border>
+                                            <Border
+                                                Grid.Row="1"
+                                                Grid.Column="1"
+                                                Padding="2,2,1,2"
+                                                Style="{StaticResource InOptionInPutPanelStyle}">
+                                                <TextBox Text="{Binding MY_GRIDSQUARE}" />
+                                            </Border>
 
-                                        <!--  国家/地区（ADIF: MY_COUNTRY）  -->
-                                        <Border
-                                            Grid.Row="1"
-                                            Grid.Column="2"
-                                            Style="{StaticResource InOptionCardPanelStyle}">
-                                            <Label Style="{StaticResource InOptionLabelStyle}">
-                                                <TextBlock Text="国家/地区" />
-                                            </Label>
-                                        </Border>
+                                            <!--  国家/地区（ADIF: MY_COUNTRY）  -->
+                                            <Border
+                                                Grid.Row="1"
+                                                Grid.Column="2"
+                                                Style="{StaticResource InOptionCardPanelStyle}">
+                                                <Label Style="{StaticResource InOptionLabelStyle}">
+                                                    <TextBlock Text="国家/地区" />
+                                                </Label>
+                                            </Border>
 
-                                        <Border
-                                            Grid.Row="1"
-                                            Grid.Column="3"
-                                            Padding="2,2,1,2"
-                                            Style="{StaticResource InOptionInPutPanelStyle}">
-                                            <TextBox Text="{Binding MY_COUNTRY}" />
-                                        </Border>
+                                            <Border
+                                                Grid.Row="1"
+                                                Grid.Column="3"
+                                                Padding="2,2,1,2"
+                                                Style="{StaticResource InOptionInPutPanelStyle}">
+                                                <TextBox Text="{Binding MY_COUNTRY}" />
+                                            </Border>
 
-                                        <!--  经度（ADIF: MY_LON）  -->
-                                        <Border
-                                            Grid.Row="1"
-                                            Grid.Column="4"
-                                            Style="{StaticResource InOptionCardPanelStyle}">
-                                            <Label Style="{StaticResource InOptionLabelStyle}">
-                                                <TextBlock Text="经度" />
-                                            </Label>
-                                        </Border>
+                                            <!--  经度（ADIF: MY_LON）  -->
+                                            <Border
+                                                Grid.Row="1"
+                                                Grid.Column="4"
+                                                Style="{StaticResource InOptionCardPanelStyle}">
+                                                <Label Style="{StaticResource InOptionLabelStyle}">
+                                                    <TextBlock Text="经度" />
+                                                </Label>
+                                            </Border>
 
-                                        <Border
-                                            Grid.Row="1"
-                                            Grid.Column="5"
-                                            Padding="2,2,1,2"
-                                            Style="{StaticResource InOptionInPutPanelStyle}">
-                                            <TextBox Text="{Binding MY_LON}" />
-                                        </Border>
+                                            <Border
+                                                Grid.Row="1"
+                                                Grid.Column="5"
+                                                Padding="2,2,1,2"
+                                                Style="{StaticResource InOptionInPutPanelStyle}">
+                                                <TextBox Text="{Binding MY_LON}" />
+                                            </Border>
 
-                                        <!--  纬度（ADIF: MY_LAT）  -->
-                                        <Border
-                                            Grid.Row="1"
-                                            Grid.Column="6"
-                                            Style="{StaticResource InOptionCardPanelStyle}">
-                                            <Label Style="{StaticResource InOptionLabelStyle}">
-                                                <TextBlock Text="纬度" />
-                                            </Label>
-                                        </Border>
+                                            <!--  纬度（ADIF: MY_LAT）  -->
+                                            <Border
+                                                Grid.Row="1"
+                                                Grid.Column="6"
+                                                Style="{StaticResource InOptionCardPanelStyle}">
+                                                <Label Style="{StaticResource InOptionLabelStyle}">
+                                                    <TextBlock Text="纬度" />
+                                                </Label>
+                                            </Border>
 
-                                        <Border
-                                            Grid.Row="1"
-                                            Grid.Column="7"
-                                            Padding="2,2,1,2"
-                                            Style="{StaticResource InOptionInPutPanelStyle}">
-                                            <TextBox Text="{Binding MY_LAT}" />
-                                        </Border>
+                                            <Border
+                                                Grid.Row="1"
+                                                Grid.Column="7"
+                                                Padding="2,2,1,2"
+                                                Style="{StaticResource InOptionInPutPanelStyle}">
+                                                <TextBox Text="{Binding MY_LAT}" />
+                                            </Border>
 
-                                        <!--  邮政编码（ADIF: MY_POSTAL_CODE）  -->
-                                        <Border
-                                            Grid.Row="1"
-                                            Grid.Column="8"
-                                            Style="{StaticResource InOptionCardPanelStyle}">
-                                            <Label Style="{StaticResource InOptionLabelStyle}">
-                                                <TextBlock Text="邮政编码" />
-                                            </Label>
-                                        </Border>
+                                            <!--  邮政编码（ADIF: MY_POSTAL_CODE）  -->
+                                            <Border
+                                                Grid.Row="1"
+                                                Grid.Column="8"
+                                                Style="{StaticResource InOptionCardPanelStyle}">
+                                                <Label Style="{StaticResource InOptionLabelStyle}">
+                                                    <TextBlock Text="邮政编码" />
+                                                </Label>
+                                            </Border>
 
-                                        <Border
-                                            Grid.Row="1"
-                                            Grid.Column="9"
-                                            Padding="2,2,1,2"
-                                            Style="{StaticResource InOptionInPutPanelStyle}">
-                                            <TextBox Text="{Binding MY_POSTAL_CODE}" />
-                                        </Border>
+                                            <Border
+                                                Grid.Row="1"
+                                                Grid.Column="9"
+                                                Padding="2,2,1,2"
+                                                Style="{StaticResource InOptionInPutPanelStyle}">
+                                                <TextBox Text="{Binding MY_POSTAL_CODE}" />
+                                            </Border>
 
-                                        <!--  ══════════════ 第 3 行：Excel 中为 A3:J3 整行合并的空行，作分组间距用，不放控件 ══════════════  -->
+                                            <!--  ══════════════ 第 3 行：Excel 中为 A3:J3 整行合并的空行，作分组间距用，不放控件 ══════════════  -->
 
-                                        <!--  ══════════════ 第 4 行 ══════════════  -->
+                                            <!--  ══════════════ 第 4 行 ══════════════  -->
 
-                                        <!--  台站地址（ADIF: MY_STREET，本站街道地址；标签占 A:B，输入框占 C:E）  -->
-                                        <Border
-                                            Grid.Row="3"
-                                            Grid.Column="0"
-                                            Grid.ColumnSpan="2"
-                                            Style="{StaticResource InOptionCardPanelStyle}">
-                                            <Label Style="{StaticResource InOptionLabelStyle}">
-                                                <TextBlock Text="台站地址" />
-                                            </Label>
-                                        </Border>
+                                            <!--  台站地址（ADIF: MY_STREET，本站街道地址；标签占 A:B，输入框占 C:E）  -->
+                                            <Border
+                                                Grid.Row="3"
+                                                Grid.Column="0"
+                                                Grid.ColumnSpan="2"
+                                                Style="{StaticResource InOptionCardPanelStyle}">
+                                                <Label Style="{StaticResource InOptionLabelStyle}">
+                                                    <TextBlock Text="台站地址" />
+                                                </Label>
+                                            </Border>
 
-                                        <Border
-                                            Grid.Row="3"
-                                            Grid.Column="2"
-                                            Grid.ColumnSpan="3"
-                                            Padding="2,2,1,2"
-                                            Style="{StaticResource InOptionInPutPanelStyle}">
-                                            <TextBox Text="{Binding MY_STREET}" />
-                                        </Border>
+                                            <Border
+                                                Grid.Row="3"
+                                                Grid.Column="2"
+                                                Grid.ColumnSpan="3"
+                                                Padding="2,2,1,2"
+                                                Style="{StaticResource InOptionInPutPanelStyle}">
+                                                <TextBox Text="{Binding MY_STREET}" />
+                                            </Border>
 
-                                        <!--  通讯地址（项目自定义，ADIF 无对应本站字段；标签占 F:G，输入框占 H:J）  -->
-                                        <Border
-                                            Grid.Row="3"
-                                            Grid.Column="5"
-                                            Grid.ColumnSpan="2"
-                                            Style="{StaticResource InOptionCardPanelStyle}">
-                                            <Label Style="{StaticResource InOptionLabelStyle}">
-                                                <TextBlock Text="通讯地址" />
-                                            </Label>
-                                        </Border>
+                                            <!--  通讯地址（项目自定义，ADIF 无对应本站字段；标签占 F:G，输入框占 H:J）  -->
+                                            <Border
+                                                Grid.Row="3"
+                                                Grid.Column="5"
+                                                Grid.ColumnSpan="2"
+                                                Style="{StaticResource InOptionCardPanelStyle}">
+                                                <Label Style="{StaticResource InOptionLabelStyle}">
+                                                    <TextBlock Text="通讯地址" />
+                                                </Label>
+                                            </Border>
 
-                                        <Border
-                                            Grid.Row="3"
-                                            Grid.Column="7"
-                                            Grid.ColumnSpan="3"
-                                            Padding="2,2,1,2"
-                                            Style="{StaticResource InOptionInPutPanelStyle}">
-                                            <TextBox Text="{Binding MY_MailAddress}" />
-                                        </Border>
+                                            <Border
+                                                Grid.Row="3"
+                                                Grid.Column="7"
+                                                Grid.ColumnSpan="3"
+                                                Padding="2,2,1,2"
+                                                Style="{StaticResource InOptionInPutPanelStyle}">
+                                                <TextBox Text="{Binding MY_MailAddress}" />
+                                            </Border>
 
-                                        <!--  ══════════════ 第 5 行 ══════════════  -->
+                                            <!--  ══════════════ 第 5 行 ══════════════  -->
 
-                                        <!--  QSL邮寄地址（项目自定义，ADIF 无对应本站字段）  -->
-                                        <Border
-                                            Grid.Row="4"
-                                            Grid.Column="0"
-                                            Grid.ColumnSpan="2"
-                                            Style="{StaticResource InOptionCardPanelStyle}">
-                                            <Label Style="{StaticResource InOptionLabelStyle}">
-                                                <TextBlock Text="QSL邮寄地址" />
-                                            </Label>
-                                        </Border>
+                                            <!--  QSL邮寄地址（项目自定义，ADIF 无对应本站字段）  -->
+                                            <Border
+                                                Grid.Row="4"
+                                                Grid.Column="0"
+                                                Grid.ColumnSpan="2"
+                                                Style="{StaticResource InOptionCardPanelStyle}">
+                                                <Label Style="{StaticResource InOptionLabelStyle}">
+                                                    <TextBlock Text="QSL邮寄地址" />
+                                                </Label>
+                                            </Border>
 
-                                        <Border
-                                            Grid.Row="4"
-                                            Grid.Column="2"
-                                            Grid.ColumnSpan="3"
-                                            Padding="2,2,1,2"
-                                            Style="{StaticResource InOptionInPutPanelStyle}">
-                                            <TextBox Text="{Binding MY_QslAddress}" />
-                                        </Border>
+                                            <Border
+                                                Grid.Row="4"
+                                                Grid.Column="2"
+                                                Grid.ColumnSpan="3"
+                                                Padding="2,2,1,2"
+                                                Style="{StaticResource InOptionInPutPanelStyle}">
+                                                <TextBox Text="{Binding MY_QslAddress}" />
+                                            </Border>
 
-                                        <!--  电子邮箱（项目自定义；ADIF 的 EMAIL 指对方邮箱，不能复用）  -->
-                                        <Border
-                                            Grid.Row="4"
-                                            Grid.Column="5"
-                                            Grid.ColumnSpan="2"
-                                            Style="{StaticResource InOptionCardPanelStyle}">
-                                            <Label Style="{StaticResource InOptionLabelStyle}">
-                                                <TextBlock Text="电子邮箱" />
-                                            </Label>
-                                        </Border>
+                                            <!--  电子邮箱（项目自定义；ADIF 的 EMAIL 指对方邮箱，不能复用）  -->
+                                            <Border
+                                                Grid.Row="4"
+                                                Grid.Column="5"
+                                                Grid.ColumnSpan="2"
+                                                Style="{StaticResource InOptionCardPanelStyle}">
+                                                <Label Style="{StaticResource InOptionLabelStyle}">
+                                                    <TextBlock Text="电子邮箱" />
+                                                </Label>
+                                            </Border>
 
-                                        <Border
-                                            Grid.Row="4"
-                                            Grid.Column="7"
-                                            Grid.ColumnSpan="3"
-                                            Padding="2,2,1,2"
-                                            Style="{StaticResource InOptionInPutPanelStyle}">
-                                            <TextBox Text="{Binding MY_Email}" />
-                                        </Border>
+                                            <Border
+                                                Grid.Row="4"
+                                                Grid.Column="7"
+                                                Grid.ColumnSpan="3"
+                                                Padding="2,2,1,2"
+                                                Style="{StaticResource InOptionInPutPanelStyle}">
+                                                <TextBox Text="{Binding MY_Email}" />
+                                            </Border>
 
-                                        <!--  ══════════════ 第 6 行 ══════════════  -->
+                                            <!--  ══════════════ 第 6 行 ══════════════  -->
 
-                                        <!--  常用天线（ADIF: MY_ANTENNA）  -->
-                                        <Border
-                                            Grid.Row="5"
-                                            Grid.Column="0"
-                                            Grid.ColumnSpan="2"
-                                            Style="{StaticResource InOptionCardPanelStyle}">
-                                            <Label Style="{StaticResource InOptionLabelStyle}">
-                                                <TextBlock Text="常用天线" />
-                                            </Label>
-                                        </Border>
+                                            <!--  常用天线（ADIF: MY_ANTENNA）  -->
+                                            <Border
+                                                Grid.Row="5"
+                                                Grid.Column="0"
+                                                Grid.ColumnSpan="2"
+                                                Style="{StaticResource InOptionCardPanelStyle}">
+                                                <Label Style="{StaticResource InOptionLabelStyle}">
+                                                    <TextBlock Text="常用天线" />
+                                                </Label>
+                                            </Border>
 
-                                        <Border
-                                            Grid.Row="5"
-                                            Grid.Column="2"
-                                            Grid.ColumnSpan="3"
-                                            Padding="2,2,1,2"
-                                            Style="{StaticResource InOptionInPutPanelStyle}">
-                                            <TextBox Text="{Binding MY_ANTENNA}" />
-                                        </Border>
+                                            <Border
+                                                Grid.Row="5"
+                                                Grid.Column="2"
+                                                Grid.ColumnSpan="3"
+                                                Padding="2,2,1,2"
+                                                Style="{StaticResource InOptionInPutPanelStyle}">
+                                                <TextBox Text="{Binding MY_ANTENNA}" />
+                                            </Border>
 
-                                        <!--  常用设备（ADIF: MY_RIG）  -->
-                                        <Border
-                                            Grid.Row="5"
-                                            Grid.Column="5"
-                                            Grid.ColumnSpan="2"
-                                            Style="{StaticResource InOptionCardPanelStyle}">
-                                            <Label Style="{StaticResource InOptionLabelStyle}">
-                                                <TextBlock Text="常用设备" />
-                                            </Label>
-                                        </Border>
+                                            <!--  常用设备（ADIF: MY_RIG）  -->
+                                            <Border
+                                                Grid.Row="5"
+                                                Grid.Column="5"
+                                                Grid.ColumnSpan="2"
+                                                Style="{StaticResource InOptionCardPanelStyle}">
+                                                <Label Style="{StaticResource InOptionLabelStyle}">
+                                                    <TextBlock Text="常用设备" />
+                                                </Label>
+                                            </Border>
 
-                                        <Border
-                                            Grid.Row="5"
-                                            Grid.Column="7"
-                                            Grid.ColumnSpan="3"
-                                            Padding="2,2,1,2"
-                                            Style="{StaticResource InOptionInPutPanelStyle}">
-                                            <TextBox Text="{Binding MY_RIG}" />
-                                        </Border>
-
-
-
-                                    </Grid>
-
-
-
-                                </Border>
-                            </Grid>
-                        </Border>
+                                            <Border
+                                                Grid.Row="5"
+                                                Grid.Column="7"
+                                                Grid.ColumnSpan="3"
+                                                Padding="2,2,1,2"
+                                                Style="{StaticResource InOptionInPutPanelStyle}">
+                                                <TextBox Text="{Binding MY_RIG}" />
+                                            </Border>
 
 
-                    </StackPanel>
-                </ScrollViewer>
+
+                                        </Grid>
+
+
+
+                                    </Border>
+                                </Grid>
+                            </Border>
+
+
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <Border Grid.Row="1" Style="{StaticResource CardPanelStyle}">
+                        <Grid ShowGridLines="True">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                            <Border
+                                Grid.Column="3">
+                                <Button
+                                    Command="{Binding AddLogBtnClickCommand}"
+                                    Content="添加日志"
+                                    Style="{StaticResource PrimaryButtonStyle}" />
+                            </Border>
+                        </Grid>
+                    </Border>
+                </Grid>
             </Border>
 
         </TabItem>
