@@ -419,9 +419,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock TextAlignment="Center">
-                                        ·开始时间<LineBreak />
-                                        StartTime</TextBlock>
+                                    <TextBlock Text="·开始时间" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  开始时间输入框（hc:DateTimePicker 复合输入，后台拆分存储）  -->
@@ -446,9 +444,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock TextAlignment="Center">
-                                        ·结束时间<LineBreak />
-                                        EndTime</TextBlock>
+                                    <TextBlock Text="·结束时间" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  结束时间输入框（hc:DateTimePicker 复合输入，后台拆分存储）  -->
@@ -471,9 +467,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock TextAlignment="Center">
-                                        备注<LineBreak />
-                                        COMMENT</TextBlock>
+                                    <TextBlock Text="备注" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <Border
@@ -485,9 +479,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock TextAlignment="Center">
-                                        ·呼号<LineBreak />
-                                        CALL</TextBlock>
+                                    <TextBlock Text="·呼号" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  呼号输入框（ADIF: CALL）  -->
@@ -513,9 +505,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock TextAlignment="Center">
-                                        ·模式<LineBreak />
-                                        MODE</TextBlock>
+                                    <TextBlock Text="·模式" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  模式输入框  -->
@@ -566,9 +556,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock TextAlignment="Center">
-                                        ·频率<LineBreak />
-                                        FREQ</TextBlock>
+                                    <TextBlock Text="·频率" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  频率输入框（ADIF: FREQ，kHz）  -->
@@ -592,9 +580,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock TextAlignment="Center">
-                                        信号报告_收<LineBreak />
-                                        RST_RCVD</TextBlock>
+                                    <TextBlock Text="信号报告_收" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  接收信号报告输入框（ADIF: RST_RCVD）  -->
@@ -617,9 +603,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock TextAlignment="Center">
-                                        信号报告_发<LineBreak />
-                                        RST_SENT</TextBlock>
+                                    <TextBlock Text="信号报告_发" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  发射信号报告输入框（ADIF: RST_SENT）  -->
@@ -643,9 +627,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock TextAlignment="Center">
-                                        网格<LineBreak />
-                                        GRIDSQUARE</TextBlock>
+                                    <TextBlock Text="网格" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  网格输入框（ADIF: GRIDSQUARE）  -->
@@ -668,9 +650,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock TextAlignment="Center">
-                                        发射功率_收<LineBreak />
-                                        RX_PWR</TextBlock>
+                                    <TextBlock Text="发射功率_收" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  接收功率输入框（ADIF: RX_PWR）  -->
@@ -695,9 +675,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock TextAlignment="Center">
-                                        发射功率_发<LineBreak />
-                                        TX_PWR</TextBlock>
+                                    <TextBlock Text="发射功率_发" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  发射功率输入框（ADIF: TX_PWR）  -->
@@ -722,9 +700,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock TextAlignment="Center">
-                                        地理位置<LineBreak />
-                                        QTH</TextBlock>
+                                    <TextBlock Text="地理位置" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  QTH地理位置输入框（ADIF: QTH）  -->
@@ -748,9 +724,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock TextAlignment="Center">
-                                        设备<LineBreak />
-                                        RIG</TextBlock>
+                                    <TextBlock Text="设备" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  设备RIG输入框（ADIF: RIG）  -->
@@ -774,9 +748,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock TextAlignment="Center">
-                                        天线<LineBreak />
-                                        ANT</TextBlock>
+                                    <TextBlock Text="天线" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  天线ANT输入框  -->
@@ -800,9 +772,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock TextAlignment="Center">
-                                        发射高度<LineBreak />
-                                        Height</TextBlock>
+                                    <TextBlock Text="发射高度" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  发射高度 Height输入框  -->
@@ -828,9 +798,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock TextAlignment="Center">
-                                        值机员<LineBreak />
-                                        CONTACTED_OP</TextBlock>
+                                    <TextBlock Text="值机员" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  对方电台值机员输入框（指对方实际操作的台）
@@ -857,9 +825,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock TextAlignment="Center">
-                                        传播模式<LineBreak />
-                                        PROP_MODE</TextBlock>
+                                    <TextBlock Text="传播模式" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  传播模式 Propagation Mode输入框  -->
@@ -894,9 +860,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock TextAlignment="Center">
-                                        数字ID<LineBreak />
-                                        DigID</TextBlock>
+                                    <TextBlock Text="数字ID" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  DMRID输入框  -->
