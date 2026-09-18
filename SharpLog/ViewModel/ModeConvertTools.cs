@@ -52,6 +52,7 @@ namespace SharpLog.ViewModel
         /// <param name="ant">天线类型（项目自定义）</param>
         /// <param name="comment">备注（ADIF: COMMENT）</param>
         /// <param name="height">发射高度（项目自定义）</param>
+        /// <param name="contactedOp">对方电台值机员呼号（ADIF: CONTACTED_OP）</param>
         /// <param name="propMode">传播模式（ADIF: PROP_MODE，来自下拉选中项的 Code；选「（不指定）」时传 null）</param>
         /// <param name="digId">DMR 数字 ID（项目自定义）</param>
         /// <param name="groupID">分组 ID（项目自定义）</param>
@@ -69,7 +70,7 @@ namespace SharpLog.ViewModel
             string call, string freq, string mode, string? submode, string rstRcvd, string rstSent,
             string gridSquare, string rxPower, string txPower,
             string qth, string rig, string ant,
-            string comment, string height, string? propMode, string digId,
+            string comment, string height, string contactedOp, string? propMode, string digId,
 
             int? groupID, int starID,
             string qslRcvd, DateTime? qslRDate, DateTime? qslSDate,
@@ -100,6 +101,8 @@ namespace SharpLog.ViewModel
                 ANT = ant,
                 COMMENT = comment,
                 Height = height,
+                // 对方电台值机员（ADIF: CONTACTED_OP）——实际在对方电台操作的人
+                CONTACTED_OP = contactedOp,
                 // 本站操作员呼号：从全局设置缓存中读取
                 // （优先取 STATION_CALLSIGN，其次 OPERATOR）。
                 // ⚠ 该列在数据库中是 NOT NULL，所以缓存里没有值时返回空串而非 null。
@@ -160,6 +163,8 @@ namespace SharpLog.ViewModel
                 QTH = qsoLog.QTH,
                 RIG = qsoLog.RIG,
                 Antenna = qsoLog.ANT,
+                // 卡片上的"值机员"显示位（Grid.Row=8 的 Column 5-6）
+                CONTACTED_OP = qsoLog.CONTACTED_OP,
                 GRIDSQUARE = qsoLog.GRIDSQUARE,
             };
             return oneLog;

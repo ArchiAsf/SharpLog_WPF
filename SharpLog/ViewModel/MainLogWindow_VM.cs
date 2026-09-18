@@ -158,10 +158,13 @@ namespace SharpLog.ViewModel
         [ObservableProperty]
         private string _height = string.Empty;
 
-        // 【已移除】原 _operator 属性（操作员姓名）
-        // 界面上的「操作员 OP」输入框与 QsoLog.OP 字段已一并删除；
-        // 通联记录中的本站呼号改由设置页的 STATION_CALLSIGN 提供
-        // （见 AppSettingsCache.RadioOperatorForQso）。
+        /// <summary>
+        /// 对方电台值机员呼号（ADIF: CONTACTED_OP），绑定 TextBox。
+        /// 指实际在【对方电台】操作设备的人——远征台、集体台换班时尤其有用。
+        /// ⚠ 与 RadioOperator 区分：RadioOperator 是【本站】的操作员呼号（来自软件设置）。
+        /// </summary>
+        [ObservableProperty]
+        private string _CONTACTED_OP = string.Empty;
 
         /// <summary>
         /// DMR 数字 ID（项目自定义字段，ADIF 无对应，保留原名）。
@@ -629,7 +632,7 @@ namespace SharpLog.ViewModel
                     // SelectedCommCode = ADIF 主模式（MODE），SelectedSubmodeCode = ADIF 子模式（SUBMODE）
                     StartTimeDT, EndTimeDT, ZoneName, CALL, FREQ, SelectedCommCode, SelectedSubmodeCode,
                     RST_RCVD, RST_SENT, GRIDSQUARE, RX_PWR, TX_PWR, QTH, RIG, Ant, COMMENT,
-                    Height, SelectedPropCode, DigID,
+                    Height, CONTACTED_OP, SelectedPropCode, DigID,
                     GroupID, StarID, QSL_RCVD, QSLRDATE, QSLSDATE, QslAddress, ReceiverName, PostalCode, ReceiverContact));
 
                 if (!Result.Result.Success)

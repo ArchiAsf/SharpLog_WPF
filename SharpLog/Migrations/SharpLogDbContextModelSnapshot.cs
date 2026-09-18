@@ -95,6 +95,9 @@ namespace SharpLog.Migrations
                     b.Property<string>("COMMENT")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("CONTACTED_OP")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 

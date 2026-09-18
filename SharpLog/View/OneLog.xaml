@@ -244,7 +244,15 @@
                     VerticalAlignment="Center"
                     Content="{Binding Antenna, RelativeSource={RelativeSource AncestorType=UserControl}}"
                     Style="{StaticResource QsoNormalLabelStyle}" />
-                <!--  【已移除】原「操作员」显示位（Grid.Row=8 的 Column 5-6）  -->
+                <!--  对方电台值机员（ADIF: CONTACTED_OP）  -->
+                <Label
+                    Grid.Row="8"
+                    Grid.Column="5"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Content="{Binding CONTACTED_OP, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Style="{StaticResource QsoNormalLabelStyle}" />
             </Grid>
         </Grid>
 
