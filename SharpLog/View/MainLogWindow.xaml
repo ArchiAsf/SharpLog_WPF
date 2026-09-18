@@ -1293,7 +1293,7 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
-                        <RowDefinition Height="40" />
+                        <RowDefinition Height="45" />
                     </Grid.RowDefinitions>
                     <ScrollViewer
                         Grid.Row="0"
@@ -1666,19 +1666,33 @@
                     </ScrollViewer>
 
                     <Border Grid.Row="1" Style="{StaticResource CardPanelStyle}">
-                        <Grid ShowGridLines="True">
+                        <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="100"/>
-                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="130"/>
                                 <ColumnDefinition Width="100"/>
                             </Grid.ColumnDefinitions>
                             <Border
+                                Grid.Column="1">
+                                <Button
+                                    Command=""
+                                    Content="取消更改"
+                                    Style="{StaticResource SecondaryButtonStyle}"/>
+                            </Border>
+                            <Border
+                                Grid.Column="2">
+                                <Button
+                                    Command=""
+                                    Content="恢复到默认设置"
+                                    Style="{StaticResource SecondaryButtonStyle}" />
+                            </Border>
+                            <Border
                                 Grid.Column="3">
                                 <Button
-                                    Command="{Binding AddLogBtnClickCommand}"
-                                    Content="添加日志"
-                                    Style="{StaticResource PrimaryButtonStyle}" />
+                                    Command=""
+                                    Content="保存设置"
+                                    Style="{StaticResource InOptionButtonStyle}" />
                             </Border>
                         </Grid>
                     </Border>
