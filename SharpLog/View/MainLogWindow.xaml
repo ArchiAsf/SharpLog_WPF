@@ -319,9 +319,8 @@
                                                         FontSize="10"
                                                         Foreground="{StaticResource LabelMainTitleColor}"
                                                         Style="{StaticResource LabelMainTitleStyle}">
-                                                        <TextBlock>
-                                                            04：07
-                                                        </TextBlock>
+                                                        <!--  日出时刻：由 VM 每天零点重算（民用晨昏）  -->
+                                                        <TextBlock Text="{Binding SunriseText}" />
                                                     </Label>
                                                 </StackPanel>
                                             </Border>
@@ -347,9 +346,8 @@
                                                         FontSize="10"
                                                         Foreground="{StaticResource LabelMainTitleColor}"
                                                         Style="{StaticResource LabelMainTitleStyle}">
-                                                        <TextBlock>
-                                                            19：27
-                                                        </TextBlock>
+                                                        <!--  日落时刻：由 VM 每天零点重算（民用晨昏）  -->
+                                                        <TextBlock Text="{Binding SunsetText}" />
                                                     </Label>
                                                 </StackPanel>
                                             </Border>

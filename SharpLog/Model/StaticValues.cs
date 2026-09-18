@@ -348,6 +348,35 @@ namespace SharpLog.Model
         public static bool IsUseUtcTime { get; set; } = true;
 
 
+        // ============================================================
+        //  晨昏（日出 / 日落）信息
+        // ------------------------------------------------------------
+        // 由 MainLogWindow_VM 在【程序启动时】与【每天本地零点】调用
+        // ToolsBox\SunTimeCalculator 计算后写入这里，供界面显示，
+        // 以及后续的传播判断（如 160m/80m 波段的夜间通联窗口）取用。
+        //
+        // 注意：算出来的是【民用晨昏】时刻（太阳位于地平线下 6°），
+        // 比日常说的"日出日落"早/晚各 20~30 分钟，这是有意为之。
+        // ============================================================
+
+        /// <summary>
+        /// 今日民用日出时刻（本地时间）。
+        /// 尚未计算、当天为极昼/极夜、或经纬度未设置时为 null。
+        /// </summary>
+        public static DateTime? SunriseTime { get; set; }
+
+        /// <summary>
+        /// 今日民用日落时刻（本地时间）。
+        /// 尚未计算、当天为极昼/极夜、或经纬度未设置时为 null。
+        /// </summary>
+        public static DateTime? SunsetTime { get; set; }
+
+        /// <summary>
+        /// 日出日落的计算状态，用于区分「正常 / 极昼 / 极夜 / 无法计算」。
+        /// </summary>
+        public static SunTimeStatus SunTimeState { get; set; } = SunTimeStatus.Invalid;
+
+
 
         // ============================================================
         // 【已移除】原 ConvertToOneLog 方法与 CombineQsoDateTime 辅助方法

@@ -268,6 +268,27 @@ namespace SharpLog.ViewModel
         private string _LocalTime = "00:00:00";
 
         /// <summary>
+        /// 晨昏区显示的日出时刻文本（如 "05:51"）。
+        /// 经纬度未填写时显示 "--:--"；极昼/极夜时显示对应的状态文字。
+        /// 由 RefreshSunTimes() 在程序启动时与每天零点更新。
+        /// </summary>
+        [ObservableProperty]
+        private string _sunriseText = "--:--";
+
+        /// <summary>
+        /// 晨昏区显示的日落时刻文本（如 "18:52"），规则同 SunriseText。
+        /// </summary>
+        [ObservableProperty]
+        private string _sunsetText = "--:--";
+
+        /// <summary>
+        /// 上次计算日出日落时所在的本地日期。
+        /// 用来判断程序运行期间有没有跨天——日期一变就在零点重新计算，
+        /// 这样程序连续开着好几天也能自动跟上。
+        /// </summary>
+        private DateTime _lastSunTimeCalcDate = DateTime.MinValue;
+
+        /// <summary>
         /// 当前选中的传播模式下拉项（绑定 ComboBox SelectedItem）。
         /// 通过 SelectedPropCode 获取 ADIF 代码（存库值）；
         /// 选中首项「（不指定）」时 Code 为 null，存库 PROP_MODE 写 NULL。
@@ -507,6 +528,92 @@ namespace SharpLog.ViewModel
                 LogUseTime = DateTime.Now;
                 ZoneName = "UTC" + DateTimeOffset.Now.ToString("zzz");
             }
+
+            // ── 晨昏区：每天零点（本地日期变化时）重算一次日出日落 ──
+            // 直接复用这个每秒定时器即可，不必再开一个；
+            // 判断依据是【本地日期有没有变】，所以程序跨零点持续运行时会自动更新。
+            if (DateTime.Now.Date != _lastSunTimeCalcDate)
+            {
+                _lastSunTimeCalcDate = DateTime.Now.Date;
+                RefreshSunTimes();
+            }
+        }
+
+        /// <summary>
+        /// 根据设置中保存的经纬度，计算当天的【民用日出日落】时刻，
+        /// 把结果写入界面绑定属性，并同步缓存到 StaticValues。
+        ///
+        /// 【触发时机】程序启动时一次，之后每天本地零点各一次（见 RefreshTime）。
+        /// 【经纬度来源】读取【已保存】的设置（AppSettingsCache）——
+        ///   设置页上正在编辑、但还没点保存的值不会影响这里。
+        /// </summary>
+        private void RefreshSunTimes()
+        {
+            // ---------- 1. 解析经纬度 ----------
+            // 用户在设置页填的是文本（如 "39.90"），这里解析成十进制度；
+            // 任意一个缺失或格式不对，都视为"无法计算"
+            bool latitudeOk = SunTimeCalculator.TryParseDegrees(
+                AppSettingsCache.Current?.MY_LAT, out double latitude);
+            bool longitudeOk = SunTimeCalculator.TryParseDegrees(
+                AppSettingsCache.Current?.MY_LON, out double longitude);
+
+            if (!latitudeOk || !longitudeOk)
+            {
+                ApplySunTimeResult(new SunTimeCalculator.SunTimeResult(
+                    SunTimeStatus.Invalid, null, null));
+                return;
+            }
+
+            // ---------- 2. 计算 ----------
+            // 结果显示采用本机所在时区。
+            // 多数情况下这与台站所在地一致；将来若要单独设置台站时区，改这一行即可。
+            TimeSpan utcOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.Now);
+
+            var result = SunTimeCalculator.CalculateCivilTwilight(
+                DateTime.Now, latitude, longitude, utcOffset);
+
+            // ---------- 3. 写到界面与 StaticValues ----------
+            ApplySunTimeResult(result);
+        }
+
+        /// <summary>
+        /// 把计算结果分别写进界面绑定属性与 StaticValues。
+        ///
+        /// 显示规则：
+        ///   · 正常   → 显示 "HH:mm" 时刻
+        ///   · 极昼   → 两个位置都显示「极昼」
+        ///   · 极夜   → 两个位置都显示「极夜」
+        ///   · 无法算 → 两个位置都显示 "--:--"（通常是经纬度还没填）
+        /// </summary>
+        private void ApplySunTimeResult(SunTimeCalculator.SunTimeResult result)
+        {
+            switch (result.Status)
+            {
+                case SunTimeStatus.PolarDay:
+                    SunriseText = "极昼";
+                    SunsetText = "极昼";
+                    break;
+
+                case SunTimeStatus.PolarNight:
+                    SunriseText = "极夜";
+                    SunsetText = "极夜";
+                    break;
+
+                case SunTimeStatus.Normal:
+                    SunriseText = result.Sunrise?.ToString("HH:mm") ?? "--:--";
+                    SunsetText = result.Sunset?.ToString("HH:mm") ?? "--:--";
+                    break;
+
+                default:   // SunTimeStatus.Invalid —— 经纬度缺失或非法
+                    SunriseText = "--:--";
+                    SunsetText = "--:--";
+                    break;
+            }
+
+            // 存入 StaticValues，供后续功能（传播判断、波段窗口提示等）取用
+            StaticValues.SunriseTime = result.Sunrise;
+            StaticValues.SunsetTime = result.Sunset;
+            StaticValues.SunTimeState = result.Status;
         }
 
         #endregion
