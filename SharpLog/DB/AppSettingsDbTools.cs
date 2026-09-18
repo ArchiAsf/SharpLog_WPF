@@ -112,6 +112,12 @@ namespace SharpLog.DB
                 }
 
                 await db.SaveChangesAsync().ConfigureAwait(false);
+
+                // 保存成功后同步刷新全局缓存，保证其他模块立刻能读到新设置。
+                // 更新分支里 existing 是数据库中的实体（已写入新值）；
+                // 新增分支里用传入的 settings。
+                AppSettingsCache.Update(existing ?? settings);
+
                 return (true, null);
             }
             catch (Microsoft.Data.Sqlite.SqliteException ex)

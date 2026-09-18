@@ -818,32 +818,11 @@
                                     Text="{Binding Height, Mode=TwoWay}" />
                             </Border>
 
-                            <Border
-                                Grid.Row="7"
-                                Grid.Column="3"
-                                Style="{StaticResource CardPanelStyle}">
-
-                                <!--  字段标签：操作员OP  -->
-                                <Label
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock TextAlignment="Center">
-                                        操作员<LineBreak />
-                                        OP</TextBlock>
-                                </Label>
-                            </Border>
-                            <!--  操作员OP输入框  -->
-                            <Border
-                                Grid.Row="7"
-                                Grid.Column="4"
-                                Grid.ColumnSpan="2"
-                                Style="{StaticResource InCardPanelStyle}">
-                                <TextBox
-                                    x:Name="OPInPutBox"
-                                    Style="{StaticResource DarkTextBoxStyle}"
-                                    Text="{Binding Operator, Mode=TwoWay}" />
-                            </Border>
+                            <!--  【已移除】原「操作员 OP」标签与输入框
+                                  该字段与 QsoLog.OP 一并删除——
+                                  通联记录中的本站呼号改由设置页的 STATION_CALLSIGN 提供。
+                                  此处（Grid.Row=7 的 Column 3 与 Column 4-5）目前留空，
+                                  后续可在页面布局调整时重新安排内容。  -->
 
 
 

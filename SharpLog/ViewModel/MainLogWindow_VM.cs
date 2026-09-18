@@ -158,11 +158,10 @@ namespace SharpLog.ViewModel
         [ObservableProperty]
         private string _height = string.Empty;
 
-        /// <summary>
-        /// 操作员（项目自定义字段，ADIF 无对应，保留原名）。
-        /// </summary>
-        [ObservableProperty]
-        private string _operator = string.Empty;
+        // 【已移除】原 _operator 属性（操作员姓名）
+        // 界面上的「操作员 OP」输入框与 QsoLog.OP 字段已一并删除；
+        // 通联记录中的本站呼号改由设置页的 STATION_CALLSIGN 提供
+        // （见 AppSettingsCache.RadioOperatorForQso）。
 
         /// <summary>
         /// DMR 数字 ID（项目自定义字段，ADIF 无对应，保留原名）。
@@ -554,11 +553,25 @@ namespace SharpLog.ViewModel
         [RelayCommand]
         private void ResetSettings()
         {
+            // 二次确认：避免误点后界面上的内容被一扫而空。
+            // 用 HandyControl 的 MessageBox（项目规范禁止使用原生 MessageBox.Show）。
+            // 默认按钮设为「取消」，这样即使误按回车也不会清空界面。
+            var choice = HandyControl.Controls.MessageBox.Show(
+                "确定要把所有设置项恢复为默认值吗？\n\n此操作只影响界面，点「保存设置」后才会写入数据库。",
+                "恢复默认设置",
+                MessageBoxButton.OKCancel,
+                MessageBoxImage.Question,
+                MessageBoxResult.Cancel);
+
+            if (choice != MessageBoxResult.OK) return;
+
             var defaultSettings = AppSettings.CreateDefault();
 
             PropertyCopyTools.CopySameNameProperties(
                 defaultSettings, this,
                 nameof(AppSettings.Id), nameof(AppSettings.UpdatedAt));
+
+            ShowSuccessMess_OnMainView("已恢复默认设置（尚未保存）");
         }
 
         /// <summary>
@@ -616,7 +629,7 @@ namespace SharpLog.ViewModel
                     // SelectedCommCode = ADIF 主模式（MODE），SelectedSubmodeCode = ADIF 子模式（SUBMODE）
                     StartTimeDT, EndTimeDT, ZoneName, CALL, FREQ, SelectedCommCode, SelectedSubmodeCode,
                     RST_RCVD, RST_SENT, GRIDSQUARE, RX_PWR, TX_PWR, QTH, RIG, Ant, COMMENT,
-                    Height, Operator, SelectedPropCode, DigID,
+                    Height, SelectedPropCode, DigID,
                     GroupID, StarID, QSL_RCVD, QSLRDATE, QSLSDATE, QslAddress, ReceiverName, PostalCode, ReceiverContact));
 
                 if (!Result.Result.Success)

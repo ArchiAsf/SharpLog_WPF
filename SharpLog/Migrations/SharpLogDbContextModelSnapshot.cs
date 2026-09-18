@@ -124,9 +124,6 @@ namespace SharpLog.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("OP")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("PROP_MODE")
                         .HasColumnType("TEXT");
 

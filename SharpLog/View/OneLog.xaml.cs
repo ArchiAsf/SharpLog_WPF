@@ -195,14 +195,8 @@ namespace SharpLog
         public static readonly DependencyProperty AntennaProperty =
             DependencyProperty.Register(nameof(Antenna), typeof(string), typeof(OneLog));
 
-        /// <summary>操作员（项目自定义字段）。</summary>
-        public string Operator
-        {
-            get => (string)GetValue(OperatorProperty);
-            set => SetValue(OperatorProperty, value);
-        }
-        public static readonly DependencyProperty OperatorProperty =
-            DependencyProperty.Register(nameof(Operator), typeof(string), typeof(OneLog));
+        // 【已移除】原 Operator 依赖属性（操作员姓名）
+        // 与 QsoLog.OP 字段一并删除，卡片上对应的显示位（Grid.Row=8 的 Column 5-6）留空。
 
         #endregion
     }

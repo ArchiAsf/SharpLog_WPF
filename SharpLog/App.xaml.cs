@@ -49,6 +49,17 @@ namespace SharpLog
                 // ---------- 第 2 步：加载 ADIF 基础数据到内存 ----------
                 // 加载失败会抛出 FileOperationException，由下方 catch 统一处理
                 AdifDataLoader.Initialize();
+
+                // ---------- 第 3 步：加载软件设置到全局缓存 ----------
+                // 让需要用到设置的地方（例如新建通联时写入本站呼号）直接读内存缓存，
+                // 不必每次都去查数据库（详见 AppSettingsCache 的类注释）。
+                // 注意：设置加载失败【不阻断程序启动】——其余功能仍可正常使用，
+                // 只是"本站呼号"等设置项暂时取不到值，因此这里只记警告。
+                var (settingsLoaded, settingsError) = AppSettingsCache.RefreshAsync().GetAwaiter().GetResult();
+                if (!settingsLoaded)
+                {
+                    Logger.Warn($"软件设置加载失败：{settingsError}", "AppStartup");
+                }
             }
             catch (Exception ex)
             {
