@@ -187,6 +187,75 @@ namespace SharpLog.ToolsBox
                 out value);
         }
 
+        /// <summary>
+        /// 判断给定时刻属于一天中的哪个时段（黎明 / 日间 / 黄昏 / 夜间），
+        /// 供晨昏区切换图标与文字使用。
+        ///
+        /// 【划分方式】以民用日出、日落时刻为基准，各自向前后延伸 transition 时长：
+        ///     黎明 = [日出 − t, 日出 + t)
+        ///     黄昏 = [日落 − t, 日落 + t)
+        ///     日间 = [日出 + t, 日落 − t)
+        ///     其余 = 夜间（含跨天的那一段）
+        ///
+        /// ⚠ 高纬度地区冬季昼短，可能出现"日出 + t"已经晚于"日落 − t"的情况，
+        ///   此时日间区间整个为空，当日不会有任何时刻被判为日间——
+        ///   这符合实际（那天确实几乎整天都是暗的），不必特殊处理。
+        /// </summary>
+        /// <param name="now">要判断的时刻（本地时间）</param>
+        /// <param name="sunTime">当天的日出日落计算结果</param>
+        /// <param name="transition">黎明与黄昏各自向两侧延伸的时长（如 30 分钟）</param>
+        /// <returns>时段</returns>
+        public static DayPeriod ResolveDayPeriod(DateTime now, SunTimeResult sunTime, TimeSpan transition)
+        {
+            #region 1. 先处理"没有日出日落"的几种情况
+
+            switch (sunTime.Status)
+            {
+                case SunTimeStatus.PolarDay:
+                    return DayPeriod.PolarDay;
+
+                case SunTimeStatus.PolarNight:
+                    return DayPeriod.PolarNight;
+
+                case SunTimeStatus.Invalid:
+                    return DayPeriod.Unknown;
+            }
+
+            // 走到这里说明状态是 Normal，日出与日落必定有值；
+            // 仍然做一次空值防护，避免将来改动导致意外崩溃
+            if (sunTime.Sunrise is not DateTime sunrise || sunTime.Sunset is not DateTime sunset)
+            {
+                return DayPeriod.Unknown;
+            }
+
+            #endregion
+
+            #region 2. 按当前时刻落在哪一段来判定
+
+            // 黎明：日出前后各 transition
+            if (now >= sunrise - transition && now < sunrise + transition)
+            {
+                return DayPeriod.Dawn;
+            }
+
+            // 黄昏：日落前后各 transition
+            if (now >= sunset - transition && now < sunset + transition)
+            {
+                return DayPeriod.Dusk;
+            }
+
+            // 日间：日出之后、日落之前（去掉两端过渡段）
+            if (now >= sunrise + transition && now < sunset - transition)
+            {
+                return DayPeriod.Day;
+            }
+
+            // 其余全部归为夜间——包括"日落后到次日日出前"这段跨天的区间
+            return DayPeriod.Night;
+
+            #endregion
+        }
+
         #region 内部辅助方法
 
         /// <summary>把 UTC 时刻转换为儒略日（Julian Day）。</summary>

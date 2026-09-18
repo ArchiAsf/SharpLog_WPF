@@ -289,6 +289,27 @@ namespace SharpLog.ViewModel
         private DateTime _lastSunTimeCalcDate = DateTime.MinValue;
 
         /// <summary>
+        /// 最近一次日出日落计算的结果，供"时段判断"复用。
+        /// 有了它，每秒判定时段时只需做几次时间比较，不必重跑天文公式。
+        /// </summary>
+        private SunTimeCalculator.SunTimeResult _currentSunTime =
+            new SunTimeCalculator.SunTimeResult(SunTimeStatus.Invalid, null, null);
+
+        /// <summary>
+        /// 晨昏区显示的时段文字：黎明 / 日间 / 黄昏 / 夜间 / 极昼 / 极夜 / 未设置。
+        /// 每秒随 RefreshTime 重新判定。
+        /// </summary>
+        [ObservableProperty]
+        private string _dayPeriodText = "未设置";
+
+        /// <summary>
+        /// 晨昏区显示的时段图标路径（/logo 目录下的 Dawn / Day / Dusk / Night 四张图之一），
+        /// 与 DayPeriodText 同步更新。
+        /// </summary>
+        [ObservableProperty]
+        private string _dayPeriodIconPath = "/logo/Day.png";
+
+        /// <summary>
         /// 当前选中的传播模式下拉项（绑定 ComboBox SelectedItem）。
         /// 通过 SelectedPropCode 获取 ADIF 代码（存库值）；
         /// 选中首项「（不指定）」时 Code 为 null，存库 PROP_MODE 写 NULL。
@@ -537,6 +558,11 @@ namespace SharpLog.ViewModel
                 _lastSunTimeCalcDate = DateTime.Now.Date;
                 RefreshSunTimes();
             }
+
+            // ── 晨昏区：每秒判定一次所属时段，跨过边界时自动切换图标与文字 ──
+            // 必须持续判定而不是只在零点算一次：时段会随时间推移自然变化
+            // （比如从「日间」进入「黄昏」），只在零点判断的话整天都不会更新。
+            RefreshDayPeriod();
         }
 
         /// <summary>
@@ -614,6 +640,71 @@ namespace SharpLog.ViewModel
             StaticValues.SunriseTime = result.Sunrise;
             StaticValues.SunsetTime = result.Sunset;
             StaticValues.SunTimeState = result.Status;
+
+            // 缓存下来供每秒的时段判断复用
+            _currentSunTime = result;
+        }
+
+        /// <summary>
+        /// 根据当前时刻与当天的日出日落，判断所处时段并更新晨昏区的图标与文字。
+        ///
+        /// 【调用时机】每秒一次（随 RefreshTime）——
+        ///   时段会随时间推移自然切换，必须持续判定。
+        ///   由于日出日落结果已缓存在 _currentSunTime，这里只做几次时间比较，
+        ///   每秒执行也不会有性能负担。
+        ///
+        /// 【划分规则】见 Model\DayPeriod.cs 的说明：
+        ///   黎明 = 日出前后各 30 分钟、黄昏 = 日落前后各 30 分钟，其余为日间/夜间。
+        /// </summary>
+        private void RefreshDayPeriod()
+        {
+            // 黎明与黄昏各自向两侧延伸的过渡时长
+            TimeSpan transition = TimeSpan.FromMinutes(30);
+
+            DayPeriod period = SunTimeCalculator.ResolveDayPeriod(
+                DateTime.Now, _currentSunTime, transition);
+
+            // 时段 → 文字 + 图标
+            // 图标路径写成 "/logo/xxx.png" 这种形式，WPF 会自动当作资源路径解析
+            switch (period)
+            {
+                case DayPeriod.Dawn:
+                    DayPeriodText = "黎明";
+                    DayPeriodIconPath = "/logo/Dawn.png";
+                    break;
+
+                case DayPeriod.Day:
+                    DayPeriodText = "日间";
+                    DayPeriodIconPath = "/logo/Day.png";
+                    break;
+
+                case DayPeriod.Dusk:
+                    DayPeriodText = "黄昏";
+                    DayPeriodIconPath = "/logo/Dusk.png";
+                    break;
+
+                case DayPeriod.Night:
+                    DayPeriodText = "夜间";
+                    DayPeriodIconPath = "/logo/Night.png";
+                    break;
+
+                case DayPeriod.PolarDay:
+                    // 太阳整日不落，配日间的图最贴切
+                    DayPeriodText = "极昼";
+                    DayPeriodIconPath = "/logo/Day.png";
+                    break;
+
+                case DayPeriod.PolarNight:
+                    DayPeriodText = "极夜";
+                    DayPeriodIconPath = "/logo/Night.png";
+                    break;
+
+                default:
+                    // DayPeriod.Unknown —— 通常是经纬度还没填写
+                    DayPeriodText = "未设置";
+                    DayPeriodIconPath = "/logo/Day.png";
+                    break;
+            }
         }
 
         #endregion

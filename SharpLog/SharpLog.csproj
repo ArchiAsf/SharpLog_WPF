@@ -13,10 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="logo\Dawn.png" />
+    <None Remove="logo\Day.png" />
     <None Remove="logo\Dusk.png" />
-    <None Remove="logo\Morning.png" />
-    <None Remove="logo\night.png" />
-    <None Remove="logo\Sun.png" />
+    <None Remove="logo\Night.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,16 +30,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!--
+      晨昏区按时段显示的图标（1075×1075 PNG，带 Alpha 透明通道）。
+      命名采用天文/气象领域的标准时段术语：
+        Dawn  黎明   Day  日间   Dusk 黄昏   Night 夜间
+    -->
+    <Resource Include="logo\Dawn.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="logo\Day.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="logo\Dusk.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="logo\Morning.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="logo\night.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="logo\Sun.png">
+    <Resource Include="logo\Night.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

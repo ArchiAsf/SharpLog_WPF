@@ -257,7 +257,8 @@
                                                 BorderBrush="{StaticResource PanelBorderColor}"
                                                 BorderThickness="0,0,1,0">
 
-                                                <Image Margin="2" Source="/logo/night.png" />
+                                                <!--  时段图标：随 黎明/日间/黄昏/夜间 自动切换（图片在 logo 目录下）  -->
+                                                <Image Margin="2" Source="{Binding DayPeriodIconPath}" />
                                             </Border>
 
                                             <Border
@@ -287,9 +288,8 @@
                                                         FontSize="12"
                                                         Foreground="{StaticResource LabelMainTitleColor}"
                                                         Style="{StaticResource LabelMainTitleStyle}">
-                                                        <TextBlock>
-                                                            黄昏
-                                                        </TextBlock>
+                                                        <!--  时段文字：与左侧图标同步切换  -->
+                                                        <TextBlock Text="{Binding DayPeriodText}" />
                                                     </Label>
                                                 </StackPanel>
                                             </Border>
