@@ -121,7 +121,6 @@ namespace SharpLog.Model
 
         /// <summary>
         /// 通联所属操作员（项目自定义字段，ADIF 无对应字段，保留原名）。
-        /// 当前由 ModeConvertTools 硬编码为 "BG2GPT"（本站呼号）。
         /// </summary>
         [Required(ErrorMessage = "通联日志所属操作员不能为空")]
         public string RadioOperator { get; set; }

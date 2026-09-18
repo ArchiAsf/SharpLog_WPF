@@ -31,7 +31,8 @@ namespace SharpLog
     {
         /// <summary>
         /// 呼号正则：仅允许大小写字母、数字、斜杠（/）。
-        /// 例：BG2GPT、JA1ABC/MM、BY1WXD/QRP 均合法。
+        /// 例：
+        /// 、JA1ABC/MM、BY1WXD/QRP 均合法。
         /// 编译一次提升性能（RegexOptions.Compiled）。
         /// </summary>
         private static readonly Regex _callsignRegex = new Regex(@"^[A-Za-z0-9/]+$", RegexOptions.Compiled);

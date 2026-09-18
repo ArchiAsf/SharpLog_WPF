@@ -33,7 +33,6 @@ namespace SharpLog.ViewModel
         ///    例如界面选「FT4」时 mode="MFSK"、submode="FT4"；
         /// 3. 频率：字符串 kHz 文本 → double（FREQ 存储语义保持 kHz）；
         /// 4. QSL 状态：字符串"是/否" → bool；
-        /// 5. RadioOperator：当前硬编码为 "BG2GPT"（本站呼号）。
         /// </summary>
         /// <param name="startTimeDT">通联开始时间（复合，拆分为 QSO_DATE + TIME_ON）</param>
         /// <param name="endTimeDT">通联结束时间（复合，拆分为 QSO_DATE_OFF + TIME_OFF）</param>
@@ -115,8 +114,6 @@ namespace SharpLog.ViewModel
                 ReceiverName = receiverName,
                 PostalCode = postalCode,
                 ReceiverContact = receiverContact,
-                // 操作员：当前硬编码为本站呼号（后续可改为用户配置）
-                RadioOperator = "BG2GPT"
             };
             return qsoLog;
         }
