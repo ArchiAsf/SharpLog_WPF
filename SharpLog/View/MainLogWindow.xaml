@@ -1674,20 +1674,23 @@
                             <ColumnDefinition Width="100" />
                         </Grid.ColumnDefinitions>
                         <Border Grid.Column="1">
+                            <!--  放弃界面上的修改，重新从数据库读取设置填入界面  -->
                             <Button
-                                Command=""
+                                Command="{Binding CancelSettingsChangeCommand}"
                                 Content="取消更改"
                                 Style="{StaticResource SecondaryButtonStyle}" />
                         </Border>
                         <Border Grid.Column="2">
+                            <!--  重置界面为默认值（只改界面，需再点保存才写库）  -->
                             <Button
-                                Command=""
+                                Command="{Binding ResetSettingsCommand}"
                                 Content="恢复到默认设置"
                                 Style="{StaticResource SecondaryButtonStyle}" />
                         </Border>
                         <Border Grid.Column="3">
+                            <!--  把界面上的设置写入数据库（首次插入，之后覆盖）  -->
                             <Button
-                                Command=""
+                                Command="{Binding SaveSettingsCommand}"
                                 Content="保存设置"
                                 Style="{StaticResource InOptionButtonStyle}" />
                         </Border>

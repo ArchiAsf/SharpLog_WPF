@@ -1,7 +1,9 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.VisualBasic;
+using SharpLog.DB;
 using SharpLog.Model;
+using SharpLog.ToolsBox;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -429,7 +431,8 @@ namespace SharpLog.ViewModel
         /// 构造函数：
         /// 1. 初始化下拉列表数据源与默认选中项；
         /// 2. 从数据库加载全部日志并刷新右侧卡片；
-        /// 3. 启动每秒时间刷新定时器。
+        /// 3. 从数据库加载软件设置并填入设置页；
+        /// 4. 启动每秒时间刷新定时器。
         /// </summary>
         public MainLogWindow_VM()
         {
@@ -444,6 +447,12 @@ namespace SharpLog.ViewModel
             var a = GetAllDBDataAsync<QsoLog>();
             AllQsoLogList = a.Result.Data.ToList();
             ShowLogInView();
+
+            // 从数据库加载软件设置（本地台站信息）并填入设置页。
+            // 从未保存过设置时界面保持为空，这属于正常情况而非错误。
+            // 用 GetAwaiter().GetResult() 同步等待（与上面加载日志的写法保持一致）；
+            // AppSettingsDbTools 内部的 await 均已加 ConfigureAwait(false)，不会死锁。
+            ReloadSettingsAsync().GetAwaiter().GetResult();
 
             // 呼号与网格统一转为大写（初始值安全处理）
             CALL = CALL.ToUpper();
@@ -501,6 +510,95 @@ namespace SharpLog.ViewModel
         #endregion
 
         #region 绑定触发事件（命令）
+
+        #region 设置页命令（保存设置 / 恢复到默认设置 / 取消更改）
+
+        /// <summary>
+        /// 「保存设置」命令：把设置页上的 16 项内容写入数据库。
+        ///
+        /// 首次保存时插入新行，之后每次都是覆盖更新
+        /// （"到底是插入还是更新"的规则封装在 AppSettingsDbTools 里，
+        ///   这里不需要判断）。
+        /// </summary>
+        [RelayCommand]
+        private async Task SaveSettingsAsync()
+        {
+            // 把界面上的值组装成实体：
+            // 用反射按属性名批量拷贝，省去手写 16 行赋值，将来增删字段也不必改这里
+            var settings = new AppSettings();
+            PropertyCopyTools.CopySameNameProperties(
+                this, settings,
+                nameof(AppSettings.Id), nameof(AppSettings.UpdatedAt));
+
+            var (success, error) = await AppSettingsDbTools.SaveAsync(settings);
+
+            if (!success)
+            {
+                await ShowErrorMess_OnMainView(error ?? "保存设置失败！");
+                return;
+            }
+
+            await ShowSuccessMess_OnMainView("设置已保存！");
+        }
+
+        /// <summary>
+        /// 「恢复到默认设置」命令：把设置页上的内容重置为默认值。
+        ///
+        /// 注意：本命令【只修改界面、不写数据库】——
+        /// 真正生效需要用户再点一次「保存设置」；
+        /// 如果反悔，点「取消更改」即可回到数据库中的已保存值。
+        ///
+        /// 默认值由 AppSettings.CreateDefault() 统一提供，目前各项均为空；
+        /// 将来要给某个字段设初始值，只改那个方法即可，这里无需改动。
+        /// </summary>
+        [RelayCommand]
+        private void ResetSettings()
+        {
+            var defaultSettings = AppSettings.CreateDefault();
+
+            PropertyCopyTools.CopySameNameProperties(
+                defaultSettings, this,
+                nameof(AppSettings.Id), nameof(AppSettings.UpdatedAt));
+        }
+
+        /// <summary>
+        /// 「取消更改」命令：放弃界面上尚未保存的修改，
+        /// 重新从数据库读取设置并填回界面。
+        /// </summary>
+        [RelayCommand]
+        private async Task CancelSettingsChangeAsync()
+        {
+            await ReloadSettingsAsync();
+            await ShowSuccessMess_OnMainView("已放弃更改，界面已恢复为已保存的设置");
+        }
+
+        /// <summary>
+        /// 从数据库重新读取设置并填入界面。
+        ///
+        /// 三个场景共用此方法：
+        ///   · 程序启动时加载；
+        ///   · 点击「取消更改」时回滚；
+        ///   · 将来需要"重新载入"时也可直接调用。
+        /// </summary>
+        private async Task ReloadSettingsAsync()
+        {
+            var (settings, error) = await AppSettingsDbTools.LoadAsync();
+
+            if (error != null)
+            {
+                await ShowErrorMess_OnMainView(error);
+                return;
+            }
+
+            // 数据库中还没有设置（从未保存过）→ 用默认值填充界面，目前即全部为空
+            var source = settings ?? AppSettings.CreateDefault();
+
+            PropertyCopyTools.CopySameNameProperties(
+                source, this,
+                nameof(AppSettings.Id), nameof(AppSettings.UpdatedAt));
+        }
+
+        #endregion
 
         /// <summary>
         /// 「添加日志」按钮点击命令：

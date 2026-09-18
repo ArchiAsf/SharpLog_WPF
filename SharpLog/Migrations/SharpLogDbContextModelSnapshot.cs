@@ -17,6 +17,68 @@ namespace SharpLog.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.29");
 
+            modelBuilder.Entity("SharpLog.Model.AppSettings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("MY_ANTENNA")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MY_COUNTRY")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MY_CQ_ZONE")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MY_DXCC")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MY_Email")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MY_GRIDSQUARE")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MY_ITU_ZONE")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MY_LAT")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MY_LON")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MY_MailAddress")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MY_POSTAL_CODE")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MY_QslAddress")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MY_RIG")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MY_STREET")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("OPERATOR")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("STATION_CALLSIGN")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AppSettingsTable");
+                });
+
             modelBuilder.Entity("SharpLog.Model.QsoLog", b =>
                 {
                     b.Property<int>("Id")
