@@ -35,7 +35,6 @@
 
     <TabControl Style="{StaticResource DarkTabControlStyle}">
         <TabItem Header="日志编辑" Style="{StaticResource DarkTabItemStyle}">
-            <Border Margin="0" Style="{StaticResource CardPanelStyle}">
                 <Grid ShowGridLines="False">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="200" />
@@ -1259,7 +1258,7 @@
                         hc:Growl.Token="LogEditGrowl" />
 
                 </Grid>
-            </Border>
+
         </TabItem>
 
         <TabItem Header="日志查看" Style="{StaticResource DarkTabItemStyle}">

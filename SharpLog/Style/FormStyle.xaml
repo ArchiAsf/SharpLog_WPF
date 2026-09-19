@@ -1461,8 +1461,16 @@
     <Style x:Key="InOptionButtonStyle" BasedOn="{StaticResource PrimaryButtonStyle}" TargetType="Button" >
         <Setter Property="Margin" Value="3" />
     </Style>
-    
 
+    <Style x:Key="EditTitlePanelStyle" TargetType="Border"/>
+    <Style x:Key="EditInputPanelStyle" TargetType="Border"/>
+    <Style x:Key="EditButtonPanelStyle" TargetType="Border"/>
+    <Style x:Key="EditLabelStyle" TargetType="Label"/>
+    <Style x:Key="EditBigFontStyle" TargetType="Label"/>
+    <Style x:Key="EditSmallFontStyle" TargetType="Label"/>
+    <Style x:Key="EditTextBoxStyle" TargetType="TextBox"/>
+    <Style x:Key="EditButtonStyle" TargetType="Button"/>
+    
 
 
 
