@@ -26,13 +26,13 @@
       ══════════════════════════════════════════════════════════════════════
     -->
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Style/BaseStyle.xaml" />
-        <ResourceDictionary Source="/Style/TabControlStyle.xaml" />
-        <ResourceDictionary Source="/Style/DataGridStyle.xaml" />
-        <ResourceDictionary Source="/Style/LogEditStyle.xaml" />
-        <ResourceDictionary Source="/Style/ScrollBarStyle.xaml" />
-        <ResourceDictionary Source="/Style/SettingStyle.xaml" />
-        <ResourceDictionary Source="/Style/EditQsoStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Style/BaseStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Style/TabControlStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Style/DataGridStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Style/LogEditStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Style/ScrollBarStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Style/SettingStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Style/EditQsoStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary>
