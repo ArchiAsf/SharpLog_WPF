@@ -23,6 +23,7 @@
          ScrollBarStyle   滚动条与 ScrollViewer（含隐式 ScrollBar 样式）
          SettingStyle     设置页：Little* / Option* / InOption* / TimeInPut_HC
          EditQsoStyle     EditQso 编辑窗口：Edit* 系列 + 3 个 hc 控件样式
+         QueryStyle       日志查看页左侧：查询 / 筛选 / 统计区
       ══════════════════════════════════════════════════════════════════════
     -->
     <ResourceDictionary.MergedDictionaries>
@@ -33,6 +34,7 @@
         <ResourceDictionary Source="pack://application:,,,/Style/ScrollBarStyle.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Style/SettingStyle.xaml" />
         <ResourceDictionary Source="pack://application:,,,/Style/EditQsoStyle.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/Style/QueryStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary>
