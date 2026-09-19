@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!--  ========== 全局颜色资源（完全对应你WinForm色值，一一映射） ==========  -->
+
     <!--  主窗体背景、字体  -->
     <SolidColorBrush x:Key="LogMainFormBackColor" Color="#FF121418" />
     <SolidColorBrush x:Key="LogMainFormFontColor" Color="#FFF0F2F5" />
