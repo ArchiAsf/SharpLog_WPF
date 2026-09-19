@@ -3,9 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:hc="clr-namespace:HandyControl.Controls;assembly=HandyControl">
 
-
-
-
     <!--  ========== Style样式定义 全部带TargetType ==========  -->
 
     <!--  1. Window 主窗体基础样式  -->
@@ -182,7 +179,6 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-
 
     <!--  ================================================================
           右键菜单（日志查看表格的行操作菜单）

@@ -13,9 +13,6 @@
         <ResourceDictionary Source="pack://application:,,,/Style/BaseStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-
-
-
     <Style x:Key="DarkTabControlStyle" TargetType="TabControl">
         <!--  内容区域背景，和主窗体背景统一  -->
         <Setter Property="Background" Value="{StaticResource LogMainFormBackColor}" />
@@ -75,7 +72,6 @@
         </Setter>
     </Style>
 
-
     <!--  TabItem 标签头部样式（核心，包含选中/悬浮触发器）  -->
     <!--  TabItem 标签头部样式（修复选中出现白色背景问题）  -->
     <Style x:Key="DarkTabItemStyle" TargetType="TabItem">
@@ -118,7 +114,6 @@
                             VerticalAlignment="Center"
                             ContentSource="Header" />
                     </Grid>
-
 
                     <!--  状态触发器：悬浮 / 选中  -->
                     <ControlTemplate.Triggers>
@@ -179,7 +174,6 @@
                             VerticalAlignment="Center"
                             ContentSource="Header" />
                     </Grid>
-
 
                     <!--  状态触发器：悬浮 / 选中  -->
                     <ControlTemplate.Triggers>
@@ -349,7 +343,6 @@
                             </ContentPresenter.Resources>
                         </ContentPresenter>
                     </Grid>
-
 
                     <!--  状态触发器：悬浮 / 选中（与顶部版完全一致）  -->
                     <ControlTemplate.Triggers>

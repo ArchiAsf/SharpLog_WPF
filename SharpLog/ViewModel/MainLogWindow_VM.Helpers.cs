@@ -1,15 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.VisualBasic;
 using SharpLog.DB;
 using SharpLog.Model;
 using SharpLog.ToolsBox;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Net.Sockets;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -60,11 +56,6 @@ namespace SharpLog.ViewModel
                 QsoLogCollection.Add(ConvertQsoLogToOneLog(log));
             }
         }
-
-        #endregion
-        #region 辅助方法（续：输入校验、界面提示等）
-
-
 
         /// <summary>
         /// 添加日志前的输入校验，全部通过才允许写入数据库：

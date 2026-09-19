@@ -13,10 +13,6 @@
         <ResourceDictionary Source="pack://application:,,,/Style/BaseStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-
-
-
-
     <!--  ================================================================
           DataGrid 暗色样式（日志查看页的表格）
           ────────────────────────────────────────────────────────────────

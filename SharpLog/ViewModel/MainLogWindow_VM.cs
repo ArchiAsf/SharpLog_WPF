@@ -1,15 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.VisualBasic;
 using SharpLog.DB;
 using SharpLog.Model;
 using SharpLog.ToolsBox;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Net.Sockets;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -325,14 +321,6 @@ namespace SharpLog.ViewModel
         /// </summary>
         [ObservableProperty]
         private ModeItem? _SelectCommMode;
-
-        /// <summary>消息提示框显示内容。</summary>
-        [ObservableProperty]
-        private string _MessageShowStr = string.Empty;
-
-        /// <summary>消息提示框可见性（显示 2 秒后自动隐藏）。</summary>
-        [ObservableProperty]
-        private Visibility _MessShowISVisibility = Visibility.Hidden;
 
         /// <summary>当前日志使用的时区名称（"UTC" 或 "UTC+08:00"），显示在底部状态栏。</summary>
         [ObservableProperty]

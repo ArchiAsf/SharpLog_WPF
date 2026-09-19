@@ -1,15 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.VisualBasic;
 using SharpLog.DB;
 using SharpLog.Model;
 using SharpLog.ToolsBox;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Net.Sockets;
-using System.Runtime.CompilerServices;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;

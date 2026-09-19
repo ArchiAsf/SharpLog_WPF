@@ -13,11 +13,6 @@
         <ResourceDictionary Source="pack://application:,,,/Style/BaseStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-
-
-
-
-
     <!--  ==================== 滚动条滑块（Thumb）共用样式 ====================  -->
     <!--  垂直/水平滚动条共用此滑块外观，改颜色只需改这里一处  -->
     <Style x:Key="DarkScrollBarThumbStyle" TargetType="Thumb">

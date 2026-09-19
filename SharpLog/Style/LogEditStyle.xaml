@@ -13,9 +13,6 @@
         <ResourceDictionary Source="pack://application:,,,/Style/BaseStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
-
-
-
     <!--  「加载更多」文字按钮：无边框无底色，看起来就是一行可点的文字  -->
     <Style x:Key="LoadMoreLinkStyle" TargetType="Button">
         <Setter Property="Background" Value="Transparent" />
@@ -51,7 +48,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-
 
     <!--  ========== 带右下角单位后缀的 TextBox 样式（暗色主题适配） ==========  -->
     <!--  使用方式：Style="{StaticResource UnitTextBoxStyle}"  Tag="填写单位，如 kHz / MHz / W"  -->
