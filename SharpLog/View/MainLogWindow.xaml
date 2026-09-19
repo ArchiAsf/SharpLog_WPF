@@ -1279,8 +1279,6 @@
                         <Grid.RowDefinitions>
                             <!--  表格占满剩余高度  -->
                             <RowDefinition Height="*" />
-                            <!--  「加载更多」常驻表格下方，不随表格内容滚动  -->
-                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
                         <!--
@@ -1512,12 +1510,17 @@
                             「已加载 N 条，点击继续加载」只能挤在某一列的宽度里，
                             根本显示不全。放在表格正下方既完整可见，又不受横向滚动影响。
                           防连点由 VM 的 IsLoadingMore 负责：加载期间按钮自动禁用。
+                        
+                        
+                        改为了悬浮在右下角
                         -->
-                        <Button
-                            Grid.Row="1"
+                        <Border Style="{StaticResource InCardPanelStyle}" Margin="0,0,10,10" Padding="0" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                            <Button Margin="0" Padding="5,2,3,2"
                             Command="{Binding LoadMoreLogViewCommand}"
                             Content="{Binding LoadMoreText}"
                             Style="{StaticResource LoadMoreLinkStyle}" />
+                        </Border>
+
                     </Grid>
                 </Border>
                 <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource CardPanelStyle}">
