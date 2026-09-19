@@ -594,7 +594,8 @@
         <Setter Property="BorderThickness" Value="0,0,1,1" />
         <Setter Property="Padding" Value="8,6" />
         <Setter Property="FontWeight" Value="SemiBold" />
-        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <!--  表头文字居中，与单元格内容的默认对齐保持一致，否则上下会错位  -->
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
         <!--  表头重写模板：原生模板的背景是浅色硬编码的，只改 Setter 不管用  -->
         <Setter Property="Template">
             <Setter.Value>
@@ -683,7 +684,7 @@
         </Style.Triggers>
     </Style>
 
-    <!--  单元格  -->
+    <!--  单元格（默认：内容居中）  -->
     <Style x:Key="DarkDataGridCellStyle" TargetType="DataGridCell">
         <!--
           单元格背景设为透明，让【行的背景】透上来。
@@ -695,6 +696,14 @@
         <Setter Property="Padding" Value="8,0" />
         <!--  原生模板里带一圈选中虚线框，一并去掉  -->
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <!--
+          ★ 默认【居中】★
+          呼号、时间、频率、波段、模式这类短数据居中排布看起来最整齐，
+          而它们在表格里占绝大多数，所以把居中定为默认值，
+          只有地址、备注这类长文本的列才单独换成左对齐
+          （见下面的 DarkDataGridLeftCellStyle）。
+        -->
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="DataGridCell">
@@ -703,11 +712,33 @@
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                         Padding="{TemplateBinding Padding}">
-                        <ContentPresenter VerticalAlignment="Center" />
+                        <!--
+                          ⚠ HorizontalAlignment 必须用 TemplateBinding 接上 HorizontalContentAlignment，
+                            否则上面那个居中设置【完全不起作用】——
+                            ContentPresenter 默认是 Stretch，会把文字块拉满整个格子宽度，
+                            看起来永远是左对齐。这是自定义 DataGridCell 模板时最常见的坑。
+                        -->
+                        <ContentPresenter
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="Center" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <!--  单元格（长文本用：内容靠左）  -->
+    <!--
+      适用列：地址、备注、城市、设备型号这类长短不一的自由文本。
+      为什么必须靠左：内容超出列宽时，居中会让左右两端都被裁掉，
+      用户连开头都看不全；靠左至少能从头读起。
+      用法：在列上写 CellStyle="{StaticResource DarkDataGridLeftCellStyle}"
+    -->
+    <Style
+        x:Key="DarkDataGridLeftCellStyle"
+        BasedOn="{StaticResource DarkDataGridCellStyle}"
+        TargetType="DataGridCell">
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
     </Style>
     <!--  表格整体  -->
     <Style x:Key="DarkDataGridStyle" TargetType="DataGrid">

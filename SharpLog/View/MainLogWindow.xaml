@@ -1376,12 +1376,14 @@
                                 <DataGridTextColumn
                                     Width="140"
                                     Binding="{Binding PROP_MODE, Converter={StaticResource PropModeDisplay}}"
+                                    CellStyle="{StaticResource DarkDataGridLeftCellStyle}"
                                     Header="传播模式" />
 
                                 <!--  ==================== 对方电台信息 ====================  -->
                                 <DataGridTextColumn
                                     Width="100"
                                     Binding="{Binding QTH}"
+                                    CellStyle="{StaticResource DarkDataGridLeftCellStyle}"
                                     Header="对方城市" />
                                 <DataGridTextColumn
                                     Width="88"
@@ -1398,10 +1400,12 @@
                                 <DataGridTextColumn
                                     Width="100"
                                     Binding="{Binding RIG}"
+                                    CellStyle="{StaticResource DarkDataGridLeftCellStyle}"
                                     Header="对方设备" />
                                 <DataGridTextColumn
                                     Width="100"
                                     Binding="{Binding ANT}"
+                                    CellStyle="{StaticResource DarkDataGridLeftCellStyle}"
                                     Header="对方天线" />
                                 <DataGridTextColumn
                                     Width="80"
@@ -1410,10 +1414,12 @@
                                 <DataGridTextColumn
                                     Width="100"
                                     Binding="{Binding CONTACTED_OP}"
+                                    CellStyle="{StaticResource DarkDataGridLeftCellStyle}"
                                     Header="对方值机员" />
                                 <DataGridTextColumn
                                     Width="100"
                                     Binding="{Binding RadioOperator}"
+                                    CellStyle="{StaticResource DarkDataGridLeftCellStyle}"
                                     Header="本站操作员" />
 
                                 <!--  ==================== 通联结束时刻 ====================  -->
@@ -1446,6 +1452,7 @@
                                 <DataGridTextColumn
                                     Width="180"
                                     Binding="{Binding QslAddress}"
+                                    CellStyle="{StaticResource DarkDataGridLeftCellStyle}"
                                     Header="QSL地址" />
                                 <DataGridTextColumn
                                     Width="86"
@@ -1454,10 +1461,12 @@
                                 <DataGridTextColumn
                                     Width="90"
                                     Binding="{Binding ReceiverName}"
+                                    CellStyle="{StaticResource DarkDataGridLeftCellStyle}"
                                     Header="收件人" />
                                 <DataGridTextColumn
                                     Width="130"
                                     Binding="{Binding ReceiverContact}"
+                                    CellStyle="{StaticResource DarkDataGridLeftCellStyle}"
                                     Header="联系方式" />
 
                                 <!--  ==================== 项目自定义字段 ====================  -->
@@ -1488,6 +1497,7 @@
                                 <DataGridTextColumn
                                     Width="220"
                                     Binding="{Binding COMMENT}"
+                                    CellStyle="{StaticResource DarkDataGridLeftCellStyle}"
                                     Header="备注" />
 
                                 <!--  ==================== 记录元数据 ====================  -->
