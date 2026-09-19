@@ -616,7 +616,24 @@
                                     Grid.Column="0"
                                     Margin="{TemplateBinding Padding}"
                                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                    VerticalAlignment="Center" />
+                                    VerticalAlignment="Center">
+                                    <!--
+                                      ★ 这里解决「表头换行后看着不居中」的问题 ★
+                                      Header 传入含换行符的字符串时，ContentPresenter 会自动
+                                      生成一个 TextBlock 来显示它。此时两层对齐是分开管的：
+                                        · HorizontalContentAlignment 管【整个 TextBlock】
+                                          在表头格子里的位置
+                                        · TextAlignment 管【TextBlock 内部每一行】的位置
+                                      只设前者不设后者，就会出现「长的那行看着居中、
+                                      短的那行却偏左」的错位。所以这里给自动生成的
+                                      TextBlock 补上 TextAlignment。
+                                    -->
+                                    <ContentPresenter.Resources>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="TextAlignment" Value="Center" />
+                                        </Style>
+                                    </ContentPresenter.Resources>
+                                </ContentPresenter>
 
                                 <!--  排序方向箭头，仅在该列参与排序时出现  -->
                                 <Path
