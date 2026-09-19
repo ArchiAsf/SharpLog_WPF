@@ -988,6 +988,41 @@ namespace SharpLog.ViewModel
         }
 
         /// <summary>
+        /// 强制重新加载日志查看列表：清空已有数据、复位分页状态，再重新取第一页。
+        ///
+        /// ════════════════════════════════════════════════════════════════════════
+        /// 【为什么不复用 LoadLogViewFirstPage】
+        ///   那个方法带着 _logViewFirstPageLoaded 哨兵 —— 它只在
+        ///   「用户第一次切到日志查看页」时加载一次，之后再调用会【直接 return】。
+        ///   拿它当刷新用是刷不动的（本次就踩了这个坑：
+        ///   编辑窗口保存后调它，列表纹丝不动，用户以为功能没做）。
+        /// ════════════════════════════════════════════════════════════════════════
+        ///
+        /// 使用场景：编辑窗口里删除 / 保存后返回，列表需要反映最新数据。
+        ///
+        /// ⚠ 副作用：会丢掉用户已加载的后续批次与滚动位置，回到第一页顶部。
+        ///   编辑单条记录的场景下可接受；若日后觉得不便，
+        ///   可改成「只把被改的那一条替换掉」而不是整表重载。
+        /// </summary>
+        public void ReloadLogView()
+        {
+            // ① 清空列表（发 Reset 通知，DataGrid 随之重建行）
+            LogViewRows.Clear();
+
+            // ② 复位分页状态。
+            //    ⚠ 这一步不能省：游标仍停在上一批的位置时，
+            //    重新加载会从列表中间接着取，第一页的数据就永远回不来了
+            _logViewCursorId = int.MaxValue;
+            _hasMoreLogViewData = true;
+
+            // ③ 解除「首屏只加载一次」的哨兵，否则第 ④ 步会被它挡掉
+            _logViewFirstPageLoaded = false;
+
+            // ④ 重新取第一页
+            LoadLogViewFirstPage();
+        }
+
+        /// <summary>
         /// 加载下一批日志。首屏与「加载更多」共用这一个方法。
         /// </summary>
         [RelayCommand(CanExecute = nameof(CanLoadMoreLogView))]

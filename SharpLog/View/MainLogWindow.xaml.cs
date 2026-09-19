@@ -62,17 +62,19 @@ namespace SharpLog
                 DataContext = editVm
             };
 
-            // DialogResult 由编辑窗口回传：
-            //   true  —— 编辑过程中删除或保存成功过，列表需要刷新
-            //   false —— 只是取消 / 直接关闭，数据没动，不必刷新
-            bool? dataChanged = editWindow.ShowDialog();
+            editWindow.ShowDialog();
 
-            if (dataChanged == true && DataContext is ViewModel.MainLogWindow_VM mainVm)
+            // 编辑窗口一关就重新加载日志查看列表 ——
+            // 不管是点「删除 / 取消 / 保存」哪个按钮，还是直接点右上角的 ×。
+            // 否则删除或保存完成后，列表里显示的还是旧数据，看起来像根本没生效。
+            //
+            // ⚠ 必须用 ReloadLogView 而不是 LoadLogViewFirstPage：
+            //   后者带着「首屏只加载一次」的哨兵，拿它当刷新用会被直接 return 掉。
+            // ⚠ 代价：取消或直接关窗时也会白查一次库（一页 2000 条），可接受；
+            //   若日后在意，可以改成「只有编辑窗口回传 DataChanged 为 true 才刷新」。
+            if (DataContext is ViewModel.MainLogWindow_VM mainVm)
             {
-                // ⚠ 这里用的是「重新加载第一页」，会丢失用户的滚动位置与
-                //   已加载的后续批次。对编辑单条记录这个场景够用；
-                //   若将来觉得不便，可改成只替换列表中的那一条。
-                mainVm.LoadLogViewFirstPage();
+                mainVm.ReloadLogView();
             }
         }
         private void ClosingChange(object sender, System.ComponentModel.CancelEventArgs e)
