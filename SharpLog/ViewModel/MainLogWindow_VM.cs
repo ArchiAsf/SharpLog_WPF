@@ -1,4 +1,4 @@
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.VisualBasic;
 using SharpLog.DB;
@@ -747,11 +747,11 @@ namespace SharpLog.ViewModel
 
             if (!success)
             {
-                await ShowErrorMess_OnMainView(error ?? "保存设置失败！");
+                await ShowErrorMess(MessagePage.Settings, error ?? "保存设置失败！");
                 return;
             }
 
-            await ShowSuccessMess_OnMainView("设置已保存！");
+            await ShowSuccessMess(MessagePage.Settings, "设置已保存！");
         }
 
         /// <summary>
@@ -785,7 +785,7 @@ namespace SharpLog.ViewModel
                 defaultSettings, this,
                 nameof(AppSettings.Id), nameof(AppSettings.UpdatedAt));
 
-            ShowSuccessMess_OnMainView("已恢复默认设置（尚未保存）");
+            ShowSuccessMess(MessagePage.Settings, "已恢复默认设置（尚未保存）");
         }
 
         /// <summary>
@@ -796,7 +796,7 @@ namespace SharpLog.ViewModel
         private async Task CancelSettingsChangeAsync()
         {
             await ReloadSettingsAsync();
-            await ShowSuccessMess_OnMainView("已放弃更改，界面已恢复为已保存的设置");
+            await ShowSuccessMess(MessagePage.Settings, "已放弃更改，界面已恢复为已保存的设置");
         }
 
         /// <summary>
@@ -813,7 +813,7 @@ namespace SharpLog.ViewModel
 
             if (error != null)
             {
-                await ShowErrorMess_OnMainView(error);
+                await ShowErrorMess(MessagePage.Settings, error);
                 return;
             }
 
@@ -848,11 +848,11 @@ namespace SharpLog.ViewModel
 
                 if (!Result.Result.Success)
                 {
-                    ShowErrorMess_OnMainView(Result.Result.WarningMessage ?? "添加日志记录失败！");
+                    ShowErrorMess(MessagePage.LogEdit, Result.Result.WarningMessage ?? "添加日志记录失败！");
                 }
                 else
                 {
-                    ShowSuccessMess_OnMainView("日志记录添加成功！");
+                    ShowSuccessMess(MessagePage.LogEdit, "日志记录添加成功！");
                     ShowLogInView();
                 }
             }
@@ -1014,7 +1014,7 @@ namespace SharpLog.ViewModel
 
                 if (error != null)
                 {
-                    ShowErrorMess_OnMainView(error);
+                    ShowErrorMess(MessagePage.LogView, error);
                     LoadMoreText = "加载失败，点击重试";
                     return;
                 }
@@ -1088,7 +1088,7 @@ namespace SharpLog.ViewModel
         {
             if (row == null) return;
 
-            ShowSuccessMess_OnMainView($"已选中记录：{row.CALL}（编辑窗口尚未开发）");
+            ShowSuccessMess(MessagePage.LogView, $"已选中记录：{row.CALL}（编辑窗口尚未开发）");
         }
 
         /// <summary>
@@ -1130,13 +1130,13 @@ namespace SharpLog.ViewModel
                     var (forceSuccess, forceError) = await ForceDeleteAllAsync<QsoLog>();
                     if (!forceSuccess)
                     {
-                        ShowErrorMess_OnMainView(forceError ?? "删除失败");
+                        ShowErrorMess(MessagePage.LogView, forceError ?? "删除失败");
                         return;
                     }
                 }
                 else
                 {
-                    ShowErrorMess_OnMainView(error ?? "删除失败");
+                    ShowErrorMess(MessagePage.LogView, error ?? "删除失败");
                     return;
                 }
             }
@@ -1145,7 +1145,7 @@ namespace SharpLog.ViewModel
             LogViewRows.Remove(row);
             UpdateLoadMoreText();
 
-            ShowSuccessMess_OnMainView($"已删除 {row.CALL} 的记录");
+            ShowSuccessMess(MessagePage.LogView, $"已删除 {row.CALL} 的记录");
         }
 
         #endregion
@@ -1170,25 +1170,25 @@ namespace SharpLog.ViewModel
             if (string.IsNullOrWhiteSpace(CALL) || string.IsNullOrWhiteSpace(FREQ)
                 || string.IsNullOrWhiteSpace(SelectedCommCode))
             {
-                ShowErrorMess_OnMainView("请填写所有必填字段！");
+                ShowErrorMess(MessagePage.LogEdit, "请填写所有必填字段！");
                 return false;
             }
             // 检查频率是否为有效的数字
             if (!double.TryParse(FREQ, out double frequency))
             {
-                ShowErrorMess_OnMainView("频率必须是有效的数字！");
+                ShowErrorMess(MessagePage.LogEdit, "频率必须是有效的数字！");
                 return false;
             }
             // 检查开始时间是否早于结束时间（复合 DateTime 直接比较）
             if (StartTimeDT >= EndTimeDT)
             {
-                ShowErrorMess_OnMainView("开始时间必须早于结束时间！");
+                ShowErrorMess(MessagePage.LogEdit, "开始时间必须早于结束时间！");
                 return false;
             }
             // 波段合法性校验结果
             if (!isValid)
             {
-                ShowErrorMess_OnMainView(errorMessage);
+                ShowErrorMess(MessagePage.LogEdit, errorMessage);
                 return false;
             }
             return true;

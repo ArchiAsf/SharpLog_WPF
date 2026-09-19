@@ -1244,7 +1244,8 @@
                         </Grid>
                     </Border>
 
-                    <!--  使用hc实现消息提示  -->
+                    <!--  【日志编辑页】的消息提示面板（右下角）  -->
+                    <!--  Token 是这个面板的身份标识，MessageTools 靠它把消息发到指定的页  -->
                     <StackPanel
                         Grid.RowSpan="4"
                         Grid.Column="2"
@@ -1255,7 +1256,7 @@
                         VerticalAlignment="Bottom"
                         hc:Growl.GrowlParent="True"
                         hc:Growl.ShowMode="Append"
-                        hc:Growl.Token="WarningShowBox" />
+                        hc:Growl.Token="LogEditGrowl" />
 
                 </Grid>
             </Border>
@@ -1271,6 +1272,25 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="450" />
                 </Grid.ColumnDefinitions>
+
+                <!--  【日志查看页】的消息提示面板（右下角）  -->
+                <!--
+                  ⚠ 必须放在 RowDefinitions / ColumnDefinitions 这些【属性元素】的【后面】——
+                    XAML 规定属性元素既不能在内容元素之后、也不能夹在内容中间，
+                    所以内容元素要统统排在所有属性元素之后（否则报 MC3088）。
+                  ⚠ Panel.ZIndex 是为了让消息浮在表格之上，否则会被后面声明的 Border 遮住。
+                  ⚠ 下边距留 40，是为了避开表格底部那行「加载更多」按钮。
+                -->
+                <StackPanel
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Panel.ZIndex="99"
+                    Margin="0,0,5,40"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    hc:Growl.GrowlParent="True"
+                    hc:Growl.ShowMode="Append"
+                    hc:Growl.Token="LogViewGrowl" />
                 <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource CardPanelStyle}">
                     
                 </Border>
@@ -1507,6 +1527,21 @@
                     <RowDefinition Height="*" />
                     <RowDefinition Height="45" />
                 </Grid.RowDefinitions>
+
+                <!--  【设置页】的消息提示面板（右下角）  -->
+                <!--
+                  放在第 0 行（内容区）里，正好落在底部那条 45 高的按钮栏上方。
+                  ⚠ 必须放在 RowDefinitions 之后，原因同「日志查看」页。
+                -->
+                <StackPanel
+                    Grid.Row="0"
+                    Panel.ZIndex="99"
+                    Margin="0,0,5,10"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    hc:Growl.GrowlParent="True"
+                    hc:Growl.ShowMode="Append"
+                    hc:Growl.Token="SettingGrowl" />
                 <Border Grid.Row="0" Style="{StaticResource CardPanelStyle}">
                     <ScrollViewer
                         Grid.Row="0"
