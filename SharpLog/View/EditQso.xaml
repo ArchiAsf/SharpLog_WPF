@@ -26,9 +26,8 @@
         · 按钮（删除 / 取消 / 保存）
             Border + EditButtonPanelStyle / Button + EditButtonStyle
 
-      ⚠ 上面的 Edit 系列样式目前【尚未定义】，后续再补。
-        XAML 编译器不检查 StaticResource 能否解析（要到运行时才知道），
-        所以现在引用它们不影响编译。
+      ⚠ 【样式】上述 Edit 系列与滚动区 EditScroll 系列样式均已定义在
+        Style/FormStyle.xaml 末尾，风格与设置页、主界面保持一致。
 
       【滚动区域】
         Grid.Row 2~6 × Grid.Column 3~7（Excel 的 D3:H7）是一块【独立的可滚动表格区】，
@@ -370,7 +369,7 @@
             Grid.Column="3"
             Grid.RowSpan="5"
             Grid.ColumnSpan="5"
-            Style="{StaticResource EditInputPanelStyle}">
+            Style="{StaticResource EditScrollPanelStyle}">
             <ScrollViewer>
                 <StackPanel>
                     <Grid>
@@ -393,128 +392,128 @@
                         <Border
                             Grid.Row="0"
                             Grid.Column="0"
-                            Style="{StaticResource EditTitlePanelStyle}">
-                            <Label Style="{StaticResource EditLabelStyle}">
+                            Style="{StaticResource EditScrollTitlePanelStyle}">
+                            <Label Style="{StaticResource EditScrollLabelStyle}">
                                 <TextBlock Text="地理位置" />
                             </Label>
                         </Border>
                         <Border
                             Grid.Row="0"
                             Grid.Column="1"
-                            Style="{StaticResource EditInputPanelStyle}">
-                            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+                            Style="{StaticResource EditScrollInputPanelStyle}">
+                            <TextBox Style="{StaticResource EditScrollTextBoxStyle}" />
                         </Border>
 
                         <!--  第 2 行：接收功率（ADIF: RX_PWR，指对方发射功率）  -->
                         <Border
                             Grid.Row="1"
                             Grid.Column="0"
-                            Style="{StaticResource EditTitlePanelStyle}">
-                            <Label Style="{StaticResource EditLabelStyle}">
+                            Style="{StaticResource EditScrollTitlePanelStyle}">
+                            <Label Style="{StaticResource EditScrollLabelStyle}">
                                 <TextBlock Text="接收功率" />
                             </Label>
                         </Border>
                         <Border
                             Grid.Row="1"
                             Grid.Column="1"
-                            Style="{StaticResource EditInputPanelStyle}">
-                            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+                            Style="{StaticResource EditScrollInputPanelStyle}">
+                            <TextBox Style="{StaticResource EditScrollTextBoxStyle}" />
                         </Border>
 
                         <!--  第 3 行：发射功率（ADIF: TX_PWR，指我方发射功率）  -->
                         <Border
                             Grid.Row="2"
                             Grid.Column="0"
-                            Style="{StaticResource EditTitlePanelStyle}">
-                            <Label Style="{StaticResource EditLabelStyle}">
+                            Style="{StaticResource EditScrollTitlePanelStyle}">
+                            <Label Style="{StaticResource EditScrollLabelStyle}">
                                 <TextBlock Text="发射功率" />
                             </Label>
                         </Border>
                         <Border
                             Grid.Row="2"
                             Grid.Column="1"
-                            Style="{StaticResource EditInputPanelStyle}">
-                            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+                            Style="{StaticResource EditScrollInputPanelStyle}">
+                            <TextBox Style="{StaticResource EditScrollTextBoxStyle}" />
                         </Border>
 
                         <!--  第 4 行：设备（ADIF: RIG，对方电台型号）  -->
                         <Border
                             Grid.Row="3"
                             Grid.Column="0"
-                            Style="{StaticResource EditTitlePanelStyle}">
-                            <Label Style="{StaticResource EditLabelStyle}">
+                            Style="{StaticResource EditScrollTitlePanelStyle}">
+                            <Label Style="{StaticResource EditScrollLabelStyle}">
                                 <TextBlock Text="设备" />
                             </Label>
                         </Border>
                         <Border
                             Grid.Row="3"
                             Grid.Column="1"
-                            Style="{StaticResource EditInputPanelStyle}">
-                            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+                            Style="{StaticResource EditScrollInputPanelStyle}">
+                            <TextBox Style="{StaticResource EditScrollTextBoxStyle}" />
                         </Border>
 
                         <!--  第 5 行：天线（项目自定义字段 ANT，对方天线类型）  -->
                         <Border
                             Grid.Row="4"
                             Grid.Column="0"
-                            Style="{StaticResource EditTitlePanelStyle}">
-                            <Label Style="{StaticResource EditLabelStyle}">
+                            Style="{StaticResource EditScrollTitlePanelStyle}">
+                            <Label Style="{StaticResource EditScrollLabelStyle}">
                                 <TextBlock Text="天线" />
                             </Label>
                         </Border>
                         <Border
                             Grid.Row="4"
                             Grid.Column="1"
-                            Style="{StaticResource EditInputPanelStyle}">
-                            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+                            Style="{StaticResource EditScrollInputPanelStyle}">
+                            <TextBox Style="{StaticResource EditScrollTextBoxStyle}" />
                         </Border>
 
                         <!--  第 6 行：天线高度（项目自定义字段 Height，单位 M）  -->
                         <Border
                             Grid.Row="5"
                             Grid.Column="0"
-                            Style="{StaticResource EditTitlePanelStyle}">
-                            <Label Style="{StaticResource EditLabelStyle}">
+                            Style="{StaticResource EditScrollTitlePanelStyle}">
+                            <Label Style="{StaticResource EditScrollLabelStyle}">
                                 <TextBlock Text="天线高度" />
                             </Label>
                         </Border>
                         <Border
                             Grid.Row="5"
                             Grid.Column="1"
-                            Style="{StaticResource EditInputPanelStyle}">
-                            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+                            Style="{StaticResource EditScrollInputPanelStyle}">
+                            <TextBox Style="{StaticResource EditScrollTextBoxStyle}" />
                         </Border>
 
                         <!--  第 7 行：对方值机员（ADIF: CONTACTED_OP）  -->
                         <Border
                             Grid.Row="6"
                             Grid.Column="0"
-                            Style="{StaticResource EditTitlePanelStyle}">
-                            <Label Style="{StaticResource EditLabelStyle}">
+                            Style="{StaticResource EditScrollTitlePanelStyle}">
+                            <Label Style="{StaticResource EditScrollLabelStyle}">
                                 <TextBlock Text="对方值机员" />
                             </Label>
                         </Border>
                         <Border
                             Grid.Row="6"
                             Grid.Column="1"
-                            Style="{StaticResource EditInputPanelStyle}">
-                            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+                            Style="{StaticResource EditScrollInputPanelStyle}">
+                            <TextBox Style="{StaticResource EditScrollTextBoxStyle}" />
                         </Border>
 
                         <!--  第 8 行：备注（ADIF: COMMENT）  -->
                         <Border
                             Grid.Row="7"
                             Grid.Column="0"
-                            Style="{StaticResource EditTitlePanelStyle}">
-                            <Label Style="{StaticResource EditLabelStyle}">
+                            Style="{StaticResource EditScrollTitlePanelStyle}">
+                            <Label Style="{StaticResource EditScrollLabelStyle}">
                                 <TextBlock Text="备注" />
                             </Label>
                         </Border>
                         <Border
                             Grid.Row="7"
                             Grid.Column="1"
-                            Style="{StaticResource EditInputPanelStyle}">
-                            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+                            Style="{StaticResource EditScrollInputPanelStyle}">
+                            <TextBox Style="{StaticResource EditScrollTextBoxStyle}" />
                         </Border>
 
                     </Grid>
