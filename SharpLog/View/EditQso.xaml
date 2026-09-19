@@ -7,10 +7,11 @@
         mc:Ignorable="d"
         Title="编辑通联记录"
         Style="{StaticResource LogMainWindowStyle}"
-        Width="1000"
+        MaxWidth="911"
         Height="580"
         MinWidth="911"
         MinHeight="400"
+        Width="911"
         WindowStartupLocation="CenterOwner">
     <!--
       ════════════════════════════════════════════════════════════════════════
@@ -40,7 +41,7 @@
         结构与字段清单见文件末尾该区域的注释。
       ════════════════════════════════════════════════════════════════════════
     -->
-    <Grid>
+    <Grid ShowGridLines="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
@@ -51,9 +52,9 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="120" />
+            <ColumnDefinition Width="87" />
+            <ColumnDefinition Width="87" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
