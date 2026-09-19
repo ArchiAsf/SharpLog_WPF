@@ -139,4 +139,66 @@
         <Setter Property="Margin" Value="0" />
     </Style>
 
+    <!--  SQL 提示文字：小字 + 警告色（提醒「仅支持 SELECT」）  -->
+    <Style
+        x:Key="QuerySqlHintStyle"
+        BasedOn="{StaticResource LabelSecondaryNoteStyle}"
+        TargetType="Label">
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="Foreground" Value="{StaticResource WarningTextColor}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Margin" Value="0" />
+    </Style>
+
+    <!--
+      SQL 自由查询输入框（多行）。
+
+      ⚠⚠ 这里【不能】直接 BasedOn DarkTextBoxStyle，有三个原因：
+        1. 它的模板里 PART_ContentHost(ScrollViewer) 没接 ScrollBarVisibility，
+           而 MultiLine 文本框的内容超出高度后【必须靠滚动条】才能看到后面的行；
+        2. 它设了 TextAlignment=Center，SQL 语句居中完全没法读；
+        3. 它设了 VerticalContentAlignment=Center，多行文本会整体贴在中间。
+        ⇒ 所以本样式自己写模板，只沿用它的配色键。
+    -->
+    <Style x:Key="QuerySqlBoxStyle" TargetType="TextBox">
+        <Setter Property="Background" Value="{StaticResource NormalTextBoxBackColor}" />
+        <Setter Property="Foreground" Value="{StaticResource NormalTextBoxTextColor}" />
+        <Setter Property="BorderBrush" Value="{StaticResource NormalTextBoxBorderColor}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CaretBrush" Value="#FFFFFFFF" />
+        <Setter Property="Padding" Value="4,3,4,3" />
+        <!--  等宽字体：SQL 语句按列对齐更好读  -->
+        <Setter Property="FontFamily" Value="Consolas" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="TextAlignment" Value="Left" />
+        <Setter Property="VerticalContentAlignment" Value="Top" />
+        <Setter Property="AcceptsReturn" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border
+                        x:Name="Bd"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="4">
+                        <!--  ⚠ 两个 ScrollBarVisibility 必须 TemplateBinding，否则滚动条永远不出现  -->
+                        <ScrollViewer
+                            x:Name="PART_ContentHost"
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalScrollBarVisibility="{TemplateBinding HorizontalScrollBarVisibility}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource FocusTextBoxBorderColor}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>

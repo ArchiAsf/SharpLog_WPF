@@ -1756,6 +1756,38 @@
                                             Content="只看今天"
                                             FontSize="12" />
                                     </StackPanel>
+
+                                    <!--  ── 分隔线 ──  -->
+                                    <hc:Divider Margin="0,8,0,0" LineStroke="{StaticResource DividerColor}" />
+
+                                    <!--
+                                      ── SQL 自由查询 ──
+                                      ⚠ 按「只读」设计：提示文字明示仅支持 SELECT。
+                                         底层实现时【必须】做三件事，否则这个框很危险：
+                                           ① 校验语句首关键字，非 SELECT 一律拒绝
+                                             （否则一条 DELETE 就能清空日志表，
+                                               本项目没有备份、也没有权限隔离）；
+                                           ② 强制追加行数上限（如 LIMIT 500），
+                                             防止 SELECT * 自连接把内存吃满、UI 冻住；
+                                           ③ 设置命令超时（如 5 秒）。
+                                    -->
+                                    <Label Content="SQL 自由查询" Style="{StaticResource QuerySectionLabelStyle}" />
+                                    <TextBox
+                                        Height="84"
+                                        HorizontalScrollBarVisibility="Auto"
+                                        Style="{StaticResource QuerySqlBoxStyle}"
+                                        VerticalScrollBarVisibility="Auto" />
+                                    <Grid Margin="0,4,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label Content="⚠ 仅支持 SELECT 查询" Style="{StaticResource QuerySqlHintStyle}" />
+                                        <Button
+                                            Grid.Column="1"
+                                            Content="执行 SQL"
+                                            Style="{StaticResource QueryMiniButtonStyle}" />
+                                    </Grid>
                                 </StackPanel>
                             </ScrollViewer>
 
