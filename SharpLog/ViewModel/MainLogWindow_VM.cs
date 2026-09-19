@@ -988,7 +988,9 @@ namespace SharpLog.ViewModel
         }
 
         /// <summary>
-        /// 强制重新加载日志查看列表：清空已有数据、复位分页状态，再重新取第一页。
+        /// 强制重新加载【两个日志列表】：左侧的日志查看表格 + 右侧的日志卡片。
+        ///
+        /// 使用场景：编辑窗口关闭后返回，两处都需要反映最新数据。
         ///
         /// ════════════════════════════════════════════════════════════════════════
         /// 【为什么不复用 LoadLogViewFirstPage】
@@ -1004,7 +1006,7 @@ namespace SharpLog.ViewModel
         ///   编辑单条记录的场景下可接受；若日后觉得不便，
         ///   可改成「只把被改的那一条替换掉」而不是整表重载。
         /// </summary>
-        public void ReloadLogView()
+        public void ReloadAfterEdit()
         {
             // ① 清空列表（发 Reset 通知，DataGrid 随之重建行）
             LogViewRows.Clear();
@@ -1020,6 +1022,10 @@ namespace SharpLog.ViewModel
 
             // ④ 重新取第一页
             LoadLogViewFirstPage();
+
+            // ⑤ 右侧的日志卡片列表也一起刷新。
+            //    它只取最近 MaxDisplayLogCount 条，查询很轻，直接同步取即可。
+            ShowLogInView();
         }
 
         /// <summary>

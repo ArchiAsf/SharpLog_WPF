@@ -68,13 +68,13 @@ namespace SharpLog
             // 不管是点「删除 / 取消 / 保存」哪个按钮，还是直接点右上角的 ×。
             // 否则删除或保存完成后，列表里显示的还是旧数据，看起来像根本没生效。
             //
-            // ⚠ 必须用 ReloadLogView 而不是 LoadLogViewFirstPage：
+            // ⚠ 必须用 ReloadAfterEdit 而不是 LoadLogViewFirstPage：
             //   后者带着「首屏只加载一次」的哨兵，拿它当刷新用会被直接 return 掉。
             // ⚠ 代价：取消或直接关窗时也会白查一次库（一页 2000 条），可接受；
             //   若日后在意，可以改成「只有编辑窗口回传 DataChanged 为 true 才刷新」。
             if (DataContext is ViewModel.MainLogWindow_VM mainVm)
             {
-                mainVm.ReloadLogView();
+                mainVm.ReloadAfterEdit();
             }
         }
         private void ClosingChange(object sender, System.ComponentModel.CancelEventArgs e)
