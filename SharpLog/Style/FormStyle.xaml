@@ -1533,6 +1533,8 @@
         <Setter Property="FontSize" Value="14" />
         <Setter Property="CaretBrush" Value="#FFFFFFFF" />
         <Setter Property="Padding" Value="2,3,2,3" />
+        <!--  主表的输入框内容居中（与 DarkTextBoxStyle 的做法一致）  -->
+        <Setter Property="TextAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
@@ -1628,6 +1630,12 @@
         TargetType="TextBox">
         <Setter Property="FontSize" Value="13" />
         <Setter Property="Padding" Value="2,2,2,2" />
+        <!--
+          ⚠ 必须显式覆盖回靠左。
+          EditTextBoxStyle 现在是 TextAlignment=Center，派生样式会继承过去；
+          而滚动区是「字段名 : 字段值」的密集列表，值要靠左才与字段名对齐好看。
+        -->
+        <Setter Property="TextAlignment" Value="Left" />
     </Style>
     
 
