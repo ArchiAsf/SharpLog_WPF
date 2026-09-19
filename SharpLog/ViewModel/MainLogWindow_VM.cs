@@ -440,10 +440,23 @@ namespace SharpLog.ViewModel
         /// </summary>
         public ObservableCollection<ModeItem> CommModeList { get; }
 
-        /// <summary>右侧日志卡片集合（OneLog 显示模型），新日志插入到顶部。</summary>
+        /// <summary>
+        /// 右侧日志区【最多】显示的记录条数。
+        ///
+        /// 数据库里可能存有成千上万条日志，而右侧只是一个滚动浏览区：
+        /// 全部读进内存既慢又费内存，界面也渲染不动，故只取最近这么多条。
+        /// 需要查看更早的记录应走"日志查看"页（待实现）里的条件查询。
+        /// </summary>
+        private const int MaxDisplayLogCount = 200;
+
+        /// <summary>右侧日志卡片集合（OneLog 显示模型），最新的记录在最上方。</summary>
         public ObservableCollection<OneLog> QsoLogCollection { get; }
 
-        /// <summary>内存中的全部日志记录（当前为全表加载，后续建议改为分页查询）。</summary>
+        /// <summary>
+        /// 界面【当前显示的这批】日志原始实体（最多 MaxDisplayLogCount 条，按主键倒序）。
+        /// ⚠ 注意：这不再是全表数据。若将来要做"按呼号/波段统计"之类的全表运算，
+        ///   必须另行走数据库查询，不能拿这个列表当数据源。
+        /// </summary>
         public List<QsoLog> AllQsoLogList { get; set; } = new List<QsoLog>();
 
         /// <summary>选中传播模式的 ADIF 代码（只读，自动从 SelectedItem 获取）。</summary>
@@ -474,7 +487,7 @@ namespace SharpLog.ViewModel
         /// <summary>
         /// 构造函数：
         /// 1. 初始化下拉列表数据源与默认选中项；
-        /// 2. 从数据库加载全部日志并刷新右侧卡片；
+        /// 2. 从数据库加载最近的日志并刷新右侧卡片；
         /// 3. 从数据库加载软件设置并填入设置页；
         /// 4. 启动每秒时间刷新定时器。
         /// </summary>
@@ -487,9 +500,9 @@ namespace SharpLog.ViewModel
             _SelectPROPItem = PropagationModeList[0]; // 默认选择第一个选项
             _SelectCommMode = CommModeList[0];        // 默认选择第一个选项
 
-            // 从数据库加载全部日志并显示到右侧卡片列表
-            var a = GetAllDBDataAsync<QsoLog>();
-            AllQsoLogList = a.Result.Data.ToList();
+            // 从数据库加载最近的日志并显示到右侧卡片列表。
+            // ShowLogInView 内部会自行查库并填充 AllQsoLogList，此处不必再查一次
+            // （原实现在这里先查一遍全表、紧接着又被 ShowLogInView 覆盖，属重复查询）。
             ShowLogInView();
 
             // 从数据库加载软件设置（本地台站信息）并填入设置页。
@@ -891,18 +904,29 @@ namespace SharpLog.ViewModel
         #region 辅助方法
 
         /// <summary>
-        /// 将数据库中的全部日志刷新到右侧卡片列表（QsoLogCollection）。
-        /// 新记录插入到列表顶部（Insert(0, ...)）。
-        /// ⚠️ 已知问题：全表加载到内存 + 同步 .Result，后续建议改分页/异步。
+        /// 刷新右侧日志卡片列表（QsoLogCollection）。
+        ///
+        /// 【取数范围】只取数据库中【最近的 MaxDisplayLogCount 条】。
+        ///   排序与截断都在数据库层面完成（ORDER BY Id DESC LIMIT 200），
+        ///   内存里只有这 200 条，与表的总行数无关。
+        ///   查询失败时 Data 为空列表，界面显示空白，错误详情见 Logs 日志
+        ///   （与改动前的静默行为保持一致，避免首次运行尚无数据表时误报）。
+        ///
+        /// 【排序】主键 Id 自增，Id 越大即越新，故查询结果本就是"最新在前"，
+        ///   直接 Add 即可。原实现用 Insert(0, ...) 逐条插到队首，
+        ///   既是 O(n²) 的写法，又隐含依赖"查询结果恰好升序"这个前提。
         /// </summary>
         private void ShowLogInView()
         {
+            var (data, _) = GetLatestDBDataAsync<QsoLog>(MaxDisplayLogCount).Result;
+
+            AllQsoLogList = data;
+
             QsoLogCollection.Clear();
-            AllQsoLogList = GetAllDBDataAsync<QsoLog>().Result.Data;
-            AllQsoLogList.ForEach(l =>
+            foreach (QsoLog log in data)
             {
-                QsoLogCollection.Insert(0, ConvertQsoLogToOneLog(l));
-            });
+                QsoLogCollection.Add(ConvertQsoLogToOneLog(log));
+            }
         }
 
 

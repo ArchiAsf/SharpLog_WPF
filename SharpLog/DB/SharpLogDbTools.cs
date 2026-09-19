@@ -123,6 +123,67 @@ namespace SharpLog.DB
             }
         }
 
+        /// <summary>
+        /// 按主键倒序查询【最近 N 条】数据（异步）。
+        ///
+        /// 【为什么要有这个方法】
+        ///   列表类界面往往只需展示最近若干条记录，若照旧全表加载，
+        ///   日志积累到几万条时既慢又占内存。排序与截断都交给 SQLite 完成，
+        ///   生成的 SQL 形如：
+        ///       SELECT * FROM LogTable ORDER BY Id DESC LIMIT 200
+        ///   内存里只有这 200 条，与表的总行数无关。
+        ///
+        /// ⚠ 主键名约定：本方法按名为 "Id" 的属性排序，要求实体存在该属性
+        ///   （本项目所有实体均满足）。之所以用 EF.Property 而不是直接写
+        ///   e => e.Id，是因为泛型 T 在编译期并不知道自己有 Id 这个成员。
+        /// </summary>
+        /// <param name="count">要取的条数；小于等于 0 时直接返回空列表</param>
+        /// <returns>(数据列表——按主键从大到小即最新在前, 错误提示信息)</returns>
+        public static async Task<(List<T> Data, string? WarningMessage)> GetLatestDBDataAsync<T>(int count) where T : class
+        {
+            // 条数非法时不必访问数据库
+            if (count <= 0)
+            {
+                return (new List<T>(), null);
+            }
+
+            try
+            {
+                using var dbContext = new SharpLogDbContext();
+
+                // OrderByDescending + Take 会被 EF Core 翻译成 SQL 的
+                // ORDER BY Id DESC LIMIT @count，不会把整张表读进内存
+                var data = await dbContext.Set<T>()
+                                          .OrderByDescending(e => EF.Property<int>(e, "Id"))
+                                          .Take(count)
+                                          .ToListAsync();
+                return (data, null);
+            }
+            catch (SqliteException ex)
+            {
+                string msg = ex.SqliteErrorCode switch
+                {
+                    1 => "查询失败：数据库中不存在当前实体对应的表/字段！",
+                    5 => "查询失败：数据库文件权限不足/无法打开！",
+                    _ => $"SQLite数据库查询错误：{ex.Message}"
+                };
+                Logger.Error($"SQLite查询异常：{msg}", ex, "DBHelper");
+                return (new List<T>(), msg);
+            }
+            catch (InvalidOperationException ex)
+            {
+                string msg = $"查询逻辑错误：{ex.Message}";
+                Logger.Error($"查询逻辑错误：{msg}", ex, "DBHelper");
+                return (new List<T>(), msg);
+            }
+            catch (Exception ex)
+            {
+                string msg = $"查询数据失败：{ex.Message}";
+                Logger.Error($"查询数据失败：{msg}", ex, "DBHelper");
+                return (new List<T>(), msg);
+            }
+        }
+
         // ==================================================
         //  更新
         // ==================================================
