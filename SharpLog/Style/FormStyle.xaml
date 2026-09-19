@@ -182,49 +182,6 @@
         </Style.Triggers>
     </Style>
 
-    <!--  8. DataGrid 暗色日志表格（对应原DataGridView）  -->
-    <Style x:Key="LogDataGridStyle" TargetType="DataGrid">
-        <Setter Property="Background" Value="{StaticResource DgvRowNormalBackColor}" />
-        <Setter Property="Foreground" Value="{StaticResource DgvRowNormalTextColor}" />
-        <Setter Property="HeadersVisibility" Value="Column" />
-        <Setter Property="GridLinesVisibility" Value="Horizontal" />
-        <Setter Property="HorizontalGridLinesBrush" Value="#FF30333A" />
-        <Setter Property="BorderBrush" Value="{StaticResource PanelBorderColor}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <!--  取消默认选中浅色背景干扰  -->
-        <Setter Property="SelectionMode" Value="Single" />
-    </Style>
-
-    <!--  DataGrid 表头样式  -->
-    <Style x:Key="LogDataGridColumnHeaderStyle" TargetType="DataGridColumnHeader">
-        <Setter Property="Background" Value="{StaticResource DgvHeaderBackColor}" />
-        <Setter Property="Foreground" Value="{StaticResource DgvHeaderTextColor}" />
-        <Setter Property="BorderBrush" Value="{StaticResource DgvHeaderBorderColor}" />
-        <Setter Property="BorderThickness" Value="0,0,1,1" />
-        <Setter Property="Padding" Value="8,6" />
-        <Setter Property="FontWeight" Value="SemiBold" />
-    </Style>
-
-    <!--  DataGrid 数据行样式  -->
-    <Style x:Key="LogDataGridRowStyle" TargetType="DataGridRow">
-        <Setter Property="Background" Value="{StaticResource DgvRowNormalBackColor}" />
-        <Setter Property="Foreground" Value="{StaticResource DgvRowNormalTextColor}" />
-        <Style.Triggers>
-            <!--  行选中样式  -->
-            <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="{StaticResource DgvRowSelectedBackColor}" />
-                <Setter Property="Foreground" Value="{StaticResource DgvRowSelectedTextColor}" />
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-
-    <!--  DataGrid单元格样式  -->
-    <Style x:Key="LogDataGridCellStyle" TargetType="DataGridCell">
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Padding" Value="6,4" />
-    </Style>
-
-    <!--  TabControl 整体容器样式  -->
     <Style x:Key="DarkTabControlStyle" TargetType="TabControl">
         <!--  内容区域背景，和主窗体背景统一  -->
         <Setter Property="Background" Value="{StaticResource LogMainFormBackColor}" />
