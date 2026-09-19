@@ -1551,7 +1551,9 @@
                                 x:Name="PART_ContentHost"
                                 Margin="{TemplateBinding Padding}"
                                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                Focusable="False" />
+                                Focusable="False"
+                                HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
+                                VerticalScrollBarVisibility="{TemplateBinding ScrollViewer.VerticalScrollBarVisibility}" />
                         </Border>
                         <!--  聚焦高亮层：平时隐藏，聚焦时才盖上去  -->
                         <Border
