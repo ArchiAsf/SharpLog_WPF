@@ -1,9 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using SharpLog.DB;
 using SharpLog.Model;
+using SharpLog.ToolsBox;
 using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace SharpLog.ViewModel
 {
@@ -32,6 +37,26 @@ namespace SharpLog.ViewModel
     {
         #region 构造与数据源
 
+        /// <summary>
+        /// 被编辑的原始实体。
+        /// 保存时在这份实例上改值再交给 EF 更新，
+        /// 这样 Id / CreatedAt 等由程序维护的字段能原样保留。
+        /// </summary>
+        private readonly QsoLog _source;
+
+        /// <summary>
+        /// 请求关闭编辑窗口。
+        /// ⚠ ViewModel 不能直接调 Window.Close()（项目规范：VM 不操作 UI 控件），
+        ///   所以这里只抛事件，由 EditQso.xaml.cs 订阅后执行关闭。
+        /// </summary>
+        public event EventHandler? CloseRequested;
+
+        /// <summary>
+        /// 本次编辑是否产生过数据变更（删除或保存成功）。
+        /// 主窗口据此决定关闭后要不要重新加载列表。
+        /// </summary>
+        public bool DataChanged { get; private set; }
+
         /// <summary>通联模式下拉列表数据源（静态，见 StaticValues.Set_CommModeList）。</summary>
         public ObservableCollection<ModeItem> CommModeList { get; }
 
@@ -44,6 +69,8 @@ namespace SharpLog.ViewModel
         /// <param name="source">要编辑的记录（由 MainLogWindow 双击 / 右键传入）</param>
         public EditQso_VM(QsoLog source)
         {
+            _source = source;
+
             // 两个下拉列表与主界面共用同一份静态数据源，保证选项完全一致
             CommModeList = StaticValues.Set_CommModeList;
             PropagationModeList = StaticValues.Set_PropagationModeList;
@@ -398,6 +425,189 @@ namespace SharpLog.ViewModel
 
             return (true, string.Empty);
         }
+
+        #endregion
+
+        #region 命令（删除 / 取消 / 保存）
+
+        /// <summary>
+        /// 删除按钮：二次确认后把这条记录从数据库删掉，然后关闭编辑窗口。
+        ///
+        /// 确认框用 HandyControl 的 MessageBox（项目规范禁止原生 MessageBox.Show），
+        /// 默认按钮设为 No —— 直接按回车不会误删。
+        /// </summary>
+        [RelayCommand]
+        private async Task DeleteAsync()
+        {
+            var choice = HandyControl.Controls.MessageBox.Show(
+                "确定要删除这条通联记录吗？\n\n" +
+                $"呼号：{CALL}\n" +
+                $"开始时间：{StartTimeDT:yyyy/MM/dd-HH:mm:ss}\n" +
+                $"频率：{FREQ} kHz\n\n" +
+                "删除后无法恢复！",
+                "删除确认",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning,
+                MessageBoxResult.No);
+
+            if (choice != MessageBoxResult.Yes) return;
+
+            var (success, error, _) = await SharpLogDbTools.DeleteDBDataAsync<QsoLog>(x => x.Id == _source.Id);
+
+            if (!success)
+            {
+                await MessageTools.ShowErrorMess(MessagePage.EditQso, error ?? "删除失败，请稍后重试");
+                return;
+            }
+
+            DataChanged = true;
+            CloseRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// 取消按钮：二次确认后直接关闭窗口，不保存任何更改。
+        /// </summary>
+        [RelayCommand]
+        private void Cancel()
+        {
+            var choice = HandyControl.Controls.MessageBox.Show(
+                "确定要取消本次更改吗？\n\n未保存的内容将会丢失。",
+                "取消更改",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question,
+                MessageBoxResult.No);
+
+            if (choice != MessageBoxResult.Yes) return;
+
+            // 不设 DataChanged —— 主窗口据此跳过列表刷新
+            CloseRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// 保存按钮：先校验，再二次确认，最后写回数据库并关闭窗口。
+        ///
+        /// 顺序是【校验 → 确认 → 写入】：
+        ///   校验不合格时先弹 Growl 报错、留在编辑页，
+        ///   不先弹确认框 —— 否则用户得点掉一个注定失败的确认框才能看到错误信息。
+        /// </summary>
+        [RelayCommand]
+        private async Task SaveAsync()
+        {
+            // ① 统一校验（呼号格式 / 频率合法性 / 起止时间先后）
+            var (isValid, errorMsg) = Validate();
+            if (!isValid)
+            {
+                await MessageTools.ShowErrorMess(MessagePage.EditQso, errorMsg);
+                return;
+            }
+
+            // ② 二次确认。保存是期望操作，默认按钮给 Yes
+            var choice = HandyControl.Controls.MessageBox.Show(
+                "确定要保存对这条记录的更改吗？\n\n" +
+                $"呼号：{CALL}\n" +
+                $"开始时间：{StartTimeDT:yyyy/MM/dd-HH:mm:ss}",
+                "保存确认",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question,
+                MessageBoxResult.Yes);
+
+            if (choice != MessageBoxResult.Yes) return;
+
+            // ③ 写回实体并落库
+            QsoLog entity = BuildEntity();
+            var (success, error) = await SharpLogDbTools.UpdateDBDataAsync(entity);
+
+            if (!success)
+            {
+                await MessageTools.ShowErrorMess(MessagePage.EditQso, error ?? "保存失败，请稍后重试");
+                return;
+            }
+
+            DataChanged = true;
+
+            // ⚠ 这里刻意不弹「保存成功」的 Growl：
+            //   紧接着窗口就关闭了，提示来不及看、只会一闪而过。
+            //   用户确认保存结果的方式，是主窗口列表刷新后显示的新数据。
+            CloseRequested?.Invoke(this, EventArgs.Empty);
+        }
+
+        #endregion
+
+        #region 保存：界面 → QsoLog 的写回
+
+        /// <summary>
+        /// 把界面上各控件的值写回实体。
+        ///
+        /// ⚠ 复用 _source 实例而不是 new 一个：
+        ///   Id / CreatedAt 这些由程序维护、界面上没有对应控件的字段能原样保留，
+        ///   EF 的 Update 也才能靠主键匹配到要更新的那一行。
+        /// </summary>
+        private QsoLog BuildEntity()
+        {
+            QsoLog entity = _source;
+
+            // ── 时间：一个 DateTime 拆回 ADIF 的「日期 + HHmmss 文本」两列 ──
+            entity.QSO_DATE = StartTimeDT.Date;
+            entity.TIME_ON = StartTimeDT.ToString("HHmmss", CultureInfo.InvariantCulture);
+            entity.QSO_DATE_OFF = EndTimeDT.Date;
+            entity.TIME_OFF = EndTimeDT.ToString("HHmmss", CultureInfo.InvariantCulture);
+
+            // ── 下拉框：拆回 ADIF 的 MODE + SUBMODE 两列 ──
+            entity.MODE = SelectCommMode?.Mode ?? string.Empty;
+            entity.SUBMODE = SelectCommMode?.Submode;
+            entity.PROP_MODE = SelectPROPItem?.Code;
+
+            // ── 数字 ──
+            entity.GroupID = GroupID;
+            entity.StarID = StarID;
+
+            // ── 文本字段 ──
+            entity.CALL = CALL;
+            entity.FREQ = ParseFrequency(FREQ);
+            entity.RST_RCVD = RST_RCVD;
+            entity.RST_SENT = RST_SENT;
+            entity.GRIDSQUARE = GRIDSQUARE;
+            entity.QTH = QTH;
+            entity.RX_PWR = RX_PWR;
+            entity.TX_PWR = TX_PWR;
+            entity.RIG = RIG;
+            entity.ANT = ANT;
+            entity.Height = Height;
+            entity.CONTACTED_OP = CONTACTED_OP;
+            entity.Weather = Weather;
+            entity.Temperature = Temperature;
+            entity.QslAddress = QslAddress;
+            entity.PostalCode = PostalCode;
+            entity.ReceiverName = ReceiverName;
+            entity.ReceiverContact = ReceiverContact;
+            entity.RadioOperator = RadioOperator;
+            entity.TimeZone = TimeZone;
+            entity.DigitalID = DigitalID;
+            entity.COMMENT = COMMENT;
+
+            // ── 界面上的「yyyy-MM-dd」文本 → DateTime? ──
+            entity.QSLRDATE = ParseDate(QSLRDATE);
+            entity.QSLSDATE = ParseDate(QSLSDATE);
+
+            // ── 界面上的「是 / 否」→ bool ──
+            entity.QSL_RCVD = QSL_RCVD == "是";
+            entity.IsConfirmed = IsConfirmed == "是";
+
+            // ── 审计字段：记下本次修改时间 ──
+            entity.LastUpdatedAt = DateTime.UtcNow;
+
+            return entity;
+        }
+
+        /// <summary>kHz 文本 → double。校验已保证能解析，这里再兜一层底。</summary>
+        private static double ParseFrequency(string text)
+            => double.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture, out double value) ? value : 0d;
+
+        /// <summary>"yyyy-MM-dd" 文本 → DateTime?；空或格式不对返回 null（ADIF 允许不填）。</summary>
+        private static DateTime? ParseDate(string text)
+            => DateTime.TryParse(text, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime value)
+               ? value
+               : null;
 
         #endregion
     }

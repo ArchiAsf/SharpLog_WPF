@@ -62,10 +62,18 @@ namespace SharpLog
                 DataContext = editVm
             };
 
-            // ⚠ 目前是单向载入：窗口里的字段能显示这条记录的值，
-            //    但还没有「保存」逻辑，所以暂时不看 ShowDialog 的返回值。
-            //    将来窗口支持「保存后返回 true」时，在这里重新加载当前页即可。
-            editWindow.ShowDialog();
+            // DialogResult 由编辑窗口回传：
+            //   true  —— 编辑过程中删除或保存成功过，列表需要刷新
+            //   false —— 只是取消 / 直接关闭，数据没动，不必刷新
+            bool? dataChanged = editWindow.ShowDialog();
+
+            if (dataChanged == true && DataContext is ViewModel.MainLogWindow_VM mainVm)
+            {
+                // ⚠ 这里用的是「重新加载第一页」，会丢失用户的滚动位置与
+                //   已加载的后续批次。对编辑单条记录这个场景够用；
+                //   若将来觉得不便，可改成只替换列表中的那一条。
+                mainVm.LoadLogViewFirstPage();
+            }
         }
         private void ClosingChange(object sender, System.ComponentModel.CancelEventArgs e)
         {

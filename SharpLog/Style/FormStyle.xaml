@@ -1663,7 +1663,7 @@
         BasedOn="{StaticResource {x:Type hc:DateTimePicker}}"
         TargetType="hc:DateTimePicker">
         <!--  与主界面 TimeInPut_HC 用同一种时间格式，保证两处显示一致  -->
-        <Setter Property="DateTimeFormat" Value="yyyy\MM\dd-HH:mm:ss" />
+        <Setter Property="DateTimeFormat" Value="yyyy/MM/dd-HH:mm:ss" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="BorderBrush" Value="{StaticResource NormalTextBoxBorderColor}" />
         <Setter Property="BorderThickness" Value="0,0,0,1" />

@@ -609,14 +609,14 @@
                 <!--  J2:J3：删除按钮（跨 2 行）  -->
                 <Border Grid.Row="0" Style="{StaticResource EditButtonPanelStyle}">
                     <Button
-                        Command=""
+                        Command="{Binding DeleteCommand}"
                         Content="删&#x0a;除"
                         Style="{StaticResource EditButtonStyle}" />
                 </Border>
                 <!--  J4:J5：取消按钮（跨 2 行）  -->
                 <Border Grid.Row="1" Style="{StaticResource EditButtonPanelStyle}">
                     <Button
-                        Command=""
+                        Command="{Binding CancelCommand}"
                         Content="取&#x0a;消"
                         Style="{StaticResource EditButtonStyle}" />
                 </Border>
@@ -624,7 +624,7 @@
                 <!--  J6:J7：保存按钮（跨 2 行）  -->
                 <Border Grid.Row="3" Style="{StaticResource EditButtonPanelStyle}">
                     <Button
-                        Command=""
+                        Command="{Binding SaveCommand}"
                         Content="保&#x0a;存"
                         Style="{StaticResource EditButtonStyle}" />
                 </Border>
