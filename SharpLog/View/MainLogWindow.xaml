@@ -1326,6 +1326,10 @@
                             <DataGrid.Columns>
                                 <!--  ==================== 最常用的核心字段排在最前 ====================  -->
                                 <DataGridTextColumn
+                                    Width="72"
+                                    Binding="{Binding Id}"
+                                    Header="记录ID" />
+                                <DataGridTextColumn
                                     Width="92"
                                     Binding="{Binding QSO_DATE, StringFormat={}{0:yyyy-MM-dd}}"
                                     Header="日期" />
@@ -1497,10 +1501,7 @@
                                     Width="140"
                                     Binding="{Binding LastUpdatedAt, StringFormat='{}{0:yyyy-MM-dd HH:mm}'}"
                                     Header="最后修改" />
-                                <DataGridTextColumn
-                                    Width="72"
-                                    Binding="{Binding Id}"
-                                    Header="记录ID" />
+
                             </DataGrid.Columns>
                         </DataGrid>
 
