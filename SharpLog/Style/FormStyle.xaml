@@ -1506,7 +1506,7 @@
               的内容摆放，单靠 HorizontalAlignment 只把 Label 自身居中而已  -->
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="Padding" Value="4,0,4,0" />
-        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontSize" Value="16" />
     </Style>
 
     <!--  ⚠ 这两个由用户预留，本次暂不使用，保留空定义  -->
@@ -1530,7 +1530,7 @@
         <Setter Property="Foreground" Value="{StaticResource NormalTextBoxTextColor}" />
         <Setter Property="BorderBrush" Value="{StaticResource NormalTextBoxBorderColor}" />
         <Setter Property="BorderThickness" Value="0,0,0,1" />
-        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontSize" Value="17" />
         <Setter Property="CaretBrush" Value="#FFFFFFFF" />
         <Setter Property="Padding" Value="2,3,2,3" />
         <!--  主表的输入框内容居中（与 DarkTextBoxStyle 的做法一致）  -->
@@ -1620,7 +1620,7 @@
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="Padding" Value="2,0,2,0" />
-        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontSize" Value="15" />
     </Style>
 
     <!--  滚动区字段值输入框：沿用主表的底线风格，只是更紧凑  -->
@@ -1628,7 +1628,7 @@
         x:Key="EditScrollTextBoxStyle"
         BasedOn="{StaticResource EditTextBoxStyle}"
         TargetType="TextBox">
-        <Setter Property="FontSize" Value="13" />
+        <Setter Property="FontSize" Value="14" />
         <Setter Property="Padding" Value="2,2,2,2" />
         <!--
           ⚠ 必须显式覆盖回靠左。
