@@ -1,4 +1,4 @@
-using SharpLog.ToolsBox;
+﻿using SharpLog.ToolsBox;
 using System.Text.RegularExpressions;
 
 namespace SharpLog
@@ -74,6 +74,28 @@ namespace SharpLog
             return (true, string.Empty);
         }
 
+        /// <summary>
+        /// 校验通联起止时间的先后关系。
+        ///
+        /// 规则：开始时间必须【严格早于】结束时间。
+        ///   相等也算非法 —— 一次通联不可能零时长，
+        ///   通常意味着用户改了其中一个却忘了改另一个。
+        ///
+        /// ⚠ 本项目原先是在 MainLogWindow_VM 里就地写 if 判断的，
+        ///   现集中到本静态工具类，主界面与编辑窗口共用同一套规则。
+        /// </summary>
+        /// <param name="start">开始时间（复合日期时间的 DateTime）</param>
+        /// <param name="end">结束时间</param>
+        /// <returns>(是否合法, 错误信息)；合法时错误信息为空串</returns>
+        public static (bool IsValid, string ErrorMessage) ValidateTimeRange(DateTime start, DateTime end)
+        {
+            if (start >= end)
+            {
+                return (false, $"【时间】开始时间（{start:yyyy-MM-dd HH:mm:ss}）必须早于结束时间（{end:yyyy-MM-dd HH:mm:ss}）");
+            }
+
+            return (true, string.Empty);
+        }
         /// <summary>
         /// 根据 kHz 频率自动匹配所属波段名称（如输入 7050 返回 "40m"）。
         /// 无匹配时返回 null。

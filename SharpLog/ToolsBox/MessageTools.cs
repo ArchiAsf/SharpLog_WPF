@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using HandyControl.Data;
 using hc = HandyControl.Controls;
 
@@ -27,7 +27,10 @@ namespace SharpLog.ToolsBox
         LogView,
 
         /// <summary>设置页</summary>
-        Settings
+        Settings,
+
+        /// <summary>编辑窗口（EditQso 弹窗，独立于主窗口的三个页面）</summary>
+        EditQso
     }
 
     /// <summary>
@@ -46,6 +49,7 @@ namespace SharpLog.ToolsBox
         {
             MessagePage.LogView => "LogViewGrowl",
             MessagePage.Settings => "SettingGrowl",
+            MessagePage.EditQso => "EditQsoGrowl",
             _ => "LogEditGrowl"
         };
 

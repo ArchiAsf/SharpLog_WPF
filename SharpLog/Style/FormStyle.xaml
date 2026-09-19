@@ -1644,4 +1644,55 @@
 
 
 
+    <!--  ══════════════════════════════════════════════════════════════════════
+          EditQso 编辑窗口里的 HandyControl 控件样式
+          ──────────────────────────────────────────────────────────────────────
+          思路：继承 HandyControl 自带的样式，只覆盖颜色与边框，
+                尽量贴近编辑窗口其余部分的「透明底 + 底部一条线」风格。
+
+          ⚠ 这几个控件的 ControlTemplate 由 HandyControl 提供，改属性能否生效
+            取决于它的模板有没有用 TemplateBinding 接这些属性。
+            若实跑下来外观没变化，需要改成重写 ControlTemplate。
+
+          ⚠ 三个样式都依赖 hc: 前缀，本文件顶部已声明该命名空间。
+          ══════════════════════════════════════════════════════════════════════  -->
+
+    <!--  时间选择框（hc:DateTimePicker）：透明底 + 只留底部一条线  -->
+    <Style
+        x:Key="EditDateTimePickerStyle"
+        BasedOn="{StaticResource {x:Type hc:DateTimePicker}}"
+        TargetType="hc:DateTimePicker">
+        <!--  与主界面 TimeInPut_HC 用同一种时间格式，保证两处显示一致  -->
+        <Setter Property="DateTimeFormat" Value="yyyy\MM\dd-HH:mm:ss" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{StaticResource NormalTextBoxBorderColor}" />
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Foreground" Value="{StaticResource NormalTextBoxTextColor}" />
+    </Style>
+
+    <!--  下拉框（模式 / 传播模式）：透明底 + 只留底部一条线  -->
+    <Style
+        x:Key="EditComboBoxStyle"
+        BasedOn="{StaticResource {x:Type ComboBox}}"
+        TargetType="ComboBox">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{StaticResource NormalTextBoxBorderColor}" />
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Foreground" Value="{StaticResource NormalTextBoxTextColor}" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <!--  数字增减框（分组 / 星级）：透明底 + 只留底部一条线，保留上下箭头按钮  -->
+    <Style
+        x:Key="EditNumericUpDownStyle"
+        BasedOn="{StaticResource {x:Type hc:NumericUpDown}}"
+        TargetType="hc:NumericUpDown">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{StaticResource NormalTextBoxBorderColor}" />
+        <Setter Property="BorderThickness" Value="0,0,0,1" />
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="Foreground" Value="{StaticResource NormalTextBoxTextColor}" />
+    </Style>
 </ResourceDictionary>

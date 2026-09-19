@@ -51,13 +51,19 @@ namespace SharpLog
         /// </summary>
         private void OnEditRequested(object? sender, Model.QsoLog row)
         {
+            // 为这条记录建一个编辑用的 ViewModel 并注入窗口。
+            // ⚠ 转换工作（QSO_DATE+TIME_ON 合成 DateTime、MODE+SUBMODE 反查下拉项等）
+            //    全部由 EditQso_VM 负责，这里只传原始实体。
+            var editVm = new ViewModel.EditQso_VM(row);
+
             var editWindow = new View.EditQso
             {
-                Owner = this
+                Owner = this,
+                DataContext = editVm
             };
 
-            // ⚠ 编辑窗口目前只搭好了布局，还没有保存逻辑，
-            //    所以暂时不看 ShowDialog 的返回值。
+            // ⚠ 目前是单向载入：窗口里的字段能显示这条记录的值，
+            //    但还没有「保存」逻辑，所以暂时不看 ShowDialog 的返回值。
             //    将来窗口支持「保存后返回 true」时，在这里重新加载当前页即可。
             editWindow.ShowDialog();
         }

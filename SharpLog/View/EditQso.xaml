@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:SharpLog.View"
     xmlns:conv="clr-namespace:SharpLog.View.Converters"
+    xmlns:hc="clr-namespace:HandyControl.Controls;assembly=HandyControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="编辑通联记录"
     Width="911"
@@ -102,7 +103,9 @@
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
                     Style="{StaticResource EditInputPanelStyle}">
-                    <TextBox Style="{StaticResource EditTextBoxStyle}" Text="2026-09-20 14:30" />
+                    <hc:DateTimePicker
+                        SelectedDateTime="{Binding StartTimeDT, Mode=TwoWay}"
+                        Style="{StaticResource EditDateTimePickerStyle}" />
                 </Border>
 
                 <!--  D1：utc（单位文字，样式暂用标签样式）  -->
@@ -128,7 +131,7 @@
                     Grid.Row="0"
                     Grid.Column="6"
                     Grid.ColumnSpan="3"
-                    Background="{Binding ElementName=ModeTextBox, Path=Text, Converter={StaticResource ModeTextToColor}}"
+                    Background="{Binding ModeDisplayName, Converter={StaticResource ModeTextToColor}}"
                     CornerRadius="4,0,0,4"
                     Margin="0,0,-2,0"
                     Height=" 20"
@@ -152,7 +155,9 @@
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
                     Style="{StaticResource EditInputPanelStyle}">
-                    <TextBox Style="{StaticResource EditTextBoxStyle}" Text="2026-09-20 14:42" />
+                    <hc:DateTimePicker
+                        SelectedDateTime="{Binding EndTimeDT, Mode=TwoWay}"
+                        Style="{StaticResource EditDateTimePickerStyle}" />
                 </Border>
 
                 <!--  D2：utc  -->
@@ -181,7 +186,11 @@
                     Grid.Column="7"
                     Grid.ColumnSpan="2"
                     Style="{StaticResource EditInputPanelStyle}">
-                    <TextBox Style="{StaticResource EditTextBoxStyle}" Text="F2 电离层反射" />
+                    <ComboBox
+                        DisplayMemberPath="DisplayName"
+                        ItemsSource="{Binding PropagationModeList}"
+                        SelectedItem="{Binding SelectPROPItem}"
+                        Style="{StaticResource EditComboBoxStyle}" />
                 </Border>
 
 
@@ -204,7 +213,7 @@
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
                     Style="{StaticResource EditInputPanelStyle}">
-                    <TextBox Style="{StaticResource EditTextBoxStyle}" Text="BG2GPT" />
+                    <TextBox Style="{StaticResource EditTextBoxStyle}" Text="{Binding CALL, Mode=TwoWay}" />
                 </Border>
 
                 <!--  ══════════════════ 第 4 行 ══════════════════  -->
@@ -226,10 +235,12 @@
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
                     Style="{StaticResource EditInputPanelStyle}">
-                    <TextBox
-                        x:Name="ModeTextBox"
-                        Style="{StaticResource EditTextBoxStyle}"
-                        Text="SSB 单边带" />
+                    <ComboBox
+                        x:Name="ModeComboBox"
+                        DisplayMemberPath="DisplayName"
+                        ItemsSource="{Binding CommModeList}"
+                        SelectedItem="{Binding SelectCommMode}"
+                        Style="{StaticResource EditComboBoxStyle}" />
                 </Border>
 
                 <!--  I4：分组（标签）  -->
@@ -262,7 +273,7 @@
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
                     Style="{StaticResource EditInputPanelStyle}">
-                    <TextBox Style="{StaticResource EditTextBoxStyle}" Text="14230.0" />
+                    <TextBox Style="{StaticResource EditTextBoxStyle}" Text="{Binding FREQ, Mode=TwoWay}" />
                 </Border>
 
                 <!--  I5：分组的值（输入框）  -->
@@ -270,7 +281,11 @@
                     Grid.Row="4"
                     Grid.Column="8"
                     Style="{StaticResource EditInputPanelStyle}">
-                    <TextBox Style="{StaticResource EditTextBoxStyle}" Text="DX 远距离" />
+                    <hc:NumericUpDown
+                        Maximum="5"
+                        Minimum="0"
+                        Style="{StaticResource EditNumericUpDownStyle}"
+                        Value="{Binding GroupID}" />
                 </Border>
 
                 <!--  ══════════════════ 第 6 行 ══════════════════  -->
@@ -290,7 +305,7 @@
                     Grid.Row="5"
                     Grid.Column="1"
                     Style="{StaticResource EditInputPanelStyle}">
-                    <TextBox Style="{StaticResource EditTextBoxStyle}" Text="59" />
+                    <TextBox Style="{StaticResource EditTextBoxStyle}" Text="{Binding RST_RCVD, Mode=TwoWay}" />
                 </Border>
 
                 <!--  C6：信号报告（输入框，单格）  -->
@@ -299,7 +314,7 @@
                     Grid.Row="5"
                     Grid.Column="2"
                     Style="{StaticResource EditInputPanelStyle}">
-                    <TextBox Style="{StaticResource EditTextBoxStyle}" Text="57" />
+                    <TextBox Style="{StaticResource EditTextBoxStyle}" Text="{Binding RST_SENT, Mode=TwoWay}" />
                 </Border>
 
                 <!--  I6：星级（标签）  -->
@@ -332,7 +347,7 @@
                     Grid.Column="1"
                     Grid.ColumnSpan="2"
                     Style="{StaticResource EditInputPanelStyle}">
-                    <TextBox Style="{StaticResource EditTextBoxStyle}" Text="PN36OM" />
+                    <TextBox Style="{StaticResource EditTextBoxStyle}" Text="{Binding GRIDSQUARE, Mode=TwoWay}" />
                 </Border>
 
                 <!--  I7：星级的值（输入框）  -->
@@ -340,7 +355,11 @@
                     Grid.Row="6"
                     Grid.Column="8"
                     Style="{StaticResource EditInputPanelStyle}">
-                    <TextBox Style="{StaticResource EditTextBoxStyle}" Text="4 星" />
+                    <hc:NumericUpDown
+                        Maximum="5"
+                        Minimum="0"
+                        Style="{StaticResource EditNumericUpDownStyle}"
+                        Value="{Binding StarID}" />
                 </Border>
 
                 <!--  按钮组  -->
@@ -417,7 +436,7 @@
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Style="{StaticResource EditScrollInputPanelStyle}">
-                                    <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="黑龙江省哈尔滨市南岗区" />
+                                    <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="{Binding QTH, Mode=TwoWay}" />
                                 </Border>
 
                                 <Border
@@ -432,7 +451,7 @@
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     Style="{StaticResource EditScrollInputPanelStyle}">
-                                    <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="100W" />
+                                    <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="{Binding RX_PWR, Mode=TwoWay}" />
                                 </Border>
 
                                 <Border
@@ -447,7 +466,7 @@
                                     Grid.Row="2"
                                     Grid.Column="1"
                                     Style="{StaticResource EditScrollInputPanelStyle}">
-                                    <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="50W" />
+                                    <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="{Binding TX_PWR, Mode=TwoWay}" />
                                 </Border>
 
                                 <Border
@@ -462,7 +481,7 @@
                                     Grid.Row="3"
                                     Grid.Column="1"
                                     Style="{StaticResource EditScrollInputPanelStyle}">
-                                    <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="ICOM IC-7300" />
+                                    <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="{Binding RIG, Mode=TwoWay}" />
                                 </Border>
 
                                 <Border
@@ -477,7 +496,7 @@
                                     Grid.Row="4"
                                     Grid.Column="1"
                                     Style="{StaticResource EditScrollInputPanelStyle}">
-                                    <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="DP 偶极天线" />
+                                    <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="{Binding ANT, Mode=TwoWay}" />
                                 </Border>
 
                                 <Border
@@ -492,7 +511,7 @@
                                     Grid.Row="5"
                                     Grid.Column="1"
                                     Style="{StaticResource EditScrollInputPanelStyle}">
-                                    <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="15M" />
+                                    <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="{Binding Height, Mode=TwoWay}" />
                                 </Border>
 
                                 <Border
@@ -507,7 +526,7 @@
                                     Grid.Row="6"
                                     Grid.Column="1"
                                     Style="{StaticResource EditScrollInputPanelStyle}">
-                                    <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="ZHANG WEI" />
+                                    <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="{Binding CONTACTED_OP, Mode=TwoWay}" />
                                 </Border>
 
 
@@ -523,7 +542,7 @@
                                     Grid.Row="7"
                                     Grid.Column="1"
                                     Style="{StaticResource EditScrollInputPanelStyle}">
-                                    <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="2026-09-20" />
+                                    <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="{Binding QSO_DATE_OFF, Mode=TwoWay}" />
                                 </Border>
                                 <Border
                                     Grid.Row="8"
@@ -537,7 +556,7 @@
                                     Grid.Row="8"
                                     Grid.Column="1"
                                     Style="{StaticResource EditScrollInputPanelStyle}">
-                                    <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="14:42" />
+                                    <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="{Binding TIME_OFF, Mode=TwoWay}" />
                                 </Border>
                                 <Border
                                     Grid.Row="9"
@@ -551,7 +570,7 @@
                                     Grid.Row="9"
                                     Grid.Column="1"
                                     Style="{StaticResource EditScrollInputPanelStyle}">
-                                    <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="晴" />
+                                    <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="{Binding Weather, Mode=TwoWay}" />
                                 </Border>
                                 <Border
                                     Grid.Row="10"
@@ -565,7 +584,7 @@
                                     Grid.Row="10"
                                     Grid.Column="1"
                                     Style="{StaticResource EditScrollInputPanelStyle}">
-                                    <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="18°C" />
+                                    <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="{Binding Temperature, Mode=TwoWay}" />
                                 </Border>
 
                             </Grid>
@@ -655,7 +674,7 @@
                                 Grid.Row="0"
                                 Grid.Column="1"
                                 Style="{StaticResource EditScrollInputPanelStyle}">
-                                <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="是" />
+                                <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="{Binding QSL_RCVD, Mode=TwoWay}" />
                             </Border>
                             <Border
                                 Grid.Row="1"
@@ -669,7 +688,7 @@
                                 Grid.Row="1"
                                 Grid.Column="1"
                                 Style="{StaticResource EditScrollInputPanelStyle}">
-                                <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="2026-09-25" />
+                                <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="{Binding QSLRDATE, Mode=TwoWay}" />
                             </Border>
                             <Border
                                 Grid.Row="2"
@@ -683,7 +702,7 @@
                                 Grid.Row="2"
                                 Grid.Column="1"
                                 Style="{StaticResource EditScrollInputPanelStyle}">
-                                <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="2026-09-22" />
+                                <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="{Binding QSLSDATE, Mode=TwoWay}" />
                             </Border>
                             <Border
                                 Grid.Row="3"
@@ -697,7 +716,7 @@
                                 Grid.Row="3"
                                 Grid.Column="1"
                                 Style="{StaticResource EditScrollInputPanelStyle}">
-                                <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="黑龙江省哈尔滨市南岗区西大直街 92 号" />
+                                <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="{Binding QslAddress, Mode=TwoWay}" />
                             </Border>
                             <Border
                                 Grid.Row="4"
@@ -711,7 +730,7 @@
                                 Grid.Row="4"
                                 Grid.Column="1"
                                 Style="{StaticResource EditScrollInputPanelStyle}">
-                                <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="150001" />
+                                <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="{Binding PostalCode, Mode=TwoWay}" />
                             </Border>
                             <Border
                                 Grid.Row="5"
@@ -725,7 +744,7 @@
                                 Grid.Row="5"
                                 Grid.Column="1"
                                 Style="{StaticResource EditScrollInputPanelStyle}">
-                                <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="ZHANG WEI" />
+                                <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="{Binding ReceiverName, Mode=TwoWay}" />
                             </Border>
                             <Border
                                 Grid.Row="6"
@@ -739,7 +758,7 @@
                                 Grid.Row="6"
                                 Grid.Column="1"
                                 Style="{StaticResource EditScrollInputPanelStyle}">
-                                <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="zhangwei@example.com" />
+                                <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="{Binding ReceiverContact, Mode=TwoWay}" />
                             </Border>
                             <Border
                                 Grid.Row="7"
@@ -753,7 +772,7 @@
                                 Grid.Row="7"
                                 Grid.Column="1"
                                 Style="{StaticResource EditScrollInputPanelStyle}">
-                                <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="BG2GPT" />
+                                <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="{Binding RadioOperator, Mode=TwoWay}" />
                             </Border>
                             <Border
                                 Grid.Row="8"
@@ -767,7 +786,7 @@
                                 Grid.Row="8"
                                 Grid.Column="1"
                                 Style="{StaticResource EditScrollInputPanelStyle}">
-                                <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="UTC+8" />
+                                <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="{Binding TimeZone, Mode=TwoWay}" />
                             </Border>
                             <Border
                                 Grid.Row="9"
@@ -781,7 +800,7 @@
                                 Grid.Row="9"
                                 Grid.Column="1"
                                 Style="{StaticResource EditScrollInputPanelStyle}">
-                                <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="4601234" />
+                                <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="{Binding DigitalID, Mode=TwoWay}" />
                             </Border>
                             <Border
                                 Grid.Row="10"
@@ -795,7 +814,7 @@
                                 Grid.Row="10"
                                 Grid.Column="1"
                                 Style="{StaticResource EditScrollInputPanelStyle}">
-                                <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="是" />
+                                <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="{Binding IsConfirmed, Mode=TwoWay}" />
                             </Border>
 
                         </Grid>
@@ -832,7 +851,7 @@
                             <TextBox
                                 AcceptsReturn="True"
                                 Style="{StaticResource EditScrollTextBoxStyle}"
-                                Text="信号稳定，双方互报 59，对方使用 100W 发射"
+                                Text="{Binding COMMENT, Mode=TwoWay}"
                                 TextAlignment="Left"
                                 TextWrapping="Wrap"
                                 VerticalContentAlignment="Top"
@@ -843,5 +862,24 @@
             </Grid>
         </Border>
 
+        <!--  ══════════════════════════════════════════════════════════════════
+              【编辑窗口】的消息提示面板（右下角）
+              ──────────────────────────────────────────────────────────────────
+              ⚠ Token 必须是 "EditQsoGrowl"，与 ToolsBox\MessageTools.cs 里
+                MessagePage.EditQso 分支返回的字符串【一字不差】，
+                否则消息找不到这个面板（表现为消息不显示或跑到别处）。
+
+              ⚠ 声明在最后：Grid 的子元素是「后声明的在上层」，
+                放最后才能保证提示浮在其它内容之上。
+              ══════════════════════════════════════════════════════════════════  -->
+        <StackPanel
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="2"
+            Margin="0,0,10,10"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            hc:Growl.GrowlParent="True"
+            hc:Growl.ShowMode="Append"
+            hc:Growl.Token="EditQsoGrowl" />
     </Grid>
 </Window>
