@@ -251,12 +251,21 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <!--  标签头部  -->
+                        <!--
+                          标签头部。
+                          ⚠ 这里的背景【刻意写死成窗口背景色】，而不是沿用 TemplateBinding Background：
+                            TabPanel 只占标签自身的宽度，标签右边剩下的那片空白
+                            露出的正是它的背景。若跟着 Background 走（那是面板色 #202328），
+                            这片空白就会比周围的窗口背景（#121418）亮一档，
+                            看着像一块补丁 —— 顶部的 DarkTabControlStyle 用的就是
+                            LogMainFormBackColor，所以那边没有这个问题。
+                          内容区的背景仍由下面 ContentPanel 的 TemplateBinding 决定，不受影响。
+                        -->
                         <TabPanel
                             x:Name="HeaderPanel"
                             Grid.Row="0"
                             Margin="0,0,0,0"
-                            Background="{TemplateBinding Background}"
+                            Background="{StaticResource LogMainFormBackColor}"
                             IsItemsHost="True" />
                         <!--  标签内容区域  -->
                         <Border
