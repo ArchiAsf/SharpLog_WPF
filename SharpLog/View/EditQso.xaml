@@ -1,0 +1,365 @@
+<Window x:Class="SharpLog.View.EditQso"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SharpLog.View"
+        mc:Ignorable="d"
+        Title="EditQso" MinHeight="256" MinWidth="911">
+    <!--
+      ════════════════════════════════════════════════════════════════════════
+      编辑通联记录窗口的布局
+      ════════════════════════════════════════════════════════════════════════
+      布局来源：F:\编辑控件的布局.xlsx
+      该表为【7 行 × 10 列】，对应下面 Grid 的 Row 0~6 与 Column 0~9
+      （A 列 = Column 0，J 列 = Column 9）。
+
+      ⚠ 注意：用户最初贴的代码里把行列数写反了
+        （写成了 10 个 RowDefinition + 7 个 ColumnDefinition），
+        这里以 Excel 的 7 行 × 10 列 为准。
+
+      【三种元素的写法】
+        · 标签（开始时间、呼号……）
+            Border + EditTitlePanelStyle / Label + EditLabelStyle / TextBlock
+        · 输入框（BG2GPT、14230……）
+            Border + EditInputPanelStyle / TextBox + EditTextBoxStyle
+        · 按钮（删除 / 取消 / 保存）
+            Border + EditButtonPanelStyle / Button + EditButtonStyle
+
+      ⚠ 上面的 Edit 系列样式目前【尚未定义】，后续再补。
+        XAML 编译器不检查 StaticResource 能否解析（要到运行时才知道），
+        所以现在引用它们不影响编译。
+
+      ⚠ 行 3~7 的 D~H 列（即 Grid.Row 2~6 × Grid.Column 3~7）是一块
+        【滚动区域，里面是独立的表格】，本次先放一个占位 Border，
+        具体内容与规则待下个对话确定。
+      ════════════════════════════════════════════════════════════════════════
+    -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!--  ══════════════════ 第 1 行 ══════════════════  -->
+
+        <!--  A1：开始时间（标签）  -->
+        <Border
+            Grid.Row="0"
+            Grid.Column="0"
+            Style="{StaticResource EditTitlePanelStyle}">
+            <Label Style="{StaticResource EditLabelStyle}">
+                <TextBlock Text="开始时间" />
+            </Label>
+        </Border>
+
+        <!--  B1:C1：开始时间（输入框，跨 2 列）  -->
+        <Border
+            Grid.Row="0"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Style="{StaticResource EditInputPanelStyle}">
+            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+        </Border>
+
+        <!--  D1：utc（单位文字，样式暂用标签样式）  -->
+        <Border
+            Grid.Row="0"
+            Grid.Column="3"
+            Style="{StaticResource EditTitlePanelStyle}">
+            <Label Style="{StaticResource EditLabelStyle}">
+                <TextBlock Text="utc" />
+            </Label>
+        </Border>
+
+        <!--
+          H1:J1：色块（跨 3 列）
+          用途：根据输入的呼号解析出对方国家后，在这里显示国旗图标与国家名称。
+          具体内容待呼号解析功能开发时再填。
+        -->
+        <Border
+            Grid.Row="0"
+            Grid.Column="7"
+            Grid.ColumnSpan="3"
+            Style="{StaticResource EditInputPanelStyle}">
+            <TextBlock />
+        </Border>
+
+        <!--  ══════════════════ 第 2 行 ══════════════════  -->
+
+        <!--  A2：结束时间（标签）  -->
+        <Border
+            Grid.Row="1"
+            Grid.Column="0"
+            Style="{StaticResource EditTitlePanelStyle}">
+            <Label Style="{StaticResource EditLabelStyle}">
+                <TextBlock Text="结束时间" />
+            </Label>
+        </Border>
+
+        <!--  B2:C2：结束时间（输入框，跨 2 列）  -->
+        <Border
+            Grid.Row="1"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Style="{StaticResource EditInputPanelStyle}">
+            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+        </Border>
+
+        <!--  D2：utc  -->
+        <Border
+            Grid.Row="1"
+            Grid.Column="3"
+            Style="{StaticResource EditTitlePanelStyle}">
+            <Label Style="{StaticResource EditLabelStyle}">
+                <TextBlock Text="utc" />
+            </Label>
+        </Border>
+
+        <!--  H2：传播模式（标签）  -->
+        <Border
+            Grid.Row="1"
+            Grid.Column="7"
+            Style="{StaticResource EditTitlePanelStyle}">
+            <Label Style="{StaticResource EditLabelStyle}">
+                <TextBlock Text="传播模式" />
+            </Label>
+        </Border>
+
+        <!--  I2：传播模式（输入框）  -->
+        <Border
+            Grid.Row="1"
+            Grid.Column="8"
+            Style="{StaticResource EditInputPanelStyle}">
+            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+        </Border>
+
+        <!--  J2:J3：删除按钮（跨 2 行）  -->
+        <Border
+            Grid.Row="1"
+            Grid.Column="9"
+            Grid.RowSpan="2"
+            Style="{StaticResource EditButtonPanelStyle}">
+            <Button
+                Command=""
+                Content="删除"
+                Style="{StaticResource EditButtonStyle}" />
+        </Border>
+
+        <!--  ══════════════════ 第 3 行 ══════════════════  -->
+
+        <!--  A3：呼号（标签）  -->
+        <Border
+            Grid.Row="2"
+            Grid.Column="0"
+            Style="{StaticResource EditTitlePanelStyle}">
+            <Label Style="{StaticResource EditLabelStyle}">
+                <TextBlock Text="呼号" />
+            </Label>
+        </Border>
+
+        <!--  B3:C3：呼号（输入框，跨 2 列）  -->
+        <Border
+            Grid.Row="2"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Style="{StaticResource EditInputPanelStyle}">
+            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+        </Border>
+
+        <!--  ══════════════════ 第 4 行 ══════════════════  -->
+
+        <!--  A4：模式（标签）  -->
+        <Border
+            Grid.Row="3"
+            Grid.Column="0"
+            Style="{StaticResource EditTitlePanelStyle}">
+            <Label Style="{StaticResource EditLabelStyle}">
+                <TextBlock Text="模式" />
+            </Label>
+        </Border>
+
+        <!--  B4:C4：模式（输入框，跨 2 列）  -->
+        <!--  ⚠ 这一格实际应改为 ComboBox（绑定模式下拉列表），待样式确定后再调整  -->
+        <Border
+            Grid.Row="3"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Style="{StaticResource EditInputPanelStyle}">
+            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+        </Border>
+
+        <!--  I4：分组（标签）  -->
+        <Border
+            Grid.Row="3"
+            Grid.Column="8"
+            Style="{StaticResource EditTitlePanelStyle}">
+            <Label Style="{StaticResource EditLabelStyle}">
+                <TextBlock Text="分组" />
+            </Label>
+        </Border>
+
+        <!--  J4:J5：取消按钮（跨 2 行）  -->
+        <Border
+            Grid.Row="3"
+            Grid.Column="9"
+            Grid.RowSpan="2"
+            Style="{StaticResource EditButtonPanelStyle}">
+            <Button
+                Command=""
+                Content="取消"
+                Style="{StaticResource EditButtonStyle}" />
+        </Border>
+
+        <!--  ══════════════════ 第 5 行 ══════════════════  -->
+
+        <!--  A5：频率（标签）  -->
+        <Border
+            Grid.Row="4"
+            Grid.Column="0"
+            Style="{StaticResource EditTitlePanelStyle}">
+            <Label Style="{StaticResource EditLabelStyle}">
+                <TextBlock Text="频率" />
+            </Label>
+        </Border>
+
+        <!--  B5:C5：频率（输入框，跨 2 列）  -->
+        <Border
+            Grid.Row="4"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Style="{StaticResource EditInputPanelStyle}">
+            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+        </Border>
+
+        <!--  I5：分组的值（输入框）  -->
+        <Border
+            Grid.Row="4"
+            Grid.Column="8"
+            Style="{StaticResource EditInputPanelStyle}">
+            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+        </Border>
+
+        <!--  ══════════════════ 第 6 行 ══════════════════  -->
+
+        <!--  A6：收/发信号报告（标签）  -->
+        <Border
+            Grid.Row="5"
+            Grid.Column="0"
+            Style="{StaticResource EditTitlePanelStyle}">
+            <Label Style="{StaticResource EditLabelStyle}">
+                <TextBlock Text="收/发信号报告" />
+            </Label>
+        </Border>
+
+        <!--  B6：信号报告（输入框，单格）  -->
+        <Border
+            Grid.Row="5"
+            Grid.Column="1"
+            Style="{StaticResource EditInputPanelStyle}">
+            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+        </Border>
+
+        <!--  C6：信号报告（输入框，单格）  -->
+        <!--  行 6 的 B、C 两列没有合并，是两个独立输入框（收报告 / 发报告）  -->
+        <Border
+            Grid.Row="5"
+            Grid.Column="2"
+            Style="{StaticResource EditInputPanelStyle}">
+            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+        </Border>
+
+        <!--  I6：星级（标签）  -->
+        <Border
+            Grid.Row="5"
+            Grid.Column="8"
+            Style="{StaticResource EditTitlePanelStyle}">
+            <Label Style="{StaticResource EditLabelStyle}">
+                <TextBlock Text="星级" />
+            </Label>
+        </Border>
+
+        <!--  J6:J7：保存按钮（跨 2 行）  -->
+        <Border
+            Grid.Row="5"
+            Grid.Column="9"
+            Grid.RowSpan="2"
+            Style="{StaticResource EditButtonPanelStyle}">
+            <Button
+                Command=""
+                Content="保存"
+                Style="{StaticResource EditButtonStyle}" />
+        </Border>
+
+        <!--  ══════════════════ 第 7 行 ══════════════════  -->
+
+        <!--  A7：网格（标签）  -->
+        <Border
+            Grid.Row="6"
+            Grid.Column="0"
+            Style="{StaticResource EditTitlePanelStyle}">
+            <Label Style="{StaticResource EditLabelStyle}">
+                <TextBlock Text="网格" />
+            </Label>
+        </Border>
+
+        <!--  B7:C7：网格（输入框，跨 2 列）  -->
+        <Border
+            Grid.Row="6"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Style="{StaticResource EditInputPanelStyle}">
+            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+        </Border>
+
+        <!--  I7：星级的值（输入框）  -->
+        <Border
+            Grid.Row="6"
+            Grid.Column="8"
+            Style="{StaticResource EditInputPanelStyle}">
+            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+        </Border>
+
+        <!--
+          ══════════════════ 滚动区域（占位，待实现） ══════════════════
+          对应 Excel 的 D3:H7，即 Grid.Row 2~6 × Grid.Column 3~7（5 行 × 5 列）。
+          Excel 里这几格写的是「地理位置 / 接收功率 / 发射功率 / 设备 / 天线」，
+          但那只是示意 —— 按用户要求，这块最终是一个【可滚动的独立表格区】，
+          具体内容与规则待下个对话确定，所以这里先只放一个占位 Border。
+
+          ⚠ 它声明在最后：Grid 的子元素是「后声明的在上层」，
+            而这块区域跨度大，放最后可以盖住可能重叠的其他元素，
+            将来往里填内容时也不会被别的格子遮挡。
+        -->
+        <Border
+            Grid.Row="2"
+            Grid.Column="3"
+            Grid.RowSpan="5"
+            Grid.ColumnSpan="5"
+            Style="{StaticResource EditInputPanelStyle}">
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Foreground="Gray"
+                Text="滚动区域（待实现）" />
+        </Border>
+
+    </Grid>
+</Window>
