@@ -30,9 +30,9 @@
         XAML 编译器不检查 StaticResource 能否解析（要到运行时才知道），
         所以现在引用它们不影响编译。
 
-      ⚠ 行 3~7 的 D~H 列（即 Grid.Row 2~6 × Grid.Column 3~7）是一块
-        【滚动区域，里面是独立的表格】，本次先放一个占位 Border，
-        具体内容与规则待下个对话确定。
+      【滚动区域】
+        Grid.Row 2~6 × Grid.Column 3~7（Excel 的 D3:H7）是一块【独立的可滚动表格区】，
+        结构与字段清单见文件末尾该区域的注释。
       ════════════════════════════════════════════════════════════════════════
     -->
     <Grid>
@@ -338,15 +338,32 @@
         </Border>
 
         <!--
-          ══════════════════ 滚动区域（占位，待实现） ══════════════════
-          对应 Excel 的 D3:H7，即 Grid.Row 2~6 × Grid.Column 3~7（5 行 × 5 列）。
-          Excel 里这几格写的是「地理位置 / 接收功率 / 发射功率 / 设备 / 天线」，
-          但那只是示意 —— 按用户要求，这块最终是一个【可滚动的独立表格区】，
-          具体内容与规则待下个对话确定，所以这里先只放一个占位 Border。
+          ════════════════════════════════════════════════════════════════════════
+          滚动区域
+          ════════════════════════════════════════════════════════════════════════
+          对应 Excel 的 D3:H7，即 Grid.Row 2~6 × Grid.Column 3~7。
+
+          【结构】
+            Border（外框）
+              └ ScrollViewer（负责纵向滚动）
+                  └ StackPanel
+                      └ Grid（每行一条字段）
+                          左列 3 份宽 = 字段名，用标签组件
+                          右列 7 份宽 = 字段值，用输入框组件
+          行数可随字段增减，列固定为两列。
+
+          【本区与主表的分工】
+            主表已占用：开始/结束时间、呼号、模式、频率、网格、
+                       传播模式、收/发信号报告、分组、星级。
+            本区放其余【常用字段】。
+            ⚠ 按用户要求，QSL 卡片管理相关的字段
+              （QSL已收 / 收卡日期 / 发卡日期 / QSL地址 / 邮政编码 /
+                收件人 / 联系方式）本次【不】放入本区。
 
           ⚠ 它声明在最后：Grid 的子元素是「后声明的在上层」，
             而这块区域跨度大，放最后可以盖住可能重叠的其他元素，
-            将来往里填内容时也不会被别的格子遮挡。
+            不会被别的格子遮挡。
+          ════════════════════════════════════════════════════════════════════════
         -->
         <Border
             Grid.Row="2"
@@ -354,11 +371,155 @@
             Grid.RowSpan="5"
             Grid.ColumnSpan="5"
             Style="{StaticResource EditInputPanelStyle}">
-            <TextBlock
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Foreground="Gray"
-                Text="滚动区域（待实现）" />
+            <ScrollViewer>
+                <StackPanel>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="7*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!--  第 1 行：地理位置（ADIF: QTH）  -->
+                        <Border
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Style="{StaticResource EditTitlePanelStyle}">
+                            <Label Style="{StaticResource EditLabelStyle}">
+                                <TextBlock Text="地理位置" />
+                            </Label>
+                        </Border>
+                        <Border
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Style="{StaticResource EditInputPanelStyle}">
+                            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+                        </Border>
+
+                        <!--  第 2 行：接收功率（ADIF: RX_PWR，指对方发射功率）  -->
+                        <Border
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Style="{StaticResource EditTitlePanelStyle}">
+                            <Label Style="{StaticResource EditLabelStyle}">
+                                <TextBlock Text="接收功率" />
+                            </Label>
+                        </Border>
+                        <Border
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Style="{StaticResource EditInputPanelStyle}">
+                            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+                        </Border>
+
+                        <!--  第 3 行：发射功率（ADIF: TX_PWR，指我方发射功率）  -->
+                        <Border
+                            Grid.Row="2"
+                            Grid.Column="0"
+                            Style="{StaticResource EditTitlePanelStyle}">
+                            <Label Style="{StaticResource EditLabelStyle}">
+                                <TextBlock Text="发射功率" />
+                            </Label>
+                        </Border>
+                        <Border
+                            Grid.Row="2"
+                            Grid.Column="1"
+                            Style="{StaticResource EditInputPanelStyle}">
+                            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+                        </Border>
+
+                        <!--  第 4 行：设备（ADIF: RIG，对方电台型号）  -->
+                        <Border
+                            Grid.Row="3"
+                            Grid.Column="0"
+                            Style="{StaticResource EditTitlePanelStyle}">
+                            <Label Style="{StaticResource EditLabelStyle}">
+                                <TextBlock Text="设备" />
+                            </Label>
+                        </Border>
+                        <Border
+                            Grid.Row="3"
+                            Grid.Column="1"
+                            Style="{StaticResource EditInputPanelStyle}">
+                            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+                        </Border>
+
+                        <!--  第 5 行：天线（项目自定义字段 ANT，对方天线类型）  -->
+                        <Border
+                            Grid.Row="4"
+                            Grid.Column="0"
+                            Style="{StaticResource EditTitlePanelStyle}">
+                            <Label Style="{StaticResource EditLabelStyle}">
+                                <TextBlock Text="天线" />
+                            </Label>
+                        </Border>
+                        <Border
+                            Grid.Row="4"
+                            Grid.Column="1"
+                            Style="{StaticResource EditInputPanelStyle}">
+                            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+                        </Border>
+
+                        <!--  第 6 行：天线高度（项目自定义字段 Height，单位 M）  -->
+                        <Border
+                            Grid.Row="5"
+                            Grid.Column="0"
+                            Style="{StaticResource EditTitlePanelStyle}">
+                            <Label Style="{StaticResource EditLabelStyle}">
+                                <TextBlock Text="天线高度" />
+                            </Label>
+                        </Border>
+                        <Border
+                            Grid.Row="5"
+                            Grid.Column="1"
+                            Style="{StaticResource EditInputPanelStyle}">
+                            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+                        </Border>
+
+                        <!--  第 7 行：对方值机员（ADIF: CONTACTED_OP）  -->
+                        <Border
+                            Grid.Row="6"
+                            Grid.Column="0"
+                            Style="{StaticResource EditTitlePanelStyle}">
+                            <Label Style="{StaticResource EditLabelStyle}">
+                                <TextBlock Text="对方值机员" />
+                            </Label>
+                        </Border>
+                        <Border
+                            Grid.Row="6"
+                            Grid.Column="1"
+                            Style="{StaticResource EditInputPanelStyle}">
+                            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+                        </Border>
+
+                        <!--  第 8 行：备注（ADIF: COMMENT）  -->
+                        <Border
+                            Grid.Row="7"
+                            Grid.Column="0"
+                            Style="{StaticResource EditTitlePanelStyle}">
+                            <Label Style="{StaticResource EditLabelStyle}">
+                                <TextBlock Text="备注" />
+                            </Label>
+                        </Border>
+                        <Border
+                            Grid.Row="7"
+                            Grid.Column="1"
+                            Style="{StaticResource EditInputPanelStyle}">
+                            <TextBox Style="{StaticResource EditTextBoxStyle}" />
+                        </Border>
+
+                    </Grid>
+                </StackPanel>
+            </ScrollViewer>
         </Border>
 
     </Grid>
