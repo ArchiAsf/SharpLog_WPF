@@ -1075,20 +1075,29 @@ namespace SharpLog.ViewModel
         }
 
         /// <summary>
-        /// 打开某条日志的编辑窗口。
+        /// 「请求编辑某条日志」事件。
+        ///
+        /// View 层订阅它来弹出编辑窗口 —— 这样 ViewModel 不必认识任何 Window 类型。
+        /// </summary>
+        public event EventHandler<QsoLog>? EditRequested;
+
+        /// <summary>
+        /// 请求打开某条日志的编辑窗口。
         /// 双击整行、右键菜单「更改该记录」都会走到这里。
         ///
-        /// ⚠ 编辑窗口尚未开发，当前只做选中提示占位。
-        ///   窗口做好后把下面那段替换成：
-        ///       var window = new QsoEditWindow { Owner = ..., DataContext = row };
-        ///       if (window.ShowDialog() == true) { 重新加载当前页 }
+        /// 【为什么这里只抛事件、不直接 new 窗口】
+        ///   项目规范禁止 ViewModel 持有并操作 UI 控件实例，而 Window 正是 UI 控件。
+        ///   VM 只负责广播「用户想编辑这条记录」这件事；
+        ///   至于用哪个窗口、模态还是非模态，全部交给 View 层决定
+        ///   （订阅方见 MainLogWindow.xaml.cs 的 OnEditRequested）。
         /// </summary>
+        /// <param name="row">要编辑的那条记录，由 XAML 绑定的 SelectedLogViewRow 传入。</param>
         [RelayCommand]
         private void OpenLogEdit(QsoLog? row)
         {
             if (row == null) return;
 
-            ShowSuccessMess(MessagePage.LogView, $"已选中记录：{row.CALL}（编辑窗口尚未开发）");
+            EditRequested?.Invoke(this, row);
         }
 
         /// <summary>

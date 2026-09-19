@@ -28,8 +28,38 @@ namespace SharpLog
         public MainLogWindow()
         {
             InitializeComponent();
-            DataContext = new ViewModel.MainLogWindow_VM();
 
+            var vm = new ViewModel.MainLogWindow_VM();
+            DataContext = vm;
+
+            // 订阅「请求编辑」事件 ——
+            // VM 那边不碰任何 Window，弹窗这件事由 View 层负责（见 OnEditRequested）
+            vm.EditRequested += OnEditRequested;
+        }
+
+        /// <summary>
+        /// 响应 ViewModel 的「请求编辑」事件：弹出编辑窗口。
+        /// 双击表格整行、右键菜单「更改该记录」最终都会走到这里。
+        ///
+        /// 【为什么弹窗写在 View 而不是 VM】
+        ///   项目规范禁止 ViewModel 持有并操作 UI 控件实例，而 Window 正是 UI 控件。
+        ///   VM 只负责广播事件，怎么显示由这里决定。
+        ///
+        /// 【为什么用 ShowDialog 而不是 Show】
+        ///   模态能挡住主界面，避免同一条记录被同时开成两个编辑窗；
+        ///   同时 Owner 一旦指定，编辑窗会跟随主窗口最小化 / 关闭，并默认居中于它。
+        /// </summary>
+        private void OnEditRequested(object? sender, Model.QsoLog row)
+        {
+            var editWindow = new View.EditQso
+            {
+                Owner = this
+            };
+
+            // ⚠ 编辑窗口目前只搭好了布局，还没有保存逻辑，
+            //    所以暂时不看 ShowDialog 的返回值。
+            //    将来窗口支持「保存后返回 true」时，在这里重新加载当前页即可。
+            editWindow.ShowDialog();
         }
         private void ClosingChange(object sender, System.ComponentModel.CancelEventArgs e)
         {

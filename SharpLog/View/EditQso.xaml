@@ -5,7 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SharpLog.View"
         mc:Ignorable="d"
-        Title="EditQso" MinHeight="256" MinWidth="911">
+        Title="编辑通联记录"
+        Style="{StaticResource LogMainWindowStyle}"
+        Width="1000"
+        Height="580"
+        MinWidth="911"
+        MinHeight="400"
+        WindowStartupLocation="CenterOwner">
     <!--
       ════════════════════════════════════════════════════════════════════════
       编辑通联记录窗口的布局
