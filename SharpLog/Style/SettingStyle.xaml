@@ -1,0 +1,113 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:hc="clr-namespace:HandyControl.Controls;assembly=HandyControl">
+
+
+    <Style
+        x:Key="TimeInPut_HC"
+        BasedOn="{StaticResource {x:Type hc:DateTimePicker}}"
+        TargetType="hc:DateTimePicker">
+        <Setter Property="DateTimeFormat" Value="yyyy/MM/dd-HH:mm:ss" />
+        <Setter Property="Background" Value="{StaticResource NormalTextBoxBackColor}" />
+        <Setter Property="FontSize" Value="13" />
+
+    </Style>
+
+    <!--  小表格里面的标签样式  -->
+    <Style
+        x:Key="LittleLabelStyle"
+        BasedOn="{StaticResource LabelMainTitleStyle}"
+        TargetType="Label">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="13" />
+    </Style>
+
+    <!--  小表格里面的卡片面板  -->
+    <Style
+        x:Key="LittleCardPanelStyle"
+        BasedOn="{StaticResource CardPanelStyle}"
+        TargetType="Border">
+        <Setter Property="Padding" Value="5,0,5,0" />
+        <Setter Property="Margin" Value="2,1,2,1" />
+
+    </Style>
+
+    <!--  状态栏里面的文字标签样式  -->
+    <Style
+        x:Key="EffectLabelStyle"
+        BasedOn="{StaticResource LabelMainTitleStyle}"
+        TargetType="Label">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="14 " />
+        <Setter Property="Margin" Value="3,8,0,8" />
+
+
+    </Style>
+
+    <!--  设置页的卡片容器样式  -->
+    <Style
+        x:Key="OptionCardPanelStyle"
+        BasedOn="{StaticResource InCardPanelStyle}"
+        TargetType="Border">
+        <Setter Property="Margin" Value="1,2,1,3" />
+        <Setter Property="MinWidth" Value="1330" />
+        <Setter Property="MaxWidth" Value="1500" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="Padding" Value="0" />
+
+
+    </Style>
+
+    <Style x:Key="OptionCardTitilePanelStyle" TargetType="Border">
+        <Setter Property="BorderBrush" Value="{StaticResource PanelBorderColor}" />
+        <Setter Property="BorderThickness" Value="0,0,0,2" />
+        <Setter Property="Margin" Value="0" />
+
+
+    </Style>
+
+    <Style
+        x:Key="OptionDividerStyle"
+        BasedOn="{StaticResource DividerBaseStyle}"
+        TargetType="hc:Divider">
+        <Setter Property="Margin" Value="0,5,0,5" />
+        <Setter Property="Padding" Value="10,8,10,8" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+        <Setter Property="LineStrokeThickness" Value="1" />
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="LineStroke" Value="{StaticResource PanelBorderColor}" />
+    </Style>
+
+
+    <!--  设置里面的标签的Border样式  -->
+    <Style
+        x:Key="InOptionCardPanelStyle"
+        BasedOn="{StaticResource CardPanelStyle}"
+        TargetType="Border">
+        <Setter Property="Padding" Value="5,0,5,0" />
+        <Setter Property="Margin" Value="2,1,2,1" />
+
+    </Style>
+
+    <!--  设置里面的标签样式  -->
+    <Style
+        x:Key="InOptionLabelStyle"
+        BasedOn="{StaticResource LabelMainTitleStyle}"
+        TargetType="Label">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="18 " />
+    </Style>
+
+    <!--  设置里面的输入面板  -->
+    <Style x:Key="InOptionInPutPanelStyle" TargetType="Border" />
+    
+    <!--设置里面的按钮-->
+    <Style x:Key="InOptionButtonStyle" BasedOn="{StaticResource PrimaryButtonStyle}" TargetType="Button" >
+        <Setter Property="Margin" Value="3" />
+    </Style>
+
+</ResourceDictionary>
