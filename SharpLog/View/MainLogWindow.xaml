@@ -1295,6 +1295,7 @@
                             Grid.Row="0"
                             ItemsSource="{Binding LogViewRows}"
                             Loaded="LogViewDataGrid_Loaded"
+                            ScrollViewer.ScrollChanged="LogViewDataGrid_ScrollChanged"
                             SelectedItem="{Binding SelectedLogViewRow, Mode=TwoWay}"
                             Style="{StaticResource DarkDataGridStyle}">
 
