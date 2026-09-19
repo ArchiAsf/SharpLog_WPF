@@ -799,16 +799,16 @@
                                     <TextBlock Text="值机员" TextAlignment="Center" />
                                 </Label>
                             </Border>
-                            <!--  对方电台值机员输入框（指对方实际操作的台）
-                                  ⚠ 与「本站操作员」不同：本站呼号来自设置页的 STATION_CALLSIGN  -->
+                            <!--
+                                对方电台值机员输入框（指对方实际操作的台）
+                                ⚠ 与「本站操作员」不同：本站呼号来自设置页的 STATION_CALLSIGN
+                            -->
                             <Border
                                 Grid.Row="7"
                                 Grid.Column="4"
                                 Grid.ColumnSpan="2"
                                 Style="{StaticResource InCardPanelStyle}">
-                                <TextBox
-                                    Style="{StaticResource DarkTextBoxStyle}"
-                                    Text="{Binding CONTACTED_OP, Mode=TwoWay}" />
+                                <TextBox Style="{StaticResource DarkTextBoxStyle}" Text="{Binding CONTACTED_OP, Mode=TwoWay}" />
                             </Border>
 
 
@@ -922,8 +922,8 @@
 
                                 <ScrollViewer
                                     Grid.Column="1"
-                                    HorizontalScrollBarVisibility="Disabled"
                                     VerticalAlignment="Top"
+                                    HorizontalScrollBarVisibility="Disabled"
                                     Style="{StaticResource DarkOnlyVerticalScrollViewerStyle}"
                                     VerticalScrollBarVisibility="Visible">
                                     <!--  日志其他信息区  -->
@@ -1246,10 +1246,27 @@
             </Border>
         </TabItem>
 
-
-
-
-        <TabItem Header="日志查看" Style="{StaticResource DarkTabItemStyle}" />
+        <TabItem Header="日志查看" Style="{StaticResource DarkTabItemStyle}">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="45" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="450" />
+                </Grid.ColumnDefinitions>
+                <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource CardPanelStyle}">
+                    
+                </Border>
+                <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource CardPanelStyle}">
+                    
+                </Border>
+                <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource CardPanelStyle}">
+                    
+                </Border>
+            </Grid>
+        </TabItem>
 
         <TabItem Header="设置" Style="{StaticResource DarkTabItemStyle}">
             <Grid>

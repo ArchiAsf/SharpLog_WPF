@@ -398,6 +398,176 @@
         </Setter>
     </Style>
 
+    <!--  ================================================================
+          TabControl 样式：标签栏在【左侧】+ 文字竖排
+          ────────────────────────────────────────────────────────────────
+          用法：
+            <TabControl Style="{StaticResource LeftDarkTabControlStyle}">
+                <TabItem Header="日志编辑" Style="{StaticResource LeftDarkTabItemStyle}">
+                    ...页面内容...
+                </TabItem>
+                <TabItem Header="日志查看" Style="{StaticResource LeftDarkTabItemStyle}">
+                    ...页面内容...
+                </TabItem>
+            </TabControl>
+
+          配色完全沿用上面 DarkTabControlStyle 的那套色键，未新增任何颜色，
+          与界面上已有的顶部标签栏在观感上保持一致：
+            常态 #202328 / 悬浮 #2C3038 / 选中 #121418 / 选中指示条 蓝色
+          ================================================================  -->
+
+    <!--  TabControl 整体容器样式-标签栏在左侧  -->
+    <Style x:Key="LeftDarkTabControlStyle" TargetType="TabControl">
+        <!--  内容区域背景，和主窗体背景统一  -->
+        <Setter Property="Background" Value="{StaticResource LogMainFormBackColor}" />
+        <Setter Property="BorderBrush" Value="{StaticResource TabBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <!--  核心：标签栏放到左侧  -->
+        <Setter Property="TabStripPlacement" Value="Left" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabControl">
+                    <Grid>
+                        <!--
+                          与顶部版镜像：Top 版把空间分成「上下两行」，
+                          这里改成「左右两列」。
+                        -->
+                        <Grid.ColumnDefinitions>
+                            <!--  标签栏：宽度由最宽的那个标签决定  -->
+                            <ColumnDefinition Width="Auto" />
+                            <!--  内容区：占满剩余空间  -->
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!--
+                          标签头部。
+                          TabPanel 会自己识别 TabStripPlacement=Left 并改为【竖向排列】，
+                          不需要在这里手动指定 Orientation，这是 WPF 的内置行为。
+                        -->
+                        <TabPanel
+                            x:Name="HeaderPanel"
+                            Grid.Column="0"
+                            Background="{TemplateBinding Background}"
+                            IsItemsHost="True" />
+
+                        <!--  标签内容区域  -->
+                        <Border
+                            x:Name="ContentPanel"
+                            Grid.Column="1"
+                            Padding="{TemplateBinding Padding}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="6,6,6,6">
+                            <ContentPresenter x:Name="PART_SelectedContentHost" ContentSource="SelectedContent" />
+                        </Border>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  TabItem 标签头部样式-标签栏在左侧 + 文字竖排  -->
+    <Style x:Key="LeftDarkTabItemStyle" TargetType="TabItem">
+        <Setter Property="Background" Value="{StaticResource TabItemNormalBackColor}" />
+        <Setter Property="Foreground" Value="{StaticResource TabItemNormalTextColor}" />
+        <Setter Property="BorderBrush" Value="{StaticResource TabBorderBrush}" />
+        <!--
+          边框：顶部版是 1,1,1,0（不画下边，因为下方接内容区），
+          这里镜像成 1,1,0,1（不画右边，因为右侧接内容区）。
+          顺序为 左,上,右,下。
+        -->
+        <Setter Property="BorderThickness" Value="1,1,0,1" />
+        <!--  竖排后横向留白要小、纵向留白要大  -->
+        <Setter Property="Padding" Value="6,10" />
+        <Setter Property="FontSize" Value="13" />
+        <!--
+          竖排时标签是「窄而高」的形状：
+          宽度固定（所有标签对齐），高度由文字长度自然决定，不设 Height。
+        -->
+        <Setter Property="Width" Value="34" />
+        <!--  保证只有两个字时也有足够的点击区域  -->
+        <Setter Property="MinHeight" Value="54" />
+        <!--  与顶部版镜像：顶部版标签之间留纵向间隔，这里改成横向间隔  -->
+        <Setter Property="Margin" Value="0,0,2,0" />
+
+        <!--  核心：重写控件模板，消除原生选中白色背景  -->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabItem">
+                    <Grid>
+
+                        <Border
+                            x:Name="MainBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="6,0,0,6" />
+
+                        <!--
+                          选中高亮条。
+                          顶部版它在「上边」，本版镜像到「右边」。
+                          规律是：永远贴在【标签与内容区相接】的那条边上。
+                        -->
+                        <Border
+                            x:Name="ActiveLine"
+                            Width="3"
+                            Margin="0,8,2,8"
+                            HorizontalAlignment="Right"
+                            Background="{StaticResource FocusTextBoxBorderColor}"
+                            CornerRadius="3,3,3,3"
+                            Visibility="Collapsed" />
+
+                        <!--
+                          ★ 竖排文字的实现要点 ★
+                          Header 传入字符串时，ContentPresenter 会自动生成一个 TextBlock 来显示它。
+                          这里通过 Resources 里的隐式样式给那个 TextBlock 设一个
+                          「只放得下一个汉字」的宽度并允许折行，
+                          中文字符就会逐字换行，形成竖排。
+
+                          ⚠ 注意这是【每个字正立、自上而下】的真竖排，
+                            不是把文字整体旋转 90 度（那样字是躺着的）。
+                          ⚠ Width=16 是按 FontSize=13 的汉字宽度定的（约 13px）。
+                            将来若调大字号，这个值要同步调大，否则会两个字挤在一行。
+                          ⚠ 纯英文标签不会逐字断行（Wrap 只在单词边界折行），
+                            本项目标签均为中文，不受影响。
+                        -->
+                        <ContentPresenter
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            ContentSource="Header">
+                            <ContentPresenter.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Width" Value="16" />
+                                    <Setter Property="TextWrapping" Value="Wrap" />
+                                    <Setter Property="TextAlignment" Value="Center" />
+                                    <!--  行距略大于字号，竖排才不显得挤  -->
+                                    <Setter Property="LineHeight" Value="17" />
+                                    <Setter Property="LineStackingStrategy" Value="BlockLineHeight" />
+                                </Style>
+                            </ContentPresenter.Resources>
+                        </ContentPresenter>
+                    </Grid>
+
+
+                    <!--  状态触发器：悬浮 / 选中（与顶部版完全一致）  -->
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="MainBorder" Property="Background" Value="{StaticResource TabItemHoverBackColor}" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="MainBorder" Property="Background" Value="{StaticResource TabItemSelectedBackColor}" />
+                            <Setter Property="Foreground" Value="{StaticResource TabItemSelectedTextColor}" />
+                            <Setter Property="FontWeight" Value="SemiBold" />
+                            <Setter TargetName="ActiveLine" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <!--  TabItem内部内容容器样式（标签页面板）  -->
     <Style x:Key="DarkTabContentStyle" TargetType="Border">
         <Setter Property="Background" Value="{StaticResource LogMainFormBackColor}" />
