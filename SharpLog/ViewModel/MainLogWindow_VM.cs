@@ -929,6 +929,229 @@ namespace SharpLog.ViewModel
             }
         }
 
+        #endregion
+
+        #region 日志查看页（表格 + 加载更多 + 行操作）
+
+        /// <summary>日志查看页的表格一次加载的条数。</summary>
+        private const int LogViewPageSize = 2000;
+
+        /// <summary>
+        /// 日志查看页的表格数据源。
+        /// 直接装 QsoLog 实体（不另做显示模型），需要变形的少数几列由
+        /// View\Converters\LogViewConverters.cs 里的转换器处理。
+        /// </summary>
+        public RangeObservableCollection<QsoLog> LogViewRows { get; } = new RangeObservableCollection<QsoLog>();
+
+        /// <summary>
+        /// 表格当前选中的那一行。
+        /// 右键菜单与双击都以它为操作对象 —— 把选中项放在 VM 里，
+        /// 是为了避免 XAML 里在 ContextMenu 内部去做跨视觉树的绑定。
+        /// </summary>
+        [ObservableProperty]
+        private QsoLog? _selectedLogViewRow;
+
+        /// <summary>底部「加载更多」的提示文字。</summary>
+        [ObservableProperty]
+        private string _loadMoreText = "正在加载…";
+
+        /// <summary>是否正在加载。用于防止用户连点导致重复请求。</summary>
+        [ObservableProperty]
+        private bool _isLoadingMore;
+
+        /// <summary>是否还有更旧的数据可加载（取到 0 条即认为已到底）。</summary>
+        private bool _hasMoreLogViewData = true;
+
+        /// <summary>
+        /// 下一页的游标：上一批最后一条（本批里 Id 最小那条）的主键。
+        /// 初始为 int.MaxValue，表示「从最新一条开始往前取」。
+        /// </summary>
+        private int _logViewCursorId = int.MaxValue;
+
+        /// <summary>首屏是否已加载过（避免每次切回这个标签页都重新拉数据）。</summary>
+        private bool _logViewFirstPageLoaded;
+
+        /// <summary>
+        /// 首屏加载入口，由 View 在表格第一次显示时调用。
+        ///
+        /// 之所以不在构造函数里加载：日志查看页是用户可能根本不点的标签页，
+        /// 启动时就白查 2000 条不划算。（TabItem 的内容是首次选中才实例化的，
+        /// 所以表格的 Loaded 事件天然就是「用户第一次切到这个页」的时机。）
+        /// </summary>
+        public void LoadLogViewFirstPage()
+        {
+            if (_logViewFirstPageLoaded) return;
+            _logViewFirstPageLoaded = true;
+
+            // 走命令而不是直接 await：AsyncRelayCommand 会自己处理重入与异常
+            LoadMoreLogViewCommand.Execute(null);
+        }
+
+        /// <summary>
+        /// 加载下一批日志。首屏与「加载更多」共用这一个方法。
+        /// </summary>
+        [RelayCommand(CanExecute = nameof(CanLoadMoreLogView))]
+        private async Task LoadMoreLogViewAsync()
+        {
+            // 防连点：上一次还没加载完，这次点击直接忽略。
+            // （按钮本身也会因 CanExecute 返回 false 而变灰点不动，这里是双保险）
+            if (IsLoadingMore) return;
+
+            // 已经取到过 0 条，说明到底了，不必再查库
+            if (!_hasMoreLogViewData)
+            {
+                UpdateLoadMoreText();
+                return;
+            }
+
+            IsLoadingMore = true;
+            LoadMoreText = "正在加载…";
+
+            try
+            {
+                // 键集分页：取「主键小于游标」的前 N 条，也就是比上一批更旧的那些
+                var (data, error) = await GetLatestDBDataAsync<QsoLog>(LogViewPageSize, _logViewCursorId);
+
+                if (error != null)
+                {
+                    ShowErrorMess_OnMainView(error);
+                    LoadMoreText = "加载失败，点击重试";
+                    return;
+                }
+
+                if (data.Count == 0)
+                {
+                    _hasMoreLogViewData = false;
+                    UpdateLoadMoreText();
+                    return;
+                }
+
+                // 记下本批最后一条的主键，作为下一批的游标。
+                // 查询是 Id 降序，所以列表末尾那条就是本批里 Id 最小的。
+                _logViewCursorId = data[data.Count - 1].Id;
+
+                // 取满一整页说明后面多半还有；取不满说明这就是最后一批了
+                _hasMoreLogViewData = data.Count >= LogViewPageSize;
+
+                // 一次性追加，只触发一次界面刷新
+                //（逐条 Add 会让 DataGrid 刷 2000 次，见 RangeObservableCollection 的说明）
+                LogViewRows.AddRange(data);
+
+                UpdateLoadMoreText();
+            }
+            finally
+            {
+                IsLoadingMore = false;
+            }
+        }
+
+        /// <summary>
+        /// 刷新底部「已加载 N 条…」的提示文字。
+        /// </summary>
+        private void UpdateLoadMoreText()
+        {
+            int loadedCount = LogViewRows.Count;
+
+            LoadMoreText = _hasMoreLogViewData
+                ? $"已加载 {loadedCount:N0} 条，点击继续加载"
+                : $"已加载 {loadedCount:N0} 条，已全部加载完毕";
+        }
+
+        /// <summary>
+        /// 「加载更多」按钮是否可点。
+        /// 正在加载时返回 false，按钮自动变灰且点不动 ——
+        /// 这样用户连点也不会重复发起请求、不会重复加载同一批数据。
+        /// </summary>
+        private bool CanLoadMoreLogView() => !IsLoadingMore;
+
+        /// <summary>
+        /// IsLoadingMore 每次变化时，通知命令重新求值 CanExecute，
+        /// 按钮的可用状态才会跟着变。
+        /// （partial 方法由 [ObservableProperty] 源生成器自动挂钩到属性 setter）
+        /// </summary>
+        partial void OnIsLoadingMoreChanged(bool value)
+        {
+            LoadMoreLogViewCommand.NotifyCanExecuteChanged();
+        }
+
+        /// <summary>
+        /// 打开某条日志的编辑窗口。
+        /// 双击整行、右键菜单「更改该记录」都会走到这里。
+        ///
+        /// ⚠ 编辑窗口尚未开发，当前只做选中提示占位。
+        ///   窗口做好后把下面那段替换成：
+        ///       var window = new QsoEditWindow { Owner = ..., DataContext = row };
+        ///       if (window.ShowDialog() == true) { 重新加载当前页 }
+        /// </summary>
+        [RelayCommand]
+        private void OpenLogEdit(QsoLog? row)
+        {
+            if (row == null) return;
+
+            ShowSuccessMess_OnMainView($"已选中记录：{row.CALL}（编辑窗口尚未开发）");
+        }
+
+        /// <summary>
+        /// 删除某条日志（右键菜单「删除该记录」，含二次确认）。
+        /// </summary>
+        [RelayCommand]
+        private async Task DeleteLogAsync(QsoLog? row)
+        {
+            if (row == null) return;
+
+            // 二次确认。项目规范禁止使用原生 MessageBox.Show，
+            // 这里用 HandyControl 的 MessageBox，与设置页「恢复默认」保持一致。
+            // ⚠ 默认按钮设为 Cancel：用户直接按回车时不会误删。
+            string dateText = row.QSO_DATE.HasValue
+                ? row.QSO_DATE.Value.ToString("yyyy-MM-dd")
+                : "（未填）";
+
+            var choice = HandyControl.Controls.MessageBox.Show(
+                $"确定要删除这条通联记录吗？\n\n" +
+                $"呼号：{row.CALL}\n" +
+                $"日期：{dateText}\n" +
+                $"频率：{row.FREQ} kHz\n\n" +
+                $"删除后无法恢复！",
+                "删除确认",
+                MessageBoxButton.OKCancel,
+                MessageBoxImage.Warning,
+                MessageBoxResult.Cancel);
+
+            if (choice != MessageBoxResult.OK) return;
+
+            var (success, error, isFullTableWarning) = await DeleteDBDataAsync<QsoLog>(x => x.Id == row.Id);
+
+            if (!success)
+            {
+                // 边界情况：表里恰好只剩这一条时，会被 DB 层的「全表删除检测」拦下，
+                // 但用户要删的本来也就是它，所以这里放行，走强制清空。
+                if (isFullTableWarning)
+                {
+                    var (forceSuccess, forceError) = await ForceDeleteAllAsync<QsoLog>();
+                    if (!forceSuccess)
+                    {
+                        ShowErrorMess_OnMainView(forceError ?? "删除失败");
+                        return;
+                    }
+                }
+                else
+                {
+                    ShowErrorMess_OnMainView(error ?? "删除失败");
+                    return;
+                }
+            }
+
+            // 从界面上移除该行并刷新底部计数
+            LogViewRows.Remove(row);
+            UpdateLoadMoreText();
+
+            ShowSuccessMess_OnMainView($"已删除 {row.CALL} 的记录");
+        }
+
+        #endregion
+
+        #region 辅助方法（续：输入校验、界面提示等）
+
 
 
         /// <summary>

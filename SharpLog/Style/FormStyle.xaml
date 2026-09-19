@@ -577,6 +577,301 @@
     </Style>
 
 
+    <!--  ================================================================
+          DataGrid 暗色样式（日志查看页的表格）
+          ────────────────────────────────────────────────────────────────
+          配色全部取自 ColorDic.xaml 里已有的 Dgv* 色键，未新增颜色：
+            表头      DgvHeaderBackColor / DgvHeaderTextColor / DgvHeaderBorderColor
+            数据行    DgvRowNormalBackColor / DgvRowNormalTextColor
+            选中行    DgvRowSelectedBackColor / DgvRowSelectedTextColor
+          ================================================================  -->
+
+    <!--  表格整体  -->
+    <Style x:Key="DarkDataGridStyle" TargetType="DataGrid">
+        <!--  ──── 配色 ────  -->
+        <Setter Property="Background" Value="{StaticResource DgvRowNormalBackColor}" />
+        <Setter Property="Foreground" Value="{StaticResource DgvRowNormalTextColor}" />
+        <Setter Property="BorderBrush" Value="{StaticResource DgvHeaderBorderColor}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="RowBackground" Value="{StaticResource DgvRowNormalBackColor}" />
+        <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource DgvHeaderBorderColor}" />
+        <Setter Property="VerticalGridLinesBrush" Value="{StaticResource DgvHeaderBorderColor}" />
+        <!--
+          网格线只画横线。列有三十多个，竖线会密得像栅栏，反而看不清内容；
+          横向的格线足够帮眼睛在一行里对齐。
+        -->
+        <Setter Property="GridLinesVisibility" Value="Horizontal" />
+        <!--  行表头没什么用，关掉可以省下一列宽度  -->
+        <Setter Property="HeadersVisibility" Value="Column" />
+
+        <!--  ──── 行为 ────  -->
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="CanUserAddRows" Value="False" />
+        <Setter Property="CanUserDeleteRows" Value="False" />
+        <Setter Property="CanUserResizeRows" Value="False" />
+        <!--  只读：编辑走悬浮窗口，不放任在表格里直接改  -->
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="SelectionMode" Value="Single" />
+        <Setter Property="SelectionUnit" Value="FullRow" />
+        <!--
+          ★ 允许拖拽表头调整列顺序 ★
+          本项默认为 True，这里显式写出来是为了让人一眼看到它是有意开启的。
+          用法：按住某一列的表头往左右拖，松手即换位。
+          ⚠ 前提是列由 XAML 手工定义（AutoGenerateColumns=False）。
+            若让 DataGrid 自动生成列，重新绑定数据时列会被重建，顺序就丢了。
+        -->
+        <Setter Property="CanUserReorderColumns" Value="True" />
+        <Setter Property="CanUserResizeColumns" Value="True" />
+        <Setter Property="CanUserSortColumns" Value="True" />
+        <Setter Property="RowHeight" Value="26" />
+
+        <!--
+          ──── 虚拟化（数据量大时的命脉）────
+          这三项配合起来，DataGrid 才只生成"看得见的那二十来行"的行容器，
+          显示 2000 条和显示 20 条的渲染开销几乎一样。
+        -->
+        <Setter Property="EnableRowVirtualization" Value="True" />
+        <Setter Property="EnableColumnVirtualization" Value="True" />
+        <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True" />
+        <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
+        <!--
+          ⚠ CanContentScroll 必须保持 True。
+            设成 False 会退化成"按像素滚动"，DataGrid 就得把每一行都量一遍才能
+            算出总高度，虚拟化直接失效 —— 这是最常见的性能翻车点。
+        -->
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+
+        <!--  ──── 子元素样式 ────  -->
+        <Setter Property="ColumnHeaderStyle" Value="{StaticResource DarkDataGridColumnHeaderStyle}" />
+        <Setter Property="RowStyle" Value="{StaticResource DarkDataGridRowStyle}" />
+        <Setter Property="CellStyle" Value="{StaticResource DarkDataGridCellStyle}" />
+    </Style>
+
+    <!--  表头单元格  -->
+    <Style x:Key="DarkDataGridColumnHeaderStyle" TargetType="DataGridColumnHeader">
+        <Setter Property="Background" Value="{StaticResource DgvHeaderBackColor}" />
+        <Setter Property="Foreground" Value="{StaticResource DgvHeaderTextColor}" />
+        <Setter Property="BorderBrush" Value="{StaticResource DgvHeaderBorderColor}" />
+        <Setter Property="BorderThickness" Value="0,0,1,1" />
+        <Setter Property="Padding" Value="8,6" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <!--  表头重写模板：原生模板的背景是浅色硬编码的，只改 Setter 不管用  -->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="DataGridColumnHeader">
+                    <Grid>
+                        <Border
+                            x:Name="BackgroundBorder"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <ContentPresenter
+                                    Grid.Column="0"
+                                    Margin="{TemplateBinding Padding}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="Center" />
+
+                                <!--  排序方向箭头，仅在该列参与排序时出现  -->
+                                <Path
+                                    x:Name="SortArrow"
+                                    Grid.Column="1"
+                                    Margin="0,0,8,0"
+                                    VerticalAlignment="Center"
+                                    Fill="{TemplateBinding Foreground}"
+                                    Visibility="Collapsed" />
+                            </Grid>
+                        </Border>
+
+                        <!--
+                          ⚠ 这两个 Thumb 是【列宽拖拽手柄】，必须保留。
+                            漏掉它们的话模板照样能显示，但用户会发现列宽拖不动了。
+                            这里设成完全透明：手柄只负责响应鼠标，不参与外观。
+                        -->
+                        <Thumb
+                            x:Name="PART_LeftHeaderGripper"
+                            Width="6"
+                            HorizontalAlignment="Left"
+                            Cursor="SizeWE"
+                            Opacity="0" />
+                        <Thumb
+                            x:Name="PART_RightHeaderGripper"
+                            Width="6"
+                            HorizontalAlignment="Right"
+                            Cursor="SizeWE"
+                            Opacity="0" />
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="SortDirection" Value="Ascending">
+                            <Setter TargetName="SortArrow" Property="Visibility" Value="Visible" />
+                            <!--  向上的三角  -->
+                            <Setter TargetName="SortArrow" Property="Data" Value="M 0,4 L 7,4 L 3.5,0 Z" />
+                        </Trigger>
+                        <Trigger Property="SortDirection" Value="Descending">
+                            <Setter TargetName="SortArrow" Property="Visibility" Value="Visible" />
+                            <!--  向下的三角  -->
+                            <Setter TargetName="SortArrow" Property="Data" Value="M 0,0 L 7,0 L 3.5,4 Z" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="BackgroundBorder" Property="Background" Value="{StaticResource TabItemHoverBackColor}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  数据行  -->
+    <Style x:Key="DarkDataGridRowStyle" TargetType="DataGridRow">
+        <Setter Property="Background" Value="{StaticResource DgvRowNormalBackColor}" />
+        <Setter Property="Foreground" Value="{StaticResource DgvRowNormalTextColor}" />
+        <Setter Property="MinHeight" Value="26" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource TabItemHoverBackColor}" />
+            </Trigger>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="{StaticResource DgvRowSelectedBackColor}" />
+                <Setter Property="Foreground" Value="{StaticResource DgvRowSelectedTextColor}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--  单元格  -->
+    <Style x:Key="DarkDataGridCellStyle" TargetType="DataGridCell">
+        <!--
+          单元格背景设为透明，让【行的背景】透上来。
+          否则选中时单元格会自己涂一层，与行的选中色打架，
+          出现"整行蓝底、格子却是别的颜色"的花斑。
+        -->
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="8,0" />
+        <!--  原生模板里带一圈选中虚线框，一并去掉  -->
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="DataGridCell">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Padding="{TemplateBinding Padding}">
+                        <ContentPresenter VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <!--  ================================================================
+          右键菜单（日志查看表格的行操作菜单）
+          WPF 原生的 ContextMenu / MenuItem 是浅色皮肤，与暗色主题冲突，
+          这里一并重写。配色沿用面板与次要按钮的色键。
+          ================================================================  -->
+
+    <!--  菜单容器  -->
+    <Style x:Key="DarkContextMenuStyle" TargetType="ContextMenu">
+        <Setter Property="Background" Value="{StaticResource PanelBackColor}" />
+        <Setter Property="BorderBrush" Value="{StaticResource PanelBorderColor}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="3" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ContextMenu">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="4">
+                        <!--  IsItemsHost 告诉 WPF：菜单项放在这里  -->
+                        <StackPanel
+                            Margin="{TemplateBinding Padding}"
+                            IsItemsHost="True"
+                            KeyboardNavigation.DirectionalNavigation="Cycle" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  菜单项  -->
+    <Style x:Key="DarkMenuItemStyle" TargetType="MenuItem">
+        <Setter Property="Foreground" Value="{StaticResource DgvRowNormalTextColor}" />
+        <Setter Property="Padding" Value="14,7" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="MenuItem">
+                    <Border
+                        x:Name="ItemBorder"
+                        Background="Transparent"
+                        CornerRadius="3">
+                        <ContentPresenter
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            ContentSource="Header" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsHighlighted" Value="True">
+                            <Setter TargetName="ItemBorder" Property="Background" Value="{StaticResource SecondaryButtonHoverBackColor}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{StaticResource PlaceholderTextColor}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  「加载更多」文字按钮：无边框无底色，看起来就是一行可点的文字  -->
+    <Style x:Key="LoadMoreLinkStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="{StaticResource LinkTextColor}" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Padding" Value="0,7" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentPresenter
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="{StaticResource ButtonHoverBackColor}" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Foreground" Value="{StaticResource PlaceholderTextColor}" />
+                            <Setter Property="Cursor" Value="Arrow" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
     <!--  ========== 带右下角单位后缀的 TextBox 样式（暗色主题适配） ==========  -->
     <!--  使用方式：Style="{StaticResource UnitTextBoxStyle}"  Tag="填写单位，如 kHz / MHz / W"  -->
     <Style x:Key="UnitTextBoxStyle" TargetType="TextBox">

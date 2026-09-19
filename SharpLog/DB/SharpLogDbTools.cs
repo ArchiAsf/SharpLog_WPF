@@ -124,22 +124,36 @@ namespace SharpLog.DB
         }
 
         /// <summary>
-        /// 按主键倒序查询【最近 N 条】数据（异步）。
+        /// 按主键倒序查询【最近 N 条】数据（异步，支持「加载更多」式的翻页）。
         ///
         /// 【为什么要有这个方法】
         ///   列表类界面往往只需展示最近若干条记录，若照旧全表加载，
         ///   日志积累到几万条时既慢又占内存。排序与截断都交给 SQLite 完成，
         ///   生成的 SQL 形如：
-        ///       SELECT * FROM LogTable ORDER BY Id DESC LIMIT 200
+        ///       SELECT * FROM LogTable WHERE Id &lt; @beforeId ORDER BY Id DESC LIMIT 200
         ///   内存里只有这 200 条，与表的总行数无关。
+        ///
+        /// 【翻页用「键集分页」而不是 Skip】
+        ///   第二页若写成 Skip(200).Take(200)，SQLite 必须先把前 200 行扫出来丢掉，
+        ///   页数越深越慢：翻到第 5000 页时 Skip(1000000) 要白白扫过 100 万行。
+        ///   本方法改用「上一页最后一条的主键」作游标：
+        ///   每次都是 WHERE Id &lt; 游标，直接走主键索引，翻了多深都还是毫秒级。
+        ///   ⚠ 代价：只能一条道往前走，不能随机跳到第 N 页。
+        ///     日志查看页正是「越翻越旧」的单向浏览，正好适用。
         ///
         /// ⚠ 主键名约定：本方法按名为 "Id" 的属性排序，要求实体存在该属性
         ///   （本项目所有实体均满足）。之所以用 EF.Property 而不是直接写
         ///   e => e.Id，是因为泛型 T 在编译期并不知道自己有 Id 这个成员。
         /// </summary>
         /// <param name="count">要取的条数；小于等于 0 时直接返回空列表</param>
+        /// <param name="beforeId">
+        /// 游标：只取主键【小于】该值的记录。默认 int.MaxValue 表示不加限制，
+        /// 也就是取最新的 count 条（首屏加载用这个默认值即可）。
+        /// 加载下一页时，传上一页最后一条的 Id。
+        /// </param>
         /// <returns>(数据列表——按主键从大到小即最新在前, 错误提示信息)</returns>
-        public static async Task<(List<T> Data, string? WarningMessage)> GetLatestDBDataAsync<T>(int count) where T : class
+        public static async Task<(List<T> Data, string? WarningMessage)> GetLatestDBDataAsync<T>(
+            int count, int beforeId = int.MaxValue) where T : class
         {
             // 条数非法时不必访问数据库
             if (count <= 0)
@@ -151,9 +165,15 @@ namespace SharpLog.DB
             {
                 using var dbContext = new SharpLogDbContext();
 
-                // OrderByDescending + Take 会被 EF Core 翻译成 SQL 的
-                // ORDER BY Id DESC LIMIT @count，不会把整张表读进内存
+                // AsNoTracking：这些数据只读来展示、马上就会被转成界面模型，
+                // 不需要 EF 在后台跟踪它们的变化。
+                // 数据量大时能省下可观的内存与时间（跟踪每个实体都要建快照）。
+                //
+                // Where(Id < beforeId) + OrderByDescending + Take 会被翻译成
+                // ORDER BY Id DESC LIMIT @count，走主键索引，不会把整张表读进内存
                 var data = await dbContext.Set<T>()
+                                          .AsNoTracking()
+                                          .Where(e => EF.Property<int>(e, "Id") < beforeId)
                                           .OrderByDescending(e => EF.Property<int>(e, "Id"))
                                           .Take(count)
                                           .ToListAsync();

@@ -7,6 +7,7 @@
     xmlns:local="clr-namespace:SharpLog"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:system="clr-namespace:System;assembly=mscorlib"
+    xmlns:conv="clr-namespace:SharpLog.View.Converters"
     Title="SharpLog"
     Width="1366"
     Height="768"
@@ -17,6 +18,20 @@
     WindowStartupLocation="CenterScreen"
     WindowStyle="SingleBorderWindow"
     mc:Ignorable="d">
+
+    <!--
+      日志查看表格用到的值转换器。
+      数据库实体里存的是 ADIF 标准原始值（频率存 kHz、模式存主模式代码、
+      时间存 HHmmss 不带冒号……），不能直接显示给用户看，需要这几只转换器
+      在绑定时把它们变成可读的写法。实现见 View\Converters\LogViewConverters.cs
+    -->
+    <Window.Resources>
+        <conv:FreqToBandConverter x:Key="FreqToBand" />
+        <conv:ModeDisplayConverter x:Key="ModeDisplay" />
+        <conv:PropModeDisplayConverter x:Key="PropModeDisplay" />
+        <conv:TimeDisplayConverter x:Key="TimeDisplay" />
+        <conv:BoolToYesNoConverter x:Key="BoolToYesNo" />
+    </Window.Resources>
 
     <TabControl Style="{StaticResource DarkTabControlStyle}">
         <TabItem Header="日志编辑" Style="{StaticResource DarkTabItemStyle}">
@@ -1260,10 +1275,251 @@
                     
                 </Border>
                 <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource CardPanelStyle}">
-                    
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <!--  表格占满剩余高度  -->
+                            <RowDefinition Height="*" />
+                            <!--  「加载更多」常驻表格下方，不随表格内容滚动  -->
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <!--
+                          日志数据表格。
+                          · 列由 XAML 手工定义（AutoGenerateColumns=False）：
+                            这样表头可以左右拖拽换位（CanUserReorderColumns），
+                            自动生成的列在重新绑定时会被重建，顺序就丢了。
+                          · 只读：编辑走双击/右键弹出的悬浮窗口，不在这里直接改。
+                        -->
+                        <DataGrid
+                            x:Name="LogViewDataGrid"
+                            Grid.Row="0"
+                            ItemsSource="{Binding LogViewRows}"
+                            Loaded="LogViewDataGrid_Loaded"
+                            SelectedItem="{Binding SelectedLogViewRow, Mode=TwoWay}"
+                            Style="{StaticResource DarkDataGridStyle}">
+
+                            <!--  双击整行 → 打开编辑窗口  -->
+                            <DataGrid.InputBindings>
+                                <MouseBinding
+                                    Command="{Binding OpenLogEditCommand}"
+                                    CommandParameter="{Binding SelectedLogViewRow}"
+                                    MouseAction="LeftDoubleClick" />
+                            </DataGrid.InputBindings>
+
+                            <!--  右键 → 行操作菜单  -->
+                            <DataGrid.ContextMenu>
+                                <ContextMenu Style="{StaticResource DarkContextMenuStyle}">
+                                    <MenuItem
+                                        Command="{Binding OpenLogEditCommand}"
+                                        CommandParameter="{Binding SelectedLogViewRow}"
+                                        Header="更改该记录"
+                                        Style="{StaticResource DarkMenuItemStyle}" />
+                                    <MenuItem
+                                        Command="{Binding DeleteLogCommand}"
+                                        CommandParameter="{Binding SelectedLogViewRow}"
+                                        Header="删除该记录"
+                                        Style="{StaticResource DarkMenuItemStyle}" />
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
+
+                            <DataGrid.Columns>
+                                <!--  ==================== 最常用的核心字段排在最前 ====================  -->
+                                <DataGridTextColumn
+                                    Width="92"
+                                    Binding="{Binding QSO_DATE, StringFormat={}{0:yyyy-MM-dd}}"
+                                    Header="日期" />
+                                <DataGridTextColumn
+                                    Width="74"
+                                    Binding="{Binding TIME_ON, Converter={StaticResource TimeDisplay}}"
+                                    Header="时间" />
+                                <DataGridTextColumn
+                                    Width="100"
+                                    Binding="{Binding CALL}"
+                                    Header="呼号" />
+                                <DataGridTextColumn
+                                    Width="86"
+                                    Binding="{Binding FREQ}"
+                                    Header="频率(kHz)" />
+                                <!--  波段不是数据库字段，是由频率查 ADIF 波段表算出来的  -->
+                                <DataGridTextColumn
+                                    Width="56"
+                                    Binding="{Binding FREQ, Converter={StaticResource FreqToBand}}"
+                                    Header="波段" />
+                                <!--
+                                  模式由 MODE + SUBMODE 两级反查成界面显示名。
+                                  直接显示 MODE 的话，界面选 FT4 的会显示成 MFSK，
+                                  选 D-STAR 的会显示成 DIGITALVOICE，用户根本认不出来。
+                                -->
+                                <DataGridTextColumn Width="98" Header="模式">
+                                    <DataGridTextColumn.Binding>
+                                        <MultiBinding Converter="{StaticResource ModeDisplay}">
+                                            <Binding Path="MODE" />
+                                            <Binding Path="SUBMODE" />
+                                        </MultiBinding>
+                                    </DataGridTextColumn.Binding>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn
+                                    Width="74"
+                                    Binding="{Binding SUBMODE}"
+                                    Header="子模式" />
+                                <DataGridTextColumn
+                                    Width="92"
+                                    Binding="{Binding RST_SENT}"
+                                    Header="信号报告(发)" />
+                                <DataGridTextColumn
+                                    Width="92"
+                                    Binding="{Binding RST_RCVD}"
+                                    Header="信号报告(收)" />
+                                <DataGridTextColumn
+                                    Width="140"
+                                    Binding="{Binding PROP_MODE, Converter={StaticResource PropModeDisplay}}"
+                                    Header="传播模式" />
+
+                                <!--  ==================== 对方电台信息 ====================  -->
+                                <DataGridTextColumn
+                                    Width="100"
+                                    Binding="{Binding QTH}"
+                                    Header="对方城市" />
+                                <DataGridTextColumn
+                                    Width="88"
+                                    Binding="{Binding GRIDSQUARE}"
+                                    Header="网格定位" />
+                                <DataGridTextColumn
+                                    Width="80"
+                                    Binding="{Binding RX_PWR}"
+                                    Header="对方功率" />
+                                <DataGridTextColumn
+                                    Width="80"
+                                    Binding="{Binding TX_PWR}"
+                                    Header="我方功率" />
+                                <DataGridTextColumn
+                                    Width="100"
+                                    Binding="{Binding RIG}"
+                                    Header="对方设备" />
+                                <DataGridTextColumn
+                                    Width="100"
+                                    Binding="{Binding ANT}"
+                                    Header="对方天线" />
+                                <DataGridTextColumn
+                                    Width="80"
+                                    Binding="{Binding Height}"
+                                    Header="天线高度" />
+                                <DataGridTextColumn
+                                    Width="100"
+                                    Binding="{Binding CONTACTED_OP}"
+                                    Header="对方值机员" />
+                                <DataGridTextColumn
+                                    Width="100"
+                                    Binding="{Binding RadioOperator}"
+                                    Header="本站操作员" />
+
+                                <!--  ==================== 通联结束时刻 ====================  -->
+                                <DataGridTextColumn
+                                    Width="92"
+                                    Binding="{Binding QSO_DATE_OFF, StringFormat={}{0:yyyy-MM-dd}}"
+                                    Header="结束日期" />
+                                <DataGridTextColumn
+                                    Width="74"
+                                    Binding="{Binding TIME_OFF, Converter={StaticResource TimeDisplay}}"
+                                    Header="结束时间" />
+                                <DataGridTextColumn
+                                    Width="72"
+                                    Binding="{Binding TimeZone}"
+                                    Header="时区" />
+
+                                <!--  ==================== QSL 卡片管理 ====================  -->
+                                <DataGridTextColumn
+                                    Width="72"
+                                    Binding="{Binding QSL_RCVD, Converter={StaticResource BoolToYesNo}}"
+                                    Header="QSL已收" />
+                                <DataGridTextColumn
+                                    Width="92"
+                                    Binding="{Binding QSLRDATE, StringFormat={}{0:yyyy-MM-dd}}"
+                                    Header="收卡日期" />
+                                <DataGridTextColumn
+                                    Width="92"
+                                    Binding="{Binding QSLSDATE, StringFormat={}{0:yyyy-MM-dd}}"
+                                    Header="发卡日期" />
+                                <DataGridTextColumn
+                                    Width="180"
+                                    Binding="{Binding QslAddress}"
+                                    Header="QSL地址" />
+                                <DataGridTextColumn
+                                    Width="86"
+                                    Binding="{Binding PostalCode}"
+                                    Header="邮政编码" />
+                                <DataGridTextColumn
+                                    Width="90"
+                                    Binding="{Binding ReceiverName}"
+                                    Header="收件人" />
+                                <DataGridTextColumn
+                                    Width="130"
+                                    Binding="{Binding ReceiverContact}"
+                                    Header="联系方式" />
+
+                                <!--  ==================== 项目自定义字段 ====================  -->
+                                <DataGridTextColumn
+                                    Width="90"
+                                    Binding="{Binding DigitalID}"
+                                    Header="DMR ID" />
+                                <DataGridTextColumn
+                                    Width="60"
+                                    Binding="{Binding GroupID}"
+                                    Header="分组" />
+                                <DataGridTextColumn
+                                    Width="60"
+                                    Binding="{Binding StarID}"
+                                    Header="星级" />
+                                <DataGridTextColumn
+                                    Width="72"
+                                    Binding="{Binding Weather}"
+                                    Header="天气" />
+                                <DataGridTextColumn
+                                    Width="72"
+                                    Binding="{Binding Temperature}"
+                                    Header="温度" />
+                                <DataGridTextColumn
+                                    Width="80"
+                                    Binding="{Binding IsConfirmed, Converter={StaticResource BoolToYesNo}}"
+                                    Header="双向确认" />
+                                <DataGridTextColumn
+                                    Width="220"
+                                    Binding="{Binding COMMENT}"
+                                    Header="备注" />
+
+                                <!--  ==================== 记录元数据 ====================  -->
+                                <DataGridTextColumn
+                                    Width="140"
+                                    Binding="{Binding CreatedAt, StringFormat='{}{0:yyyy-MM-dd HH:mm}'}"
+                                    Header="创建时间" />
+                                <DataGridTextColumn
+                                    Width="140"
+                                    Binding="{Binding LastUpdatedAt, StringFormat='{}{0:yyyy-MM-dd HH:mm}'}"
+                                    Header="最后修改" />
+                                <DataGridTextColumn
+                                    Width="72"
+                                    Binding="{Binding Id}"
+                                    Header="记录ID" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <!--
+                          「加载更多」。
+                          ⚠ 它放在表格【外面】，而不是塞进表格的最后一行：
+                            DataGrid 的单元格不支持跨列合并，想在最后一行显示整句
+                            「已加载 N 条，点击继续加载」只能挤在某一列的宽度里，
+                            根本显示不全。放在表格正下方既完整可见，又不受横向滚动影响。
+                          防连点由 VM 的 IsLoadingMore 负责：加载期间按钮自动禁用。
+                        -->
+                        <Button
+                            Grid.Row="1"
+                            Command="{Binding LoadMoreLogViewCommand}"
+                            Content="{Binding LoadMoreText}"
+                            Style="{StaticResource LoadMoreLinkStyle}" />
+                    </Grid>
                 </Border>
                 <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource CardPanelStyle}">
-                    
+
                 </Border>
             </Grid>
         </TabItem>
