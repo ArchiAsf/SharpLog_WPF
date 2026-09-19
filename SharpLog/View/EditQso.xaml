@@ -51,7 +51,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="290" />
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -399,7 +399,6 @@
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="*" />
-                                    <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="3*" />
@@ -511,22 +510,9 @@
                                     <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="ZHANG WEI" />
                                 </Border>
 
+
                                 <Border
                                     Grid.Row="7"
-                                    Grid.Column="0"
-                                    Style="{StaticResource EditScrollTitlePanelStyle}">
-                                    <Label Style="{StaticResource EditScrollLabelStyle}">
-                                        <TextBlock Text="备注" />
-                                    </Label>
-                                </Border>
-                                <Border
-                                    Grid.Row="7"
-                                    Grid.Column="1"
-                                    Style="{StaticResource EditScrollInputPanelStyle}">
-                                    <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="信号稳定，双方互报 59，对方使用 100W 发射" />
-                                </Border>
-                                <Border
-                                    Grid.Row="8"
                                     Grid.Column="0"
                                     Style="{StaticResource EditScrollTitlePanelStyle}">
                                     <Label Style="{StaticResource EditScrollLabelStyle}">
@@ -534,13 +520,13 @@
                                     </Label>
                                 </Border>
                                 <Border
-                                    Grid.Row="8"
+                                    Grid.Row="7"
                                     Grid.Column="1"
                                     Style="{StaticResource EditScrollInputPanelStyle}">
                                     <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="2026-09-20" />
                                 </Border>
                                 <Border
-                                    Grid.Row="9"
+                                    Grid.Row="8"
                                     Grid.Column="0"
                                     Style="{StaticResource EditScrollTitlePanelStyle}">
                                     <Label Style="{StaticResource EditScrollLabelStyle}">
@@ -548,13 +534,13 @@
                                     </Label>
                                 </Border>
                                 <Border
-                                    Grid.Row="9"
+                                    Grid.Row="8"
                                     Grid.Column="1"
                                     Style="{StaticResource EditScrollInputPanelStyle}">
                                     <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="14:42" />
                                 </Border>
                                 <Border
-                                    Grid.Row="10"
+                                    Grid.Row="9"
                                     Grid.Column="0"
                                     Style="{StaticResource EditScrollTitlePanelStyle}">
                                     <Label Style="{StaticResource EditScrollLabelStyle}">
@@ -562,13 +548,13 @@
                                     </Label>
                                 </Border>
                                 <Border
-                                    Grid.Row="10"
+                                    Grid.Row="9"
                                     Grid.Column="1"
                                     Style="{StaticResource EditScrollInputPanelStyle}">
                                     <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="晴" />
                                 </Border>
                                 <Border
-                                    Grid.Row="11"
+                                    Grid.Row="10"
                                     Grid.Column="0"
                                     Style="{StaticResource EditScrollTitlePanelStyle}">
                                     <Label Style="{StaticResource EditScrollLabelStyle}">
@@ -576,7 +562,7 @@
                                     </Label>
                                 </Border>
                                 <Border
-                                    Grid.Row="11"
+                                    Grid.Row="10"
                                     Grid.Column="1"
                                     Style="{StaticResource EditScrollInputPanelStyle}">
                                     <TextBox Style="{StaticResource EditScrollTextBoxStyle}" Text="18°C" />
@@ -629,13 +615,35 @@
 
         <Border
             Grid.Row="1"
-            Grid.ColumnSpan="2"
-            Style="{StaticResource InCardPanelStyle}">
+            Grid.ColumnSpan="2">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="7*"/>
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
+
+                <Border  Grid.Column="0" Style="{StaticResource CardPanelStyle}" >
+                    <ScrollViewer>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="7*" />
+                            </Grid.ColumnDefinitions>
+
+                        </Grid>
+                    </ScrollViewer>
+                </Border>
+
+                <Border Grid.Column="1" Style="{StaticResource CardPanelStyle}">
+                    
+                </Border>
             </Grid>
         </Border>
 
