@@ -586,69 +586,6 @@
             选中行    DgvRowSelectedBackColor / DgvRowSelectedTextColor
           ================================================================  -->
 
-    <!--  表格整体  -->
-    <Style x:Key="DarkDataGridStyle" TargetType="DataGrid">
-        <!--  ──── 配色 ────  -->
-        <Setter Property="Background" Value="{StaticResource DgvRowNormalBackColor}" />
-        <Setter Property="Foreground" Value="{StaticResource DgvRowNormalTextColor}" />
-        <Setter Property="BorderBrush" Value="{StaticResource DgvHeaderBorderColor}" />
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="RowBackground" Value="{StaticResource DgvRowNormalBackColor}" />
-        <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource DgvHeaderBorderColor}" />
-        <Setter Property="VerticalGridLinesBrush" Value="{StaticResource DgvHeaderBorderColor}" />
-        <!--
-          网格线只画横线。列有三十多个，竖线会密得像栅栏，反而看不清内容；
-          横向的格线足够帮眼睛在一行里对齐。
-        -->
-        <Setter Property="GridLinesVisibility" Value="Horizontal" />
-        <!--  行表头没什么用，关掉可以省下一列宽度  -->
-        <Setter Property="HeadersVisibility" Value="Column" />
-
-        <!--  ──── 行为 ────  -->
-        <Setter Property="AutoGenerateColumns" Value="False" />
-        <Setter Property="CanUserAddRows" Value="False" />
-        <Setter Property="CanUserDeleteRows" Value="False" />
-        <Setter Property="CanUserResizeRows" Value="False" />
-        <!--  只读：编辑走悬浮窗口，不放任在表格里直接改  -->
-        <Setter Property="IsReadOnly" Value="True" />
-        <Setter Property="SelectionMode" Value="Single" />
-        <Setter Property="SelectionUnit" Value="FullRow" />
-        <!--
-          ★ 允许拖拽表头调整列顺序 ★
-          本项默认为 True，这里显式写出来是为了让人一眼看到它是有意开启的。
-          用法：按住某一列的表头往左右拖，松手即换位。
-          ⚠ 前提是列由 XAML 手工定义（AutoGenerateColumns=False）。
-            若让 DataGrid 自动生成列，重新绑定数据时列会被重建，顺序就丢了。
-        -->
-        <Setter Property="CanUserReorderColumns" Value="True" />
-        <Setter Property="CanUserResizeColumns" Value="True" />
-        <Setter Property="CanUserSortColumns" Value="True" />
-        <Setter Property="RowHeight" Value="26" />
-
-        <!--
-          ──── 虚拟化（数据量大时的命脉）────
-          这三项配合起来，DataGrid 才只生成"看得见的那二十来行"的行容器，
-          显示 2000 条和显示 20 条的渲染开销几乎一样。
-        -->
-        <Setter Property="EnableRowVirtualization" Value="True" />
-        <Setter Property="EnableColumnVirtualization" Value="True" />
-        <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True" />
-        <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
-        <!--
-          ⚠ CanContentScroll 必须保持 True。
-            设成 False 会退化成"按像素滚动"，DataGrid 就得把每一行都量一遍才能
-            算出总高度，虚拟化直接失效 —— 这是最常见的性能翻车点。
-        -->
-        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
-        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
-        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
-
-        <!--  ──── 子元素样式 ────  -->
-        <Setter Property="ColumnHeaderStyle" Value="{StaticResource DarkDataGridColumnHeaderStyle}" />
-        <Setter Property="RowStyle" Value="{StaticResource DarkDataGridRowStyle}" />
-        <Setter Property="CellStyle" Value="{StaticResource DarkDataGridCellStyle}" />
-    </Style>
-
     <!--  表头单元格  -->
     <Style x:Key="DarkDataGridColumnHeaderStyle" TargetType="DataGridColumnHeader">
         <Setter Property="Background" Value="{StaticResource DgvHeaderBackColor}" />
@@ -771,6 +708,68 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+    <!--  表格整体  -->
+    <Style x:Key="DarkDataGridStyle" TargetType="DataGrid">
+        <!--  ──── 配色 ────  -->
+        <Setter Property="Background" Value="{StaticResource DgvRowNormalBackColor}" />
+        <Setter Property="Foreground" Value="{StaticResource DgvRowNormalTextColor}" />
+        <Setter Property="BorderBrush" Value="{StaticResource DgvHeaderBorderColor}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="RowBackground" Value="{StaticResource DgvRowNormalBackColor}" />
+        <Setter Property="HorizontalGridLinesBrush" Value="{StaticResource DgvHeaderBorderColor}" />
+        <Setter Property="VerticalGridLinesBrush" Value="{StaticResource DgvHeaderBorderColor}" />
+        <!--
+          网格线只画横线。列有三十多个，竖线会密得像栅栏，反而看不清内容；
+          横向的格线足够帮眼睛在一行里对齐。
+        -->
+        <Setter Property="GridLinesVisibility" Value="Horizontal" />
+        <!--  行表头没什么用，关掉可以省下一列宽度  -->
+        <Setter Property="HeadersVisibility" Value="Column" />
+
+        <!--  ──── 行为 ────  -->
+        <Setter Property="AutoGenerateColumns" Value="False" />
+        <Setter Property="CanUserAddRows" Value="False" />
+        <Setter Property="CanUserDeleteRows" Value="False" />
+        <Setter Property="CanUserResizeRows" Value="False" />
+        <!--  只读：编辑走悬浮窗口，不放任在表格里直接改  -->
+        <Setter Property="IsReadOnly" Value="True" />
+        <Setter Property="SelectionMode" Value="Single" />
+        <Setter Property="SelectionUnit" Value="FullRow" />
+        <!--
+          ★ 允许拖拽表头调整列顺序 ★
+          本项默认为 True，这里显式写出来是为了让人一眼看到它是有意开启的。
+          用法：按住某一列的表头往左右拖，松手即换位。
+          ⚠ 前提是列由 XAML 手工定义（AutoGenerateColumns=False）。
+            若让 DataGrid 自动生成列，重新绑定数据时列会被重建，顺序就丢了。
+        -->
+        <Setter Property="CanUserReorderColumns" Value="True" />
+        <Setter Property="CanUserResizeColumns" Value="True" />
+        <Setter Property="CanUserSortColumns" Value="True" />
+        <Setter Property="RowHeight" Value="26" />
+
+        <!--
+          ──── 虚拟化（数据量大时的命脉）────
+          这三项配合起来，DataGrid 才只生成"看得见的那二十来行"的行容器，
+          显示 2000 条和显示 20 条的渲染开销几乎一样。
+        -->
+        <Setter Property="EnableRowVirtualization" Value="True" />
+        <Setter Property="EnableColumnVirtualization" Value="True" />
+        <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True" />
+        <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling" />
+        <!--
+          ⚠ CanContentScroll 必须保持 True。
+            设成 False 会退化成"按像素滚动"，DataGrid 就得把每一行都量一遍才能
+            算出总高度，虚拟化直接失效 —— 这是最常见的性能翻车点。
+        -->
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+
+        <!--  ──── 子元素样式 ────  -->
+        <Setter Property="ColumnHeaderStyle" Value="{StaticResource DarkDataGridColumnHeaderStyle}" />
+        <Setter Property="RowStyle" Value="{StaticResource DarkDataGridRowStyle}" />
+        <Setter Property="CellStyle" Value="{StaticResource DarkDataGridCellStyle}" />
     </Style>
 
 
