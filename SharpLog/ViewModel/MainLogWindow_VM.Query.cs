@@ -158,7 +158,8 @@ namespace SharpLog.ViewModel
             // 切回手工列视图（从 SQL 结果模式返回）
             IsSqlResultMode = false;
 
-            UpdateLoadMoreText();
+            // 左下角提示跟随查询走，显示本次实际查到的条数
+            LoadMoreText = $"已加载 {LogViewRows.Count} 条，已全部加载完毕";
 
             // ── ⑥ 筛选器落库（用户要求关软件再开还在） ──
             SaveFilterToSettings();
@@ -365,8 +366,11 @@ namespace SharpLog.ViewModel
                 return;
             }
 
-            _ = ShowErrorMess(MessagePage.LogView,
-                "请先填写查询条件，或在「SQL 自由查询」里写一条语句。");
+            // 两边都空 = 用户想看全部数据。
+            // ⇒ 等价于执行"显示全部"：查全部（仍受筛选器限制），
+            //   并把左侧切回原来的 38 列手工列表视图。
+            SqlText = string.Empty;
+            ApplyQuery();
         }
 
         /// <summary>
@@ -411,6 +415,10 @@ namespace SharpLog.ViewModel
                 // 只读查询：结果切到自动列视图
                 SqlResultTable = table;
                 IsSqlResultMode = true;
+
+                // 左下角提示也跟着换成 SQL 的结果行数，
+                // 否则会出现"表里只有 5 行、提示却写着已加载 95 条"这种矛盾
+                LoadMoreText = $"SQL 查询返回 {table.Rows.Count} 行";
                 _ = ShowSuccessMess(MessagePage.LogView, message);
                 return;
             }
