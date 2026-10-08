@@ -499,6 +499,14 @@ namespace SharpLog.ViewModel
             // AppSettingsDbTools 内部的 await 均已加 ConfigureAwait(false)，不会死锁。
             ReloadSettingsAsync().GetAwaiter().GetResult();
 
+            // 从数据库读回日志查看页的筛选器。
+            // 用户要求：筛选器持续生效，关掉软件再打开也要保留。
+            LoadFilterFromSettings();
+
+            // 统计区的初值（QSO 总数 + CQ / ITU / DXCC 分区数）。
+            // ⚠ 三个分区字段目前全为 null，所以后三个数会是 0，这是预期的。
+            RefreshStatistics();
+
             // 呼号与网格统一转为大写（初始值安全处理）
             CALL = CALL.ToUpper();
             GRIDSQUARE = GRIDSQUARE.ToUpper();

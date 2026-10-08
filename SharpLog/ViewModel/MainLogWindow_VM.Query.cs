@@ -324,6 +324,19 @@ namespace SharpLog.ViewModel
         private bool _isSqlResultMode;
 
         /// <summary>
+        /// true = 左侧显示【日志列表】（手工 38 列）。
+        /// ⚠ 它只是 IsSqlResultMode 的反面 —— 因为 WPF 内置的
+        ///   BooleanToVisibilityConverter 不能取反，XAML 里需要一个正向的布尔值。
+        /// </summary>
+        public bool IsLogListMode => !IsSqlResultMode;
+
+        /// <summary>IsSqlResultMode 一变，连带通知 IsLogListMode，否则界面不会跟着切。</summary>
+        partial void OnIsSqlResultModeChanged(bool value)
+        {
+            OnPropertyChanged(nameof(IsLogListMode));
+        }
+
+        /// <summary>
         /// 「执行查询」按钮 —— 把「条件查询」和「SQL 自由查询」合二为一。
         ///
         /// 【判定顺序】（用户定的规则）

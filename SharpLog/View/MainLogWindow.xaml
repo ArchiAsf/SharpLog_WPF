@@ -31,6 +31,14 @@
         <conv:PropModeDisplayConverter x:Key="PropModeDisplay" />
         <conv:TimeDisplayConverter x:Key="TimeDisplay" />
         <conv:BoolToYesNoConverter x:Key="BoolToYesNo" />
+
+        <!--
+          左侧两块视图二选一，见 MainLogWindow_VM.Query.cs：
+            IsLogListMode=true     → 日志列表（手工定义的那套列）
+            IsSqlResultMode=true   → SQL 查询结果（列由结果动态生成）
+          用 WPF 内置的布尔转可见性转换器，不必自己写一个。
+        -->
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
     </Window.Resources>
 
     <TabControl Style="{StaticResource DarkTabControlStyle}">
@@ -1307,10 +1315,30 @@
                             自动生成的列在重新绑定时会被重建，顺序就丢了。
                           · 只读：编辑走双击/右键弹出的悬浮窗口，不在这里直接改。
                         -->
+                        <!--
+                          ══════════ SQL 查询结果（列由结果动态生成）══════════
+                          ⚠ 与下面的日志列表【叠在同一位置】，靠可见性二选一。
+                          ⚠ AutoGenerateColumns=True：列完全按 SQL 返回的字段来，
+                             所以 SELECT COUNT(*) 这种聚合查询也能正常显示。
+                          ⚠ 只有【只读查询】会切到这里；写操作（DELETE/UPDATE）执行完
+                             走的是 ApplyQuery() 刷新日志列表，不切视图。
+                             想切回列表：再执行一次条件查询即可（ApplyQuery 会复位）。
+                        -->
+                        <DataGrid
+                            x:Name="SqlResultDataGrid"
+                            Grid.Row="0"
+                            AutoGenerateColumns="True"
+                            CanUserAddRows="False"
+                            IsReadOnly="True"
+                            ItemsSource="{Binding SqlResultTable}"
+                            Style="{StaticResource DarkDataGridStyle}"
+                            Visibility="{Binding IsSqlResultMode, Converter={StaticResource BoolToVis}}" />
+
                         <DataGrid
                             x:Name="LogViewDataGrid"
                             Grid.Row="0"
                             ItemsSource="{Binding LogViewRows}"
+                            Visibility="{Binding IsLogListMode, Converter={StaticResource BoolToVis}}"
                             Loaded="LogViewDataGrid_Loaded"
                             ScrollViewer.ScrollChanged="LogViewDataGrid_ScrollChanged"
                             SelectedItem="{Binding SelectedLogViewRow, Mode=TwoWay}"
