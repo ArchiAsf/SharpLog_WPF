@@ -43,8 +43,37 @@ namespace SharpLog.ToolsBox
         /// <summary>对应的数据库列名。取自白名单，用户无法输入。</summary>
         public string ColumnName { get; init; } = string.Empty;
 
-        /// <summary>true = 数值列（值按数字比较）；false = 文本列（可做 LIKE 模糊匹配）。</summary>
-        public bool IsNumeric { get; init; }
+        /// <summary>
+        /// 值的种类 —— 决定拼 SQL 之前怎么规范化用户的输入。
+        ///
+        /// ⚠⚠ 这一项【至关重要】，不是可有可无的：
+        ///   数据库里存的是 ADIF 原始格式（日期 yyyyMMdd 无分隔符、时间 HHmmss 无冒号），
+        ///   而用户会按日常习惯填 2026-03-28 / 11:00:00。
+        ///   两种写法直接做字符串比较会得出完全错误的结果 ——
+        ///   例如 '110656' &lt; '11:00:00' 竟然是 true
+        ///   （第三位 '0' 的 ASCII 是 48，':' 是 58），
+        ///   于是 11:06:56 的记录会意外出现在「时间 &lt; 11:00:00」的结果里。
+        /// </summary>
+        public QueryFieldKind Kind { get; init; } = QueryFieldKind.Text;
+    }
+
+    /// <summary>查询字段的值种类，决定用户输入要怎么规范化。</summary>
+    public enum QueryFieldKind
+    {
+        /// <summary>普通文本，原样比较。</summary>
+        Text,
+
+        /// <summary>数字，按数值比较。</summary>
+        Number,
+
+        /// <summary>ADIF 日期（库里存 yyyyMMdd）。用户可填 2026-03-28 / 2026/03/28 / 20260328。</summary>
+        Date,
+
+        /// <summary>ADIF 时间（库里存 HHmmss）。用户可填 11:00:00 / 11:00 / 110000。</summary>
+        Time,
+
+        /// <summary>波段伪列，不是数据库列，要换算成频率区间。</summary>
+        Band
     }
 
     /// <summary>
@@ -83,20 +112,24 @@ namespace SharpLog.ToolsBox
         /// </summary>
         public static IReadOnlyList<QueryFieldOption> QueryFields { get; } = new List<QueryFieldOption>
         {
-            new() { DisplayName = "日志 ID",     ColumnName = "Id",          IsNumeric = true  },
-            new() { DisplayName = "呼号",        ColumnName = "CALL",        IsNumeric = false },
-            new() { DisplayName = "日期",        ColumnName = "QSO_DATE",    IsNumeric = false },
-            new() { DisplayName = "时间",        ColumnName = "TIME_ON",     IsNumeric = false },
-            new() { DisplayName = "频率(kHz)",   ColumnName = "FREQ",        IsNumeric = true  },
-            new() { DisplayName = "波段",        ColumnName = BandColumnToken, IsNumeric = false },
-            new() { DisplayName = "模式",        ColumnName = "MODE",        IsNumeric = false },
-            new() { DisplayName = "传播模式",    ColumnName = "PROP_MODE",   IsNumeric = false },
-            new() { DisplayName = "网格",        ColumnName = "GRIDSQUARE",  IsNumeric = false },
-            new() { DisplayName = "对方城市",    ColumnName = "QTH",         IsNumeric = false },
-            new() { DisplayName = "信号报告(发)", ColumnName = "RST_SENT",    IsNumeric = false },
-            new() { DisplayName = "信号报告(收)", ColumnName = "RST_RCVD",    IsNumeric = false },
-            new() { DisplayName = "QSL 已收",    ColumnName = "QSL_RCVD",    IsNumeric = false },
-            new() { DisplayName = "备注",        ColumnName = "COMMENT",     IsNumeric = false },
+            new() { DisplayName = "日志 ID",      ColumnName = "Id",            Kind = QueryFieldKind.Number },
+            new() { DisplayName = "呼号",         ColumnName = "CALL",          Kind = QueryFieldKind.Text },
+            new() { DisplayName = "日期",         ColumnName = "QSO_DATE",      Kind = QueryFieldKind.Date },
+            new() { DisplayName = "时间",         ColumnName = "TIME_ON",       Kind = QueryFieldKind.Time },
+            new() { DisplayName = "结束日期",     ColumnName = "QSO_DATE_OFF",  Kind = QueryFieldKind.Date },
+            new() { DisplayName = "结束时间",     ColumnName = "TIME_OFF",      Kind = QueryFieldKind.Time },
+            new() { DisplayName = "频率(kHz)",    ColumnName = "FREQ",          Kind = QueryFieldKind.Number },
+            new() { DisplayName = "波段",         ColumnName = BandColumnToken, Kind = QueryFieldKind.Band },
+            new() { DisplayName = "模式",         ColumnName = "MODE",          Kind = QueryFieldKind.Text },
+            new() { DisplayName = "子模式",       ColumnName = "SUBMODE",       Kind = QueryFieldKind.Text },
+            new() { DisplayName = "传播模式",     ColumnName = "PROP_MODE",     Kind = QueryFieldKind.Text },
+            new() { DisplayName = "网格",         ColumnName = "GRIDSQUARE",    Kind = QueryFieldKind.Text },
+            new() { DisplayName = "对方城市",     ColumnName = "QTH",           Kind = QueryFieldKind.Text },
+            new() { DisplayName = "对方设备",     ColumnName = "RIG",           Kind = QueryFieldKind.Text },
+            new() { DisplayName = "信号报告(发)", ColumnName = "RST_SENT",      Kind = QueryFieldKind.Text },
+            new() { DisplayName = "信号报告(收)", ColumnName = "RST_RCVD",      Kind = QueryFieldKind.Text },
+            new() { DisplayName = "QSL 已收",     ColumnName = "QSL_RCVD",      Kind = QueryFieldKind.Text },
+            new() { DisplayName = "备注",         ColumnName = "COMMENT",       Kind = QueryFieldKind.Text },
         };
 
         /// <summary>
@@ -484,7 +517,7 @@ namespace SharpLog.ToolsBox
                 string trimmed = value.Trim();
 
                 // ── 波段：不是数据库列，换算成频率区间（FREQ 存的是 kHz，波段表是 MHz） ──
-                if (field.ColumnName == BandColumnToken)
+                if (field.Kind == QueryFieldKind.Band)
                 {
                     AdifBand? band = AdifDataLoader.Bands?
                         .FirstOrDefault(b => string.Equals(b.Band, trimmed, StringComparison.OrdinalIgnoreCase));
@@ -516,7 +549,7 @@ namespace SharpLog.ToolsBox
                 }
 
                 // ── 数值列 ──
-                if (field.IsNumeric)
+                if (field.Kind == QueryFieldKind.Number)
                 {
                     if (!double.TryParse(trimmed, NumberStyles.Any, CultureInfo.InvariantCulture, out double number))
                     {
@@ -530,14 +563,36 @@ namespace SharpLog.ToolsBox
                     continue;
                 }
 
+                // ── 日期 / 时间：先把用户输入规范化成【数据库里实际存的 ADIF 格式】 ──
+                // ⚠ 不规范化的话，「时间 < 11:00:00」会把 11:06:56 也算进去
+                //   （'110656' 与 '11:00:00' 逐字符比较时，'0' 的 ASCII 48 < ':' 的 58）。
+                string compareValue = trimmed;
+
+                if (field.Kind == QueryFieldKind.Date)
+                {
+                    if (!TryNormalizeDate(trimmed, out compareValue))
+                    {
+                        return (false, string.Empty, parameters,
+                            $"字段「{field.DisplayName}」的日期写法看不明白。请填 2026-03-28 或 20260328 这种形式。");
+                    }
+                }
+                else if (field.Kind == QueryFieldKind.Time)
+                {
+                    if (!TryNormalizeTime(trimmed, out compareValue))
+                    {
+                        return (false, string.Empty, parameters,
+                            $"字段「{field.DisplayName}」的时间写法看不明白。请填 11:00:00、11:00 或 110000 这种形式。");
+                    }
+                }
+
                 // ── 文本列：模糊匹配走 LIKE，其余走普通比较 ──
                 if (op == QueryOperator.Contains || op == QueryOperator.StartsWith || op == QueryOperator.EndsWith)
                 {
                     string pattern = op switch
                     {
-                        QueryOperator.Contains => "%" + EscapeLike(trimmed) + "%",
-                        QueryOperator.StartsWith => EscapeLike(trimmed) + "%",
-                        _ => "%" + EscapeLike(trimmed)
+                        QueryOperator.Contains => "%" + EscapeLike(compareValue) + "%",
+                        QueryOperator.StartsWith => EscapeLike(compareValue) + "%",
+                        _ => "%" + EscapeLike(compareValue)
                     };
 
                     string pname = "@q" + index++;
@@ -549,7 +604,7 @@ namespace SharpLog.ToolsBox
                 {
                     string pname = "@q" + index++;
                     sb.Append(field.ColumnName).Append(' ').Append(OperatorToSql(op)).Append(' ').Append(pname);
-                    parameters.Add(new SqliteParameter(pname, trimmed));
+                    parameters.Add(new SqliteParameter(pname, compareValue));
                 }
             }
 
@@ -717,6 +772,76 @@ namespace SharpLog.ToolsBox
             QueryOperator.LessOrEqual => "<=",
             _ => "="
         };
+
+        /// <summary>
+        /// 把用户写的日期规范化成 ADIF 的 yyyyMMdd。
+        /// 支持 2026-03-28 / 2026/03/28 / 2026.03.28 / 20260328 四种写法。
+        /// </summary>
+        public static bool TryNormalizeDate(string input, out string result)
+        {
+            result = string.Empty;
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                return false;
+            }
+
+            string s = input.Trim()
+                .Replace("-", string.Empty)
+                .Replace("/", string.Empty)
+                .Replace(".", string.Empty);
+
+            if (s.Length != 8 || !int.TryParse(s, out _))
+            {
+                return false;
+            }
+
+            int month = int.Parse(s.Substring(4, 2), CultureInfo.InvariantCulture);
+            int day = int.Parse(s.Substring(6, 2), CultureInfo.InvariantCulture);
+            if (month < 1 || month > 12 || day < 1 || day > 31)
+            {
+                return false;
+            }
+
+            result = s;
+            return true;
+        }
+
+        /// <summary>
+        /// 把用户写的时间规范化成 ADIF 的 HHmmss。
+        /// 支持 11:00:00 / 11：00：00（中文冒号）/ 11:00 / 1100 / 110000。
+        /// </summary>
+        public static bool TryNormalizeTime(string input, out string result)
+        {
+            result = string.Empty;
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                return false;
+            }
+
+            string s = input.Trim().Replace(":", string.Empty).Replace("：", string.Empty);
+
+            // 只填了 HHmm 时自动补上秒
+            if (s.Length == 4)
+            {
+                s += "00";
+            }
+
+            if (s.Length != 6 || !int.TryParse(s, out _))
+            {
+                return false;
+            }
+
+            int hour = int.Parse(s.Substring(0, 2), CultureInfo.InvariantCulture);
+            int minute = int.Parse(s.Substring(2, 2), CultureInfo.InvariantCulture);
+            int second = int.Parse(s.Substring(4, 2), CultureInfo.InvariantCulture);
+            if (hour > 23 || minute > 59 || second > 59)
+            {
+                return false;
+            }
+
+            result = s;
+            return true;
+        }
 
         /// <summary>
         /// 转义 LIKE 模式里的通配符。
