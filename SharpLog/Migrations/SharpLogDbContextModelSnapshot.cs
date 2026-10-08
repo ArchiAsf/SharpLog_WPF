@@ -23,6 +23,21 @@ namespace SharpLog.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("FilterBand")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FilterCall")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FilterMode")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("FilterOnlyConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("FilterOnlyToday")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("MY_ANTENNA")
                         .HasColumnType("TEXT");
 
@@ -98,8 +113,14 @@ namespace SharpLog.Migrations
                     b.Property<string>("CONTACTED_OP")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("CQZ")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
+
+                    b.Property<int?>("DXCC")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("DigitalID")
                         .IsRequired()
@@ -116,6 +137,9 @@ namespace SharpLog.Migrations
 
                     b.Property<string>("Height")
                         .HasColumnType("TEXT");
+
+                    b.Property<int?>("ITUZ")
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsConfirmed")
                         .HasColumnType("INTEGER");

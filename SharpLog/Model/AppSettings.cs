@@ -92,6 +92,38 @@ namespace SharpLog.Model
         /// <summary>本站设备描述（ADIF: MY_RIG）。</summary>
         public string? MY_RIG { get; set; }
 
+        // ==================== 日志查看页 · 筛选器（持久化） ====================
+        // 用户要求：「筛选器是持续生效的，即使软件关了再开也保留」。
+        // 因此筛选条件必须落库，而不是只放在内存里。
+        // ⚠ 属性名与 MainLogWindow_VM 中的同名绑定属性配对，
+        //    由 PropertyCopyTools 按名批量互拷，增删字段时两边各加一个同名属性即可。
+
+        /// <summary>
+        /// 筛选器：对方呼号（模糊匹配）。null 或空串表示不按呼号筛选。
+        /// </summary>
+        public string? FilterCall { get; set; }
+
+        /// <summary>
+        /// 筛选器：通联模式（ADIF: MODE）。null 或空串表示全部模式。
+        /// </summary>
+        public string? FilterMode { get; set; }
+
+        /// <summary>
+        /// 筛选器：波段（如 "20m"）。null 或空串表示全部波段。
+        /// ⚠ 波段不是数据库列，查询时需先由 ADIF 波段表换算成频率区间。
+        /// </summary>
+        public string? FilterBand { get; set; }
+
+        /// <summary>
+        /// 筛选器：是否只显示已双向确认（IsConfirmed）的记录。
+        /// </summary>
+        public bool FilterOnlyConfirmed { get; set; } = false;
+
+        /// <summary>
+        /// 筛选器：是否只显示今天的通联记录（按 QSO_DATE 匹配本地当天）。
+        /// </summary>
+        public bool FilterOnlyToday { get; set; } = false;
+
         // ==================== 元数据 ====================
 
         /// <summary>

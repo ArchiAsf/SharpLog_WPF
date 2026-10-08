@@ -298,5 +298,24 @@ namespace SharpLog.Model
         /// 表示对方也确认了本次通联（区别于单方面记录）。
         /// </summary>
         public bool IsConfirmed { get; set; } = false;
+
+        // ==================== 分区与奖项（ADIF 标准字段） ====================
+        // ⚠ 这三个字段的【数据来源（呼号前缀解析）尚未实现】，目前统一为 null。
+        //    字段名严格采用 ADIF 3.1.7 规范，将来接上解析后不用再改库结构。
+
+        /// <summary>
+        /// CQ 分区（ADIF: CQZ），取值范围 1~40，未解析时为 null。
+        /// </summary>
+        public int? CQZ { get; set; }
+
+        /// <summary>
+        /// ITU 分区（ADIF: ITUZ），取值范围 1~90，未解析时为 null。
+        /// </summary>
+        public int? ITUZ { get; set; }
+
+        /// <summary>
+        /// DXCC 实体编号（ADIF: DXCC），未解析时为 null。
+        /// </summary>
+        public int? DXCC { get; set; }
     }
 }
