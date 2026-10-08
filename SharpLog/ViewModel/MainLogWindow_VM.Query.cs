@@ -47,7 +47,11 @@ namespace SharpLog.ViewModel
         /// 当前的查询条件行集合，绑定到界面上的 ItemsControl。
         /// 默认放一行空的，用户点「+ 添加条件」往里加。
         /// </summary>
-        public ObservableCollection<QueryConditionRow> QueryConditions { get; } = new();
+        public ObservableCollection<QueryConditionRow> QueryConditions { get; } = new()
+        {
+            // 默认放一行空的 —— 用户一切到这一页就能直接填，不用先点「+ 添加条件」
+            new QueryConditionRow()
+        };
 
         /// <summary>「字段」下拉框的数据源（白名单，见 SqlQueryTools.QueryFields）。</summary>
         public IReadOnlyList<QueryFieldOption> QueryFieldOptions => SqlQueryTools.QueryFields;
@@ -318,6 +322,39 @@ namespace SharpLog.ViewModel
         /// </summary>
         [ObservableProperty]
         private bool _isSqlResultMode;
+
+        /// <summary>
+        /// 「执行查询」按钮 —— 把「条件查询」和「SQL 自由查询」合二为一。
+        ///
+        /// 【判定顺序】（用户定的规则）
+        ///   ① SQL 框有内容  → 跑 SQL 自由查询（优先，查询条件忽略）
+        ///   ② SQL 空、条件也全空 → 提示用户先填点什么
+        ///   ③ SQL 空、条件有内容 → 跑条件查询（同时套上筛选器）
+        ///
+        /// 【为什么优先 SQL】用户写了一条完整语句时，意图很明确，
+        ///   不该再去清空旁边的条件行才能生效。
+        /// </summary>
+        [RelayCommand]
+        private void ExecuteQuery()
+        {
+            if (!string.IsNullOrWhiteSpace(SqlText))
+            {
+                ExecuteSql();
+                return;
+            }
+
+            bool hasCondition = QueryConditions.Any(
+                c => c.SelectedField != null && !string.IsNullOrWhiteSpace(c.Value));
+
+            if (hasCondition)
+            {
+                ApplyQuery();
+                return;
+            }
+
+            _ = ShowErrorMess(MessagePage.LogView,
+                "请先填写查询条件，或在「SQL 自由查询」里写一条语句。");
+        }
 
         /// <summary>
         /// 执行 SQL 框里的语句。

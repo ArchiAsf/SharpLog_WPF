@@ -1611,10 +1611,7 @@
                                         Command="{Binding AddQueryConditionCommand}"
                                         Content="+ 添加条件"
                                         Style="{StaticResource QueryAddButtonStyle}" />
-                                    <Button
-                                        Command="{Binding ApplyQueryCommand}"
-                                        Content="应用查询"
-                                        Style="{StaticResource QueryAddButtonStyle}" />
+
 
                                     <!--  ── 分隔线 ──  -->
                                     <hc:Divider
@@ -1703,10 +1700,28 @@
                                         Style="{StaticResource QuerySqlBoxStyle}"
                                         Text="{Binding SqlText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         VerticalScrollBarVisibility="Auto" />
-                                    <Label
-                                        Margin="0,4,0,0"
-                                        Content="⚠ 仅支持 SELECT 查询；删改等写操作需二次确认"
-                                        Style="{StaticResource QuerySqlHintStyle}" />
+                                    <Grid Margin="0,4,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label
+                                            Content="⚠ 仅支持 SELECT 查询；删改等写操作需二次确认"
+                                            Style="{StaticResource QuerySqlHintStyle}" />
+                                        <!--
+                                          ── 执行查询（唯一的查询按钮）──
+                                          ⚠ 条件查询与 SQL 自由查询已合并到它身上，判定规则见 VM 的 ExecuteQuery：
+                                             SQL 框有内容优先跑 SQL；SQL 空且条件也空则提示；否则跑条件查询。
+                                        -->
+                                        <Button
+                                            Grid.Column="1"
+                                            Width="110"
+                                            Height="30"
+                                            Command="{Binding ExecuteQueryCommand}"
+                                            Content="执行查询"
+                                            FontSize="13"
+                                            Style="{StaticResource QueryAddButtonStyle}" />
+                                    </Grid>
                                 </StackPanel>
                             </ScrollViewer>
 
@@ -1761,20 +1776,7 @@
                                         </Border>
                                     </Grid>
 
-                                    <!--
-                                      ── 执行 SQL ──
-                                      ⚠ 它【不在】中间那个滚动区里，而是钉在查询区固定最下边缘，
-                                         所以条件行变多、滚动区纵向扩展时，按钮位置纹丝不动。
-                                    -->
-                                    <Button
-                                        Width="180"
-                                        Height="36"
-                                        Margin="0,8,0,2"
-                                        HorizontalAlignment="Center"
-                                        Command="{Binding ExecuteSqlCommand}"
-                                        Content="执 行 S Q L"
-                                        FontSize="14"
-                                        Style="{StaticResource QueryAddButtonStyle}" />
+
                                 </StackPanel>
                             </Border>
                         </Grid>

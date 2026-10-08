@@ -71,10 +71,10 @@ namespace SharpLog.ViewModel
             new() { DisplayName = ">",      Value = QueryOperator.Greater },
             new() { DisplayName = "<",      Value = QueryOperator.Less },
             new() { DisplayName = ">=",     Value = QueryOperator.GreaterOrEqual },
-            new() { DisplayName = "<=",     Value = QueryOperator.LessOrEqual },
-            new() { DisplayName = "包含",   Value = QueryOperator.Contains },
-            new() { DisplayName = "开头是", Value = QueryOperator.StartsWith },
-            new() { DisplayName = "结尾是", Value = QueryOperator.EndsWith }
+            new() { DisplayName = "<=",     Value = QueryOperator.LessOrEqual }
+            // ⚠ 不放「包含 / 开头是 / 结尾是」—— 用户反馈用不上，已从下拉里去掉。
+            //   QueryOperator 枚举与 SqlQueryTools 里的 LIKE 分支【保留】，
+            //   将来若要恢复，把这三项加回来即可。
         };
     }
 }
