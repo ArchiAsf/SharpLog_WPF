@@ -1228,8 +1228,8 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="3*" />
-                                <ColumnDefinition Width="6*" />
-                                <ColumnDefinition Width="6*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
@@ -1256,7 +1256,7 @@
                             -->
                             <StackPanel
                                 Grid.Column="1"
-                                HorizontalAlignment="Right"
+                                HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Orientation="Horizontal">
                                 <Label Style="{StaticResource EffectLabelStyle}">
@@ -1270,7 +1270,7 @@
                             <!--  ── 值机员所在网格（靠右）──  -->
                             <StackPanel
                                 Grid.Column="2"
-                                HorizontalAlignment="Right"
+                                HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Orientation="Horizontal">
                                 <Label Style="{StaticResource EffectLabelStyle}">
