@@ -1542,6 +1542,7 @@
                                         Style="{StaticResource QueryTitleStyle}" />
                                     <Button
                                         HorizontalAlignment="Right"
+                                        Command="{Binding ClearQueryConditionsCommand}"
                                         Content="清空"
                                         Style="{StaticResource QueryMiniButtonStyle}" />
                                 </Grid>
@@ -1557,128 +1558,63 @@
 
                                     <!--  ── 查询条件 ──  -->
                                     <Label Content="查询条件" Style="{StaticResource QuerySectionLabelStyle}" />
+<!--
+                                      ── 查询条件行 ──
+                                      ⚠ 用 ItemsControl 动态生成：行数由 VM 的 QueryConditions 决定，
+                                         默认 1 行，点「+ 添加条件」往集合里加一项就多一行。
+                                      ⚠ 横向不扩展（列宽固定），纵向由外层 ScrollViewer 承接。
+                                      ⚠ 模板里的 DataContext 是 QueryConditionRow 本身，
+                                         要取 VM 上的下拉数据源/命令，必须用 RelativeSource 回到 ItemsControl。
+                                    -->
+                                    <ItemsControl ItemsSource="{Binding QueryConditions}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="0,2,0,2">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="96" />
+                                                        <ColumnDefinition Width="52" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <ComboBox
+                                                        Grid.Column="0"
+                                                        Height="24"
+                                                        DisplayMemberPath="DisplayName"
+                                                        FontSize="12"
+                                                        ItemsSource="{Binding DataContext.QueryFieldOptions, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                        SelectedItem="{Binding SelectedField, Mode=TwoWay}" />
+                                                    <ComboBox
+                                                        Grid.Column="1"
+                                                        Height="24"
+                                                        Margin="2,0,0,0"
+                                                        DisplayMemberPath="DisplayName"
+                                                        FontSize="12"
+                                                        ItemsSource="{Binding DataContext.QueryOperatorOptions, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                        SelectedItem="{Binding SelectedOperator, Mode=TwoWay}" />
+                                                    <TextBox
+                                                        Grid.Column="2"
+                                                        Margin="2,0,0,0"
+                                                        Style="{StaticResource QueryInputTextBoxStyle}"
+                                                        Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                    <Button
+                                                        Grid.Column="3"
+                                                        Command="{Binding DataContext.RemoveQueryConditionCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                        CommandParameter="{Binding}"
+                                                        Content="✕"
+                                                        Style="{StaticResource QueryMiniButtonStyle}" />
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
 
-                                    <!--  条件行：字段 ▼ │ 运算符 ▼ │ 值 │ ✕  -->
-                                    <Grid Margin="0,2,0,2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="96" />
-                                            <ColumnDefinition Width="50" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <ComboBox
-                                            Grid.Column="0"
-                                            Height="24"
-                                            FontSize="12"
-                                            SelectedIndex="0">
-                                            <ComboBoxItem Content="日志 ID" />
-                                            <ComboBoxItem Content="呼号" />
-                                            <ComboBoxItem Content="日期" />
-                                            <ComboBoxItem Content="频率" />
-                                            <ComboBoxItem Content="模式" />
-                                            <ComboBoxItem Content="波段" />
-                                        </ComboBox>
-                                        <ComboBox
-                                            Grid.Column="1"
-                                            Height="24"
-                                            Margin="2,0,0,0"
-                                            FontSize="12"
-                                            SelectedIndex="0">
-                                            <ComboBoxItem Content="=" />
-                                            <ComboBoxItem Content="!=" />
-                                            <ComboBoxItem Content="&gt;" />
-                                            <ComboBoxItem Content="&lt;" />
-                                            <ComboBoxItem Content="&gt;=" />
-                                            <ComboBoxItem Content="&lt;=" />
-                                        </ComboBox>
-                                        <TextBox Grid.Column="2" Margin="2,0,0,0" Style="{StaticResource QueryInputTextBoxStyle}" />
-                                        <Button
-                                            Grid.Column="3"
-                                            Content="✕"
-                                            Style="{StaticResource QueryMiniButtonStyle}" />
-                                    </Grid>
-
-                                    <!--  条件行：呼号  -->
-                                    <Grid Margin="0,2,0,2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="96" />
-                                            <ColumnDefinition Width="50" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <ComboBox
-                                            Grid.Column="0"
-                                            Height="24"
-                                            FontSize="12"
-                                            SelectedIndex="1">
-                                            <ComboBoxItem Content="日志 ID" />
-                                            <ComboBoxItem Content="呼号" />
-                                            <ComboBoxItem Content="日期" />
-                                            <ComboBoxItem Content="频率" />
-                                            <ComboBoxItem Content="模式" />
-                                            <ComboBoxItem Content="波段" />
-                                        </ComboBox>
-                                        <ComboBox
-                                            Grid.Column="1"
-                                            Height="24"
-                                            Margin="2,0,0,0"
-                                            FontSize="12"
-                                            SelectedIndex="0">
-                                            <ComboBoxItem Content="=" />
-                                            <ComboBoxItem Content="!=" />
-                                            <ComboBoxItem Content="&gt;" />
-                                            <ComboBoxItem Content="&lt;" />
-                                            <ComboBoxItem Content="&gt;=" />
-                                            <ComboBoxItem Content="&lt;=" />
-                                        </ComboBox>
-                                        <TextBox Grid.Column="2" Margin="2,0,0,0" Style="{StaticResource QueryInputTextBoxStyle}" />
-                                        <Button
-                                            Grid.Column="3"
-                                            Content="✕"
-                                            Style="{StaticResource QueryMiniButtonStyle}" />
-                                    </Grid>
-
-                                    <!--  条件行：日期  -->
-                                    <Grid Margin="0,2,0,2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="96" />
-                                            <ColumnDefinition Width="50" />
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <ComboBox
-                                            Grid.Column="0"
-                                            Height="24"
-                                            FontSize="12"
-                                            SelectedIndex="2">
-                                            <ComboBoxItem Content="日志 ID" />
-                                            <ComboBoxItem Content="呼号" />
-                                            <ComboBoxItem Content="日期" />
-                                            <ComboBoxItem Content="频率" />
-                                            <ComboBoxItem Content="模式" />
-                                            <ComboBoxItem Content="波段" />
-                                        </ComboBox>
-                                        <ComboBox
-                                            Grid.Column="1"
-                                            Height="24"
-                                            Margin="2,0,0,0"
-                                            FontSize="12"
-                                            SelectedIndex="4">
-                                            <ComboBoxItem Content="=" />
-                                            <ComboBoxItem Content="!=" />
-                                            <ComboBoxItem Content="&gt;" />
-                                            <ComboBoxItem Content="&lt;" />
-                                            <ComboBoxItem Content="&gt;=" />
-                                            <ComboBoxItem Content="&lt;=" />
-                                        </ComboBox>
-                                        <TextBox Grid.Column="2" Margin="2,0,0,0" Style="{StaticResource QueryInputTextBoxStyle}" />
-                                        <Button
-                                            Grid.Column="3"
-                                            Content="✕"
-                                            Style="{StaticResource QueryMiniButtonStyle}" />
-                                    </Grid>
-
-                                    <Button Content="+ 添加条件" Style="{StaticResource QueryAddButtonStyle}" />
+                                    <Button
+                                        Command="{Binding AddQueryConditionCommand}"
+                                        Content="+ 添加条件"
+                                        Style="{StaticResource QueryAddButtonStyle}" />
+                                    <Button
+                                        Command="{Binding ApplyQueryCommand}"
+                                        Content="应用查询"
+                                        Style="{StaticResource QueryAddButtonStyle}" />
 
                                     <!--  ── 分隔线 ──  -->
                                     <hc:Divider
@@ -1699,7 +1635,8 @@
                                             Grid.Column="1"
                                             Height="24"
                                             FontSize="12"
-                                            IsEditable="True" />
+                                            IsEditable="True"
+                                            Text="{Binding FilterCall, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     </Grid>
 
                                     <!--  筛选：按模式  -->
@@ -1713,14 +1650,8 @@
                                             Grid.Column="1"
                                             Height="24"
                                             FontSize="12"
-                                            SelectedIndex="0">
-                                            <ComboBoxItem Content="全部模式" />
-                                            <ComboBoxItem Content="SSB" />
-                                            <ComboBoxItem Content="CW" />
-                                            <ComboBoxItem Content="FT8" />
-                                            <ComboBoxItem Content="FM" />
-                                            <ComboBoxItem Content="RTTY" />
-                                        </ComboBox>
+                                            ItemsSource="{Binding FilterModeOptions}"
+                                            SelectedItem="{Binding FilterMode, Mode=TwoWay}" />
                                     </Grid>
 
                                     <!--  筛选：按波段  -->
@@ -1734,27 +1665,21 @@
                                             Grid.Column="1"
                                             Height="24"
                                             FontSize="12"
-                                            SelectedIndex="0">
-                                            <ComboBoxItem Content="全部波段" />
-                                            <ComboBoxItem Content="160m" />
-                                            <ComboBoxItem Content="80m" />
-                                            <ComboBoxItem Content="40m" />
-                                            <ComboBoxItem Content="20m" />
-                                            <ComboBoxItem Content="15m" />
-                                            <ComboBoxItem Content="10m" />
-                                            <ComboBoxItem Content="6m" />
-                                            <ComboBoxItem Content="2m" />
-                                            <ComboBoxItem Content="70cm" />
-                                        </ComboBox>
+                                            ItemsSource="{Binding FilterBandOptions}"
+                                            SelectedItem="{Binding FilterBand, Mode=TwoWay}" />
                                     </Grid>
 
                                     <!--  快捷开关  -->
                                     <StackPanel Margin="0,6,0,0" Orientation="Horizontal">
-                                        <CheckBox Content="只看已确认 QSL" FontSize="12" />
+                                        <CheckBox
+                                            Content="只看已确认 QSL"
+                                            FontSize="12"
+                                            IsChecked="{Binding FilterOnlyConfirmed, Mode=TwoWay}" />
                                         <CheckBox
                                             Margin="12,0,0,0"
                                             Content="只看今天"
-                                            FontSize="12" />
+                                            FontSize="12"
+                                            IsChecked="{Binding FilterOnlyToday, Mode=TwoWay}" />
                                     </StackPanel>
 
                                     <!--  ── 分隔线 ──  -->
@@ -1776,18 +1701,12 @@
                                         Height="84"
                                         HorizontalScrollBarVisibility="Auto"
                                         Style="{StaticResource QuerySqlBoxStyle}"
+                                        Text="{Binding SqlText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         VerticalScrollBarVisibility="Auto" />
-                                    <Grid Margin="0,4,0,0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="Auto" />
-                                        </Grid.ColumnDefinitions>
-                                        <Label Content="⚠ 仅支持 SELECT 查询" Style="{StaticResource QuerySqlHintStyle}" />
-                                        <Button
-                                            Grid.Column="1"
-                                            Content="执行 SQL"
-                                            Style="{StaticResource QueryMiniButtonStyle}" />
-                                    </Grid>
+                                    <Label
+                                        Margin="0,4,0,0"
+                                        Content="⚠ 仅支持 SELECT 查询；删改等写操作需二次确认"
+                                        Style="{StaticResource QuerySqlHintStyle}" />
                                 </StackPanel>
                             </ScrollViewer>
 
@@ -1806,7 +1725,7 @@
                                             Style="{StaticResource QueryStatCaptionStyle}" />
                                         <Label
                                             HorizontalAlignment="Right"
-                                            Content="1,234"
+                                            Content="{Binding QsoTotalCount}"
                                             Style="{StaticResource QueryStatNumberStyle}" />
                                     </Grid>
 
@@ -1824,23 +1743,38 @@
                                         </Grid.ColumnDefinitions>
                                         <Border Grid.Column="0" Style="{StaticResource QueryStatCellStyle}">
                                             <StackPanel>
-                                                <Label Content="12" Style="{StaticResource QueryStatNumberStyle}" />
+                                                <Label Content="{Binding CqZoneCount}" Style="{StaticResource QueryStatNumberStyle}" />
                                                 <Label Content="CQ 分区" Style="{StaticResource QueryStatCaptionStyle}" />
                                             </StackPanel>
                                         </Border>
                                         <Border Grid.Column="1" Style="{StaticResource QueryStatCellStyle}">
                                             <StackPanel>
-                                                <Label Content="34" Style="{StaticResource QueryStatNumberStyle}" />
+                                                <Label Content="{Binding ItuZoneCount}" Style="{StaticResource QueryStatNumberStyle}" />
                                                 <Label Content="ITU 分区" Style="{StaticResource QueryStatCaptionStyle}" />
                                             </StackPanel>
                                         </Border>
                                         <Border Grid.Column="2" Style="{StaticResource QueryStatCellStyle}">
                                             <StackPanel>
-                                                <Label Content="56" Style="{StaticResource QueryStatNumberStyle}" />
+                                                <Label Content="{Binding DxccCount}" Style="{StaticResource QueryStatNumberStyle}" />
                                                 <Label Content="DXCC" Style="{StaticResource QueryStatCaptionStyle}" />
                                             </StackPanel>
                                         </Border>
                                     </Grid>
+
+                                    <!--
+                                      ── 执行 SQL ──
+                                      ⚠ 它【不在】中间那个滚动区里，而是钉在查询区固定最下边缘，
+                                         所以条件行变多、滚动区纵向扩展时，按钮位置纹丝不动。
+                                    -->
+                                    <Button
+                                        Width="180"
+                                        Height="36"
+                                        Margin="0,8,0,2"
+                                        HorizontalAlignment="Center"
+                                        Command="{Binding ExecuteSqlCommand}"
+                                        Content="执 行 S Q L"
+                                        FontSize="14"
+                                        Style="{StaticResource QueryAddButtonStyle}" />
                                 </StackPanel>
                             </Border>
                         </Grid>
