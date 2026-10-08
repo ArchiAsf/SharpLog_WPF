@@ -1248,6 +1248,39 @@
                                 </Label>
                             </StackPanel>
 
+                            <!--
+                              ── 值机员（靠右）──
+                              绑 OPERATOR（ADIF: OPERATOR）—— 本次通联时在电台前操作的人。
+                              ⚠ 与「本站呼号 STATION_CALLSIGN」是两回事：后者指台站本身，
+                                前者指操作的人（远征台、集体台换班时两者会不同）。
+                            -->
+                            <StackPanel
+                                Grid.Column="1"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                                <Label Style="{StaticResource EffectLabelStyle}">
+                                    <TextBlock Text="{DynamicResource Text_RadioOperator}" />
+                                </Label>
+                                <Label Style="{StaticResource EffectLabelStyle}">
+                                    <TextBlock Text="{Binding OPERATOR}" />
+                                </Label>
+                            </StackPanel>
+
+                            <!--  ── 值机员所在网格（靠右）──  -->
+                            <StackPanel
+                                Grid.Column="2"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                                <Label Style="{StaticResource EffectLabelStyle}">
+                                    <TextBlock Text="{DynamicResource Text_OperatorGrid}" />
+                                </Label>
+                                <Label Style="{StaticResource EffectLabelStyle}">
+                                    <TextBlock Text="{Binding MY_GRIDSQUARE}" />
+                                </Label>
+                            </StackPanel>
+
                         </Grid>
                     </Border>
 
