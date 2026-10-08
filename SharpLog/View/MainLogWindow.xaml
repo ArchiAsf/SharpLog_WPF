@@ -1051,8 +1051,8 @@
                                                 Padding="0,2,0,2">
                                                 <hc:ComboBox Text="{Binding QSL_RCVD}">
                                                     <hc:ComboBox.Items>
-                                                        <system:String>是</system:String>
-                                                        <system:String>否</system:String>
+                                                        <system:String>{DynamicResource Text_Yes}</system:String>
+                                                        <system:String>{DynamicResource Text_No}</system:String>
                                                     </hc:ComboBox.Items>
                                                 </hc:ComboBox>
                                             </Border>

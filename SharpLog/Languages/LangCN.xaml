@@ -46,6 +46,8 @@
     <system:String x:Key="Text_AddLog">添加日志</system:String>
     <system:String x:Key="Text_OtherInfo">其他信息</system:String>
 
+    <system:String x:Key="Text_Yes">是</system:String>
+    <system:String x:Key="Text_No">否</system:String>
     <system:String x:Key="Text_LanguageToggle">EN</system:String>
 
 

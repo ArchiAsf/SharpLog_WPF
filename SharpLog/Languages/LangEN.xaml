@@ -57,6 +57,8 @@
     <system:String x:Key="Text_AddLog">Add Log</system:String>
     <system:String x:Key="Text_OtherInfo">More Info</system:String>
 
+    <system:String x:Key="Text_Yes">Yes</system:String>
+    <system:String x:Key="Text_No">No</system:String>
     <system:String x:Key="Text_LanguageToggle">中文</system:String>
 
 </ResourceDictionary>
