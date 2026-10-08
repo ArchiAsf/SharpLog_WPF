@@ -81,6 +81,25 @@
                                 <RowDefinition />
                             </Grid.RowDefinitions>
 
+                            <!--
+                              ── 中英文切换 ──
+                              按钮文字走 {DynamicResource Text_LanguageToggle}：
+                              中文界面显示 "EN"、英文界面显示 "中文"（显示的是【另一种】语言，
+                              这样一眼就知道点下去会变成什么）。
+                              切换逻辑见 ToolsBox\LanguageTools —— 它替换 App 的语言资源字典，
+                              之后 WPF 会自动刷新所有 DynamicResource 引用。
+                            -->
+                            <Button
+                                Grid.Row="0"
+                                Grid.Column="2"
+                                Width="70"
+                                Margin="0,0,6,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Command="{Binding ToggleLanguageCommand}"
+                                Content="{DynamicResource Text_LanguageToggle}"
+                                Style="{StaticResource SecondaryButtonStyle}" />
+
                         </Grid>
 
 
