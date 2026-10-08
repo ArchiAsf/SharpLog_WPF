@@ -42,7 +42,7 @@
     </Window.Resources>
 
     <TabControl Style="{StaticResource DarkTabControlStyle}">
-        <TabItem Header="日志编辑" Style="{StaticResource DarkTabItemStyle}">
+        <TabItem Header="{DynamicResource Text_TabLogEdit}" Style="{StaticResource DarkTabItemStyle}">
                 <Grid ShowGridLines="False">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="200" />
@@ -404,7 +404,7 @@
                                         <Button
                                             Margin="5"
                                             Command="{Binding ConvertTimeZoneCommand}"
-                                            Content="时区转换"
+                                            Content="{DynamicResource Text_TimeZoneConvert}"
                                             Style="{StaticResource PrimaryButtonStyle}" />
                                     </Border>
 
@@ -458,7 +458,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock Text="·开始时间" TextAlignment="Center" />
+                                    <TextBlock Text="{DynamicResource Text_StartTime}" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  开始时间输入框（hc:DateTimePicker 复合输入，后台拆分存储）  -->
@@ -483,7 +483,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock Text="·结束时间" TextAlignment="Center" />
+                                    <TextBlock Text="{DynamicResource Text_EndTime}" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  结束时间输入框（hc:DateTimePicker 复合输入，后台拆分存储）  -->
@@ -506,7 +506,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock Text="备注" TextAlignment="Center" />
+                                    <TextBlock Text="{DynamicResource Text_Comment}" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <Border
@@ -518,7 +518,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock Text="·呼号" TextAlignment="Center" />
+                                    <TextBlock Text="{DynamicResource Text_Call}" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  呼号输入框（ADIF: CALL）  -->
@@ -544,7 +544,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock Text="·模式" TextAlignment="Center" />
+                                    <TextBlock Text="{DynamicResource Text_Mode}" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  模式输入框  -->
@@ -595,7 +595,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock Text="·频率" TextAlignment="Center" />
+                                    <TextBlock Text="{DynamicResource Text_Freq}" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  频率输入框（ADIF: FREQ，kHz）  -->
@@ -619,7 +619,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock Text="信号报告_收" TextAlignment="Center" />
+                                    <TextBlock Text="{DynamicResource Text_RstRcvd}" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  接收信号报告输入框（ADIF: RST_RCVD）  -->
@@ -642,7 +642,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock Text="信号报告_发" TextAlignment="Center" />
+                                    <TextBlock Text="{DynamicResource Text_RstSent}" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  发射信号报告输入框（ADIF: RST_SENT）  -->
@@ -666,7 +666,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock Text="网格" TextAlignment="Center" />
+                                    <TextBlock Text="{DynamicResource Text_GridSquare}" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  网格输入框（ADIF: GRIDSQUARE）  -->
@@ -689,7 +689,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock Text="发射功率_收" TextAlignment="Center" />
+                                    <TextBlock Text="{DynamicResource Text_RxPwr}" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  接收功率输入框（ADIF: RX_PWR）  -->
@@ -714,7 +714,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock Text="发射功率_发" TextAlignment="Center" />
+                                    <TextBlock Text="{DynamicResource Text_TxPwr}" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  发射功率输入框（ADIF: TX_PWR）  -->
@@ -739,7 +739,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock Text="地理位置" TextAlignment="Center" />
+                                    <TextBlock Text="{DynamicResource Text_Qth}" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  QTH地理位置输入框（ADIF: QTH）  -->
@@ -763,7 +763,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock Text="设备" TextAlignment="Center" />
+                                    <TextBlock Text="{DynamicResource Text_Rig}" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  设备RIG输入框（ADIF: RIG）  -->
@@ -787,7 +787,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock Text="天线" TextAlignment="Center" />
+                                    <TextBlock Text="{DynamicResource Text_Ant}" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  天线ANT输入框  -->
@@ -811,7 +811,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock Text="发射高度" TextAlignment="Center" />
+                                    <TextBlock Text="{DynamicResource Text_Height}" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  发射高度 Height输入框  -->
@@ -837,7 +837,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock Text="值机员" TextAlignment="Center" />
+                                    <TextBlock Text="{DynamicResource Text_ContactedOp}" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--
@@ -864,7 +864,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock Text="传播模式" TextAlignment="Center" />
+                                    <TextBlock Text="{DynamicResource Text_PropMode}" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  传播模式 Propagation Mode输入框  -->
@@ -899,7 +899,7 @@
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     Style="{StaticResource LabelMainTitleStyle}">
-                                    <TextBlock Text="数字ID" TextAlignment="Center" />
+                                    <TextBlock Text="{DynamicResource Text_DigitalId}" TextAlignment="Center" />
                                 </Label>
                             </Border>
                             <!--  DMRID输入框  -->
@@ -921,7 +921,7 @@
                                 Style="{StaticResource InCardPanelStyle}">
                                 <Button
                                     Command="{Binding AddLogBtnClickCommand}"
-                                    Content="添加日志"
+                                    Content="{DynamicResource Text_AddLog}"
                                     Style="{StaticResource PrimaryButtonStyle}" />
                             </Border>
 
@@ -938,7 +938,7 @@
                         Style="{StaticResource InDarkTabControlStyle}">
                         <TabItem
                             Height="18"
-                            Header="其他信息"
+                            Header="{DynamicResource Text_OtherInfo}"
                             Style="{StaticResource InDarkTabItemStyle}">
 
                             <Grid>
@@ -2032,7 +2032,7 @@
                                                 Grid.Column="0"
                                                 Style="{StaticResource InOptionCardPanelStyle}">
                                                 <Label Style="{StaticResource InOptionLabelStyle}">
-                                                    <TextBlock Text="网格" />
+                                                    <TextBlock Text="{DynamicResource Text_GridSquare}" />
                                                 </Label>
                                             </Border>
 

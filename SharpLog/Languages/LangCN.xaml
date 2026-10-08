@@ -22,6 +22,30 @@
            ⚠ 它显示的是"另一种语言"的名字：
              中文界面显示 EN，英文界面显示 中文。
               这样用户一眼就知道点下去会切成什么。  -->
+    <!--  ── 日志编辑页界面文字 ──  -->
+    <system:String x:Key="Text_TabLogEdit">日志编辑</system:String>
+    <system:String x:Key="Text_TimeZoneConvert">时区转换</system:String>
+    <system:String x:Key="Text_StartTime">·开始时间</system:String>
+    <system:String x:Key="Text_EndTime">·结束时间</system:String>
+    <system:String x:Key="Text_Comment">备注</system:String>
+    <system:String x:Key="Text_Call">·呼号</system:String>
+    <system:String x:Key="Text_Mode">·模式</system:String>
+    <system:String x:Key="Text_Freq">·频率</system:String>
+    <system:String x:Key="Text_RstRcvd">信号报告_收</system:String>
+    <system:String x:Key="Text_RstSent">信号报告_发</system:String>
+    <system:String x:Key="Text_GridSquare">网格</system:String>
+    <system:String x:Key="Text_RxPwr">发射功率_收</system:String>
+    <system:String x:Key="Text_TxPwr">发射功率_发</system:String>
+    <system:String x:Key="Text_Qth">地理位置</system:String>
+    <system:String x:Key="Text_Rig">设备</system:String>
+    <system:String x:Key="Text_Ant">天线</system:String>
+    <system:String x:Key="Text_Height">发射高度</system:String>
+    <system:String x:Key="Text_ContactedOp">值机员</system:String>
+    <system:String x:Key="Text_PropMode">传播模式</system:String>
+    <system:String x:Key="Text_DigitalId">数字ID</system:String>
+    <system:String x:Key="Text_AddLog">添加日志</system:String>
+    <system:String x:Key="Text_OtherInfo">其他信息</system:String>
+
     <system:String x:Key="Text_LanguageToggle">EN</system:String>
 
 
