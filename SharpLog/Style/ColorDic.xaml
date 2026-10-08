@@ -31,6 +31,12 @@
     <SolidColorBrush x:Key="ButtonDisabledBackColor" Color="#FF233250" />
     <SolidColorBrush x:Key="ButtonDisabledTextColor" Color="#FF787D87" />
 
+    <!--  保存按钮（绿色实心）—— 用于"保存"这类确认性主操作，
+          与主按钮的蓝形成语义区分。与 SuccessTextColor(#4EC9B0) 同一色系。  -->
+    <SolidColorBrush x:Key="SuccessButtonNormalBackColor" Color="#FF2E9E63" />
+    <SolidColorBrush x:Key="SuccessButtonHoverBackColor" Color="#FF3FBF7C" />
+    <SolidColorBrush x:Key="SuccessButtonClickBackColor" Color="#FF1F7A4A" />
+
     <!--  DataGrid 日志表格（原DataGridView）  -->
     <SolidColorBrush x:Key="DgvHeaderBackColor" Color="#FF202328" />
     <SolidColorBrush x:Key="DgvHeaderTextColor" Color="#FFFFFFFF" />

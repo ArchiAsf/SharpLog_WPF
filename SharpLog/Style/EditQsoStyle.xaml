@@ -131,6 +131,92 @@
         BasedOn="{StaticResource PrimaryButtonStyle}"
         TargetType="Button"></Style>
 
+    <!--
+      保存按钮：绿色实心。
+      ⚠ 不能 BasedOn PrimaryButtonStyle 再改 Background —— 它的 Trigger 里
+        硬编码了蓝色系色键（Hover / Pressed 都会把背景抢回蓝），必须自己写模板。
+      与主按钮的蓝形成语义区分：蓝=主操作，绿=确认保存，红=危险。
+    -->
+    <Style x:Key="EditSaveButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource SuccessButtonNormalBackColor}" />
+        <Setter Property="Foreground" Value="{StaticResource ButtonNormalTextColor}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="12,6" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border
+                        x:Name="Bd"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="4">
+                        <ContentPresenter
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="{TemplateBinding Content}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource SuccessButtonHoverBackColor}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{StaticResource SuccessButtonClickBackColor}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{StaticResource ButtonDisabledBackColor}" />
+                <Setter Property="Foreground" Value="{StaticResource ButtonDisabledTextColor}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--
+      危险按钮（幽灵式）：透明填充 + 红边框 + 红字。
+      用于删除 / 取消。悬浮时填充淡红底（ErrorBackColor）作为按压前反馈。
+    -->
+    <Style x:Key="EditDangerOutlineButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource ErrorTextColor}" />
+        <Setter Property="BorderBrush" Value="{StaticResource DangerButtonNormalBackColor}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="12,6" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border
+                        x:Name="Bd"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="4">
+                        <ContentPresenter
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Content="{TemplateBinding Content}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource ErrorBackColor}" />
+                <Setter Property="BorderBrush" Value="{StaticResource DangerButtonHoverBackColor}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{StaticResource DangerButtonClickBackColor}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="{StaticResource ButtonDisabledTextColor}" />
+                <Setter Property="BorderBrush" Value="{StaticResource ButtonDisabledBackColor}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <!--  ══════════════════════════════════════════════════════════════════════
           滚动区专用样式
           ──────────────────────────────────────────────────────────────────────

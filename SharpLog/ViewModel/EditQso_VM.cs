@@ -239,6 +239,23 @@ namespace SharpLog.ViewModel
         [ObservableProperty]
         private string _RadioOperator = string.Empty;
 
+        /// <summary>
+        /// CQ 分区（ADIF: CQZ），取值范围 1~40。
+        /// ⚠ 目前靠【手工填写】—— 呼号前缀自动解析尚未实现。
+        ///   用 string 而非 int?，因为要能表示"没填"（空串），
+        ///   直接绑 int? 到 TextBox 会在输入中途（如只敲了一个"-"）解析失败。
+        /// </summary>
+        [ObservableProperty]
+        private string _CQZ = string.Empty;
+
+        /// <summary>ITU 分区（ADIF: ITUZ），取值范围 1~90，手工填写。</summary>
+        [ObservableProperty]
+        private string _ITUZ = string.Empty;
+
+        /// <summary>DXCC 实体编号（ADIF: DXCC），手工填写。</summary>
+        [ObservableProperty]
+        private string _DXCC = string.Empty;
+
         /// <summary>时区（ADIF: 由 TimeZone 记录，如 "UTC+8"）。</summary>
         [ObservableProperty]
         private string _TimeZone = string.Empty;
@@ -313,6 +330,9 @@ namespace SharpLog.ViewModel
             ReceiverName = source.ReceiverName ?? string.Empty;
             ReceiverContact = source.ReceiverContact ?? string.Empty;
             RadioOperator = source.RadioOperator ?? string.Empty;
+            CQZ = source.CQZ?.ToString(CultureInfo.InvariantCulture) ?? string.Empty;
+            ITUZ = source.ITUZ?.ToString(CultureInfo.InvariantCulture) ?? string.Empty;
+            DXCC = source.DXCC?.ToString(CultureInfo.InvariantCulture) ?? string.Empty;
             TimeZone = source.TimeZone ?? string.Empty;
             DigitalID = source.DigitalID ?? string.Empty;
             IsConfirmed = BoolToYesNo(source.IsConfirmed);
@@ -581,6 +601,10 @@ namespace SharpLog.ViewModel
             entity.ReceiverName = ReceiverName;
             entity.ReceiverContact = ReceiverContact;
             entity.RadioOperator = RadioOperator;
+            // 分区是"可空整数"：解析不出来（空串或非数字）就存 null，不报错
+            entity.CQZ = int.TryParse(CQZ, NumberStyles.Integer, CultureInfo.InvariantCulture, out int cqzValue) ? cqzValue : (int?)null;
+            entity.ITUZ = int.TryParse(ITUZ, NumberStyles.Integer, CultureInfo.InvariantCulture, out int ituzValue) ? ituzValue : (int?)null;
+            entity.DXCC = int.TryParse(DXCC, NumberStyles.Integer, CultureInfo.InvariantCulture, out int dxccValue) ? dxccValue : (int?)null;
             entity.TimeZone = TimeZone;
             entity.DigitalID = DigitalID;
             entity.COMMENT = COMMENT;
