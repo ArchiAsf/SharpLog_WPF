@@ -369,6 +369,17 @@ namespace SharpLog.ToolsBox
         /// <returns>(是否成功, 结果表, 影响/返回行数, 提示信息)</returns>
         public static (bool Success, DataTable? Table, int AffectedRows, string Message) Execute(string? sql)
         {
+            return Execute(sql, null);
+        }
+
+        /// <summary>
+        /// 带参数执行 —— 筛选器包装成子查询后，条件里的参数要走这个重载传进来。
+        /// </summary>
+        /// <param name="sql">要执行的 SQL</param>
+        /// <param name="parameters">参数列表，可为 null</param>
+        public static (bool Success, DataTable? Table, int AffectedRows, string Message) Execute(
+            string? sql, List<SqliteParameter>? parameters)
+        {
             if (string.IsNullOrWhiteSpace(sql))
             {
                 return (false, null, 0, "SQL 语句为空。");
@@ -386,6 +397,15 @@ namespace SharpLog.ToolsBox
                 using var cmd = conn.CreateCommand();
                 cmd.CommandText = sql;
                 cmd.CommandTimeout = TimeoutSeconds;
+
+                // 筛选器生成的参数（SQL 被包成子查询时用得到）
+                if (parameters != null)
+                {
+                    foreach (SqliteParameter parameter in parameters)
+                    {
+                        cmd.Parameters.Add(parameter);
+                    }
+                }
 
                 using var reader = cmd.ExecuteReader();
 
@@ -657,6 +677,29 @@ namespace SharpLog.ToolsBox
             {
                 return (false, new List<QsoLog>(), ex.Message);
             }
+        }
+
+        /// <summary>
+        /// 把用户的只读 SQL 包成子查询，外面套上筛选条件。
+        ///
+        /// 【为什么需要它】用户定的规则：筛选器优先级最高，
+        ///   即使在「SQL 自由查询」模式下也必须生效。
+        ///   ⇒ SELECT * FROM (用户写的SQL) WHERE 筛选条件
+        ///
+        /// ⚠ 只对【只读】语句用 —— 写操作（DELETE / UPDATE）没法这样包，
+        ///   那些语句下筛选器不参与。
+        /// ⚠ 用户 SQL 末尾的分号必须先去掉，否则放进子查询里会语法错误。
+        /// ⚠ 筛选条件为空时原样返回，不做任何包装（这种情况下性能也更好）。
+        /// </summary>
+        public static string WrapWithFilter(string userSql, string filterWhere)
+        {
+            if (string.IsNullOrWhiteSpace(filterWhere))
+            {
+                return userSql;
+            }
+
+            string inner = userSql.Trim().TrimEnd(';').Trim();
+            return "SELECT * FROM (" + inner + ") WHERE " + filterWhere;
         }
 
         // ====================================================================

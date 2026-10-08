@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Data.Sqlite;
 using SharpLog.DB;
 using SharpLog.Infrastructure;
 using SharpLog.Model;
@@ -402,7 +403,34 @@ namespace SharpLog.ViewModel
                 }
             }
 
-            var (success, table, affectedRows, message) = SqlQueryTools.Execute(sql);
+            // ── 把筛选器套上去 ──
+            // 用户定的规则：【筛选器优先级最高，即使在 SQL 自由查询模式下也要生效】。
+            // 做法：把只读 SQL 包成子查询 —— SELECT * FROM (你写的SQL) WHERE 筛选条件。
+            // ⚠ 写操作（DELETE / UPDATE）没法这样包（总不能把 DELETE 塞进子查询），
+            //   所以那些语句下筛选器不参与 —— 这也是它们必须双重确认的原因之一。
+            string finalSql = sql;
+            List<SqliteParameter>? sqlParameters = null;
+
+            if (kind == SqlStatementKind.ReadOnly)
+            {
+                var filter = SqlQueryTools.BuildFilterWhere(
+                    FilterCall,
+                    FilterMode == AnyOption ? string.Empty : FilterMode,
+                    FilterBand == AnyOption ? string.Empty : FilterBand,
+                    FilterOnlyConfirmed,
+                    FilterOnlyToday);
+
+                if (!filter.Success)
+                {
+                    _ = ShowErrorMess(MessagePage.LogView, filter.Message);
+                    return;
+                }
+
+                finalSql = SqlQueryTools.WrapWithFilter(sql, filter.Where);
+                sqlParameters = filter.Parameters;
+            }
+
+            var (success, table, affectedRows, message) = SqlQueryTools.Execute(finalSql, sqlParameters);
 
             if (!success)
             {

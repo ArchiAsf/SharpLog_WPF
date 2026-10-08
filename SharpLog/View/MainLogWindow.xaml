@@ -1734,7 +1734,7 @@
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
                                         <Label
-                                            Content="⚠ 仅支持 SELECT 查询；删改等写操作需二次确认"
+                                            Content="⚠ 筛选器始终生效；非 SELECT 语句需二次确认"
                                             Style="{StaticResource QuerySqlHintStyle}" />
                                         <!--
                                           ── 执行查询（唯一的查询按钮）──
